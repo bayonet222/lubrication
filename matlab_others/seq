@@ -1,0 +1,16 @@
+DP = 1;
+
+z = xx*0+padpos; z(1:floor(nx/4)) = hgap; z(floor(nx/4*3):end) = hgap;
+
+for i =1:DP:NT,
+    hti = -ht((i-1)*dt;
+    hhi = z + htex;
+    clf
+    hold on
+    plot(xx, 1e2*PP(i,:),'r-');
+    plot(xx,-hti,xx,per,l1,dep,S), 'k-','linewidth',2);
+    plot(xx,z, 'k-','linewidth',2)
+    plot(xx,TH(i,:).*z,'b--', 'linewidth',2); 
+    ylim([ -dep 2]);
+    drawnow
+end
