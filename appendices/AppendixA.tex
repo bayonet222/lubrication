@@ -1,0 +1,94 @@
+% Appendix A
+\chapter{Second order MAC scheme for Navier-Stokes equations} % Main appendix title
+\label{chap:appendix_MAC} % For referencing this appendix elsewhere, use \ref{AppendixA}
+
+\lhead{Appendix A. \emph{Second order MAC scheme for Navier-Stokes equations}} % This is for the header on each page - perhaps a shortened title
+
+The finite volume method is presented here along with a staggered MAC (marker-and-cell) mesh. The adopted notation corresponds to Chapter 2 of \citetitle{prosperetti2009}, \citeauthor{prosperetti2009} (\citeyear{prosperetti2009}). Further details can be found in the referenced book. 
+
+The 2D Navier-Stokes \eqref{nvs_2d_u,nvs_2d_v} and the incompressibility condition \eqref*{continuity_2d} resp. are written in the discrete version ($dx\equiv h$)
+\begin{align}
+\frac{\mathbf{u}^{n+1}-\mathbf{u}^n}{\Delta t}+\mathbf{A}_h(\mathbf{u}^n)&=-\frac{1}{\rho}\nabla_hp+\mu\,\mathbf{D}_h \mathbf{u}^n,\label{eq:ap_nvs}\\
+\nabla_h\cdot \mathbf{u}^{n+1}&=0,\label{eq:ap_incomp_cond}
+\end{align}
+where $n$ is the index of the time step and $\Delta t$ its length. $\mathbf{A}_h$, $\mathbf{D}_h$ and $\nabla_h$ are approximations of the advection, diffusion and gradient operators resp..
+
+\Figref{omega_h_staggered} shows the discretization scheme used for solving the Navier Stokes equations in \Secref{comparison_nvs_reynolds}. The first step is to generate an approximated version $\Omega_h$ of the domain $\Omega$ (see \Figref{omega_h_staggered}). The volume schematized in \Figref{omega_h_staggered} is used to determine the equation involving the unknown pressure $p_{\!_{i,j}}$. The same is done to determine the equation for the velocity $u_{\!_{i+\frac{1}{2},j}}$, but this time the control volume is shifted as the left scheme of \Figref{control_volume_uv} shown. At the right side of that figure the scheme of the control volume for $v_{\!_{i,j+\frac{1}{2}}}$ is shown.
+
+\section{Discretization of advection and diffusion}
+\begin{figure}[ht]
+ \centering 
+ \def\svgwidth{\textwidth}	
+\input{figs/staggered_grid.pdf_tex}\caption[Staggered MAC discretization scheme]{Staggered MAC discretization by Finite Volume Methods. Control volume for pressure.}\label{fig:omega_h_staggered}
+\end{figure}
+\begin{figure}[hb]
+ \centering 
+ \def\svgwidth{\textwidth}	
+\input{figs/staggered_grid_uv.pdf_tex}\caption[Staggered MAC control volumes for velocities]{Control volumes for $u$ (left) and $v$ (right). Adapted from \cite{prosperetti2009}.}\label{fig:control_volume_uv}
+\end{figure}
+
+Over an arbitrary control volume, the advection of $\mathbf{u}^n$ can be approximated by the average
+\begin{equation}
+\mathbf{A}(\mathbf{u}^n)=\frac{1}{\Delta V}\int_V \nabla\cdot \left(\mathbf{u}^n\otimes \mathbf{u}^n\right)dv=\frac{1}{\Delta V}\oint_{\partial V} \mathbf{u}^n(\mathbf{u}^n\cdot \hat{n})ds
+\end{equation}
+
+Now, based on the corresponding control volume for $u_{i+\frac{1}{2},j}$ and $v_{i,j+\frac{1}{2}}$, the discrete  versions of $\mathbf{A}_x(\mathbf{u}^n)$ and $\mathbf{A}_y(\mathbf{u}^n)$ can be written resp. as
+\begin{align*}
+(\mathbf{A}_x)^n_{i+\frac{1}{2},j} = &\frac{1}{h}\left\{\left(\frac{u_{i+\frac{3}{2},j}+u^n_{i+\frac{1}{2},j}}{2}\right)^2-\left(\frac{u^n_{i+\frac{1}{2},j}+u^n_{i-\frac{1}{2},j}}{2}\right)^2\right.\\
+&+\left(\frac{u^n_{i+\frac{1}{2},j+1}+u^n_{i+\frac{1}{2},j}}{2}\right)\left(\frac{v^n_{i+1,j+\frac{1}{2}}+v^n_{i,j+\frac{1}{2}}}{2}\right)\\
+&-\left.\left(\frac{u^n_{i+\frac{1}{2},j}+u^n_{i+\frac{1}{2},j-1}}{2}\right)\left(\frac{v^n_{i+1,j-\frac{1}{2}}+v^n_{i,j-\frac{1}{2}}}{2}\right)\right\},\\
+(\mathbf{A}_y)^n_{i,j+\frac{1}{2}} = &\frac{1}{h}\left\{\left(\frac{u^n_{i+\frac{1}{2},j}+u^n_{i+\frac{1}{2},j+1}}{2}\right)\left(\frac{v^n_{i,j+\frac{1}{2}}+v^n_{i+1,j+\frac{1}{2}}}{2}\right)^2\right.\\
+&-\left(\frac{u^n_{i-\frac{1}{2},j+1}+u^n_{i-\frac{1}{2},j}}{2}\right)\left(\frac{v^n_{i,j+\frac{1}{2}}+v^n_{i-1,j+\frac{1}{2}}}{2}\right)\\
+&+\left.\left(\frac{v^n_{i,j+\frac{3}{2}}+v^n_{i,j+\frac{1}{2}}}{2}\right)^2-\left(\frac{v^n_{i,j+\frac{1}{2}}+v^n_{i,j-\frac{1}{2}}}{2}\right)^2\right\},
+\end{align*}
+and the diffusion of $\mathbf{u}_n$ can be approximated by the average
+\begin{equation}
+\mathbf{D}(\mathbf{u}^n)=\frac{1}{\Delta V}\int_V \nabla^2\mathbf{u}^n dv.\label{eq:ap_app_du}
+\end{equation}
+This way, the discrete version of the diffusion on $u_{i+\frac{1}{2},j}$ and $v_{i,j+\frac{1}{2}}$ is given resp. by
+\begin{align*}
+(\mathbf{D}_x)^n_{i+\frac{1}{2},j}=&\frac{u_{i+\frac{3}{2},j}^n+u^n_{i-\frac{1}{2},j}+u^n_{i+\frac{1}{2},j+1}+u^n_{i+\frac{1}{2},j-1}-4u^n_{i+\frac{1}{2},j}}{h^2},\\
+(\mathbf{D}_y)^n_{i,j+\frac{1}{2}}=&\frac{v_{i+1,j+\frac{1}{2}}^n+v^n_{i-1,j+\frac{1}{2}}+v^n_{i,j+\frac{3}{2}}+v^n_{i,j-\frac{1}{2}}-4v^n_{i,j+\frac{1}{2}}}{h^2}.
+\end{align*}
+\section{Projection Method}
+The Projection Method was introduced by \textcite{chorin1968} and \textcite{yanenko1971}. In this approach the velocity is first advanced without taking into account the pressure, resulting into a velocity field that, in general, does not accomplish the non-compressibility condition. After that, the pressure necessary to make the velocity field accomplish with the non-compressibility condition is found, and the velocity field is corrected by adding the pressure gradient.
+
+For this, the momentum equation is split into two parts by introducing a temporal velocity $\mathbf{u}^*$ such that $$\mathbf{u}^{n+1}-\mathbf{u}^n=\left(\mathbf{u}^{n+1}-\mathbf{u}^*\right)+\left(\mathbf{u}^*-\mathbf{u}^n\right).$$
+Now, a predictor step is made (we adopt a second order Crank-Nicholson scheme \cite{leveque2007}) such that the temporary velocity field is found by ignoring the pressure effects:
+\begin{equation}\label{eq:ap_crank_nich}
+\frac{\mathbf{u}^*-\mathbf{u}^n}{\Delta t}=-\frac{3}{2}\mathbf{A}_h\left(\mathbf{u}^n\right)+\frac{1}{2}\mathbf{A}_h\left(\mathbf{u}^{n-1}\right)+\frac{\mu}{2}\left(\mathbf{D}_h\mathbf{u}^n+\mathbf{D}_h\mathbf{u}^*\right).
+\end{equation}
+Next, the correction step is
+\begin{equation}
+\frac{\mathbf{u}^{n+1}-\mathbf{u}^*}{\Delta t}=-\nabla_h\phi^{n+1},\label{eq:ap_corr_step}
+\end{equation}
+where $\phi$ is related to the pressure by the equation
+\begin{equation}
+-\nabla\phi^{n+1}=-\frac{1}{\rho}\nabla p^{n+1}+\frac{\mu}{2}\left(\mathbf{D}_h\mathbf{u}^{n+1}-\mathbf{D}_h\mathbf{u}^*\right).\label{eq:ap_phi_pressure}
+\end{equation}
+Using central finite differences for the gradient of $\phi$, the discrete version of \eqref{ap_corr_step} is written
+\begin{align}
+u_{i+\frac{1}{2},j}^{n+1}=u_{i+\frac{1}{2},j}^{*}-\frac{\Delta t}{\rho\,h}\left(\phi_{i+1,j}^{n+1}-\phi_{i,j}^{n+1}\right),\label{eq:ap_corr_step_discr_u}\\
+v_{i,j+\frac{1}{2}}^{n+1}=v_{i,j+\frac{1}{2}}^{*}-\frac{\Delta t}{\rho\,h}\left(\phi_{i,j+1}^{n+1}-\phi_{i,j}^{n+1}\right).
+\label{eq:ap_corr_step_discr_v}
+\end{align}
+Deriving \eqref{ap_corr_step} and using \eqref*{ap_incomp_cond} we get the next Poisson equation for $\phi$
+\begin{equation}
+\nabla^2_h\phi^{n+1}=\frac{\nabla\cdot \mathbf{u}^*}{\Delta t}.\label{eq:ap_phi}
+\end{equation}
+By using an analogous approximation used before for the velocity diffusion in \eqref{ap_app_du}, this time \eqref{ap_phi} is discretized as
+\begin{equation}
+\frac{\phi_{\!_{i+1,j}}^{n+1}+\phi^{n+1}_{\!_{i-1,j}}+\phi^{n+1}_{\!_{i,j+1}}+\phi^{n+1}_{\!_{i,j-1}}-4\phi^{n+1}_{\!_{i,j}}}{h^2}=\frac{\rho}{\Delta t}\left(\frac{u^*_{\!_{i+\frac{1}{2},j}}-u^*_{\!_{i-\frac{1}{2},j}}+v^*_{\!_{i,j+\frac{1}{2}}}+v^*_{\!_{i,j-\frac{1}{2}}}}{h}\right).\label{eq:ap_phi_discr}
+\end{equation}
+Summarizing, once the initial and boundary conditions are established, the steps of the method are:
+\begin{enumerate}
+\item Find the temporal velocity $\mathbf{u}^*$ by solving the equation (rearranging \eqref{ap_crank_nich}):
+$$\left(\frac{1}{\Delta t}\mathbb{I}-\frac{\mu}{2}\mathbf{D}_h\right)\mathbf{u}^*=-\frac{3}{2}\mathbf{A}_h\left(\mathbf{u}^n\right)+\frac{1}{2}\mathbf{A}_h\left(\mathbf{u}^{n-1}\right)+\frac{\mu}{2}\mathbf{D}_h\mathbf{u}^n+\frac{1}{\Delta t}\mathbf{u}^n,$$
+where $\mathbb{I}$ is the identity operator.
+\item Solve the Poisson \eqref{ap_phi_discr} for finding the \emph{pseudo-pressure} $\phi$.
+\item Find the velocity at time $n+1$ by using \eqref{ap_corr_step_discr_u,ap_corr_step_discr_v}.
+\end{enumerate}
+
+\begin{remark}
+\it If needed, at some time step the pressure $p$ can be obtained by solving \eqref{ap_phi_pressure}.
+\end{remark}

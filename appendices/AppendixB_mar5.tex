@@ -1,0 +1,328 @@
+% Appendix B
+
+\chapter{Mathematical background} % Main appendix title
+\label{chap:AppendixB} % For referencing this appendix elsewhere, use \ref{AppendixA}
+\lhead{Appendix B. \emph{Mathematical background}} % This is for the header on each page - perhaps a shortened title
+In this Appendix, $\Omega$ will represent a Lebesgue measurable subset of $\mathbb{R}^n$.
+
+Now, we make some basic definitions:
+\begin{definition}If $\alpha=(\alpha_1,\ldots,\alpha_n)$ is an $n$-tuple of nonnegative integers, we call $\alpha$ a \emph{multi-index} and denote by $x^\alpha$ the monomial $x_1^{\alpha_1}\cdots x_n^{\alpha_n}$, which has degree $|\alpha|=\sum_{i=1}^n \alpha_i$. Similarly, if $D_j=\frac{\partial}{\partial x_j}$ for $1\leq j\leq n$, then
+$$D^\alpha=D_1^{\alpha_1}\cdots D_n^{\alpha_n}$$ denotes a differential operator of order $|\alpha|$. $D^{(0,\ldots,0)}u=u$.
+\end{definition}
+\begin{definition}
+We denote as $C_B^j(\Omega)$ as the next class of differentiable functions $$C_B^j(\Omega)=\{u\in C^j(\Omega):D^\alpha\text{ is bounded on }\Omega\text{ for } |\alpha|\leq j\}.$$
+\end{definition}
+\begin{definition}
+Let $0<\lambda \leq 1$, the Hölder space $C^{m,\lambda}(\bar{\Omega})$ is the subspace of $C^m(\bar{\Omega})$ of functions $\phi$ for which, for $0\leq |\alpha|\leq m$, there exists a constant $K$ such that $$|D^\alpha \phi(x) -D^\alpha \phi(y)|\leq K \|x-y\|^\lambda,\qquad x,y \in \Omega.$$
+\end{definition}
+\begin{definition}
+Given a point $x$ in $\mathbb{R}^n$, an open ball $B_1$ with center $x$ and an open ball $B_2$ not containing $x$, the set $C_x=B_1\cap \{x+\lambda(y-x):y\in B_2,\,\lambda >0\}$ is called a \emph{finite cone} in $\mathbb{R}^n$ having vertex at $x$.
+\end{definition}
+
+\section{Duality and Reflexivity} Let $E$ be a normed linear space. A functional on $E$ is a mapping from $E$ into $\mathbb{R}$. The space of all bounded linear on $E$ is called the \emph{dual space} of $E$ and is denoted by $E^*$. It can be shown that $E^*$ is a Banach space under the norm:
+$$\|f\|_{E^*}=\sup_{x\neq 0}\frac{|f(x)|}{\|x\|}.$$
+The second dual $E^{**}=(E^*)^*$ is called the \emph{bidual space} of $E^*$. If $E^{**}$ isomorphic to $E$, then $E$ is called \emph{reflexive}.
+%\begin{definition}
+%A Banach space $E$ is said to be \emph{uniformly convex} if $\forall \epsilon >0$ $\exists \delta >0$ such that
+%$$\forall x,y\in E:\|x\|\leq 1,\,\|y\|\leq 1,\,\|x-y\|>\epsilon\text{ implies }\left\|\frac{x+y}{2}\right\|<1-\delta.$$
+%\end{definition}
+%\begin{theorem}[Milman-Pettis] Every uniformly convex Banach space is reflexive.
+%\end{theorem}
+\section{Hilbert Spaces} A mapping $x*y=(x,y)$ from $E\times E$ to $\mathbb{R}$ is an \emph{inner product} on $E$ if it satisfies 
+\begin{enumerate}
+\item[(i)]$(x,y)=(y,x)$ for all $x,y\in E$,
+\item[(ii)]$(\alpha\,x+\beta\,y,\,z)=\alpha(x,y)+\beta(y,z)$ for all $\alpha,\beta\in \mathbb{R}$, $x,y,z\in E$,
+\item[(iii)]$(x,x)>0$ for all $x\neq 0$, $x\in E$.
+\end{enumerate}
+\begin{definition} Let $H$ be a Hilbert space and $x,y\in H$, we say $x$ is orthogonal to $y$ if $(x,y)=0$, and we denote it $x\perp y$. A subset $V\subset H$ is orthogonal to some element $x\in H$ if $x\perp y$ for any $y\in V$.
+\end{definition}
+A linear space $E$ equipped with an inner product is called an \emph{inner product space}. Writing $\|x\|=(x,x)^{\frac{1}{2}}$ for $x\in E$, we have
+\begin{description}
+\item[Schwarz inequality] 
+\begin{equation}
+|(x,y)|\leq \|x\|\|y\|,
+\end{equation}
+\item[Triangle inequality]
+\begin{equation}
+\|x+y\|\leq \|x\| + \|y\|,
+\end{equation}
+\item[Parallelogram law]
+\begin{equation}
+\|x+y\|^2+\|x-y\|^2=2\,(\|x\|^2+\|y\|^2).
+\end{equation}
+\end{description}
+As we can see, every inner product space is also a normed space. A \emph{Hilbert space} is defined to be a complete inner product space.
+
+The next are two basic properties of a bilinear form.
+
+\begin{definition} Let $a:H\times H \rightarrow \mathbb{R}$ be a bilinear form, with $H$ a real Hilbert space, then we say $a$ is \emph{continuous} if there exists a constant $C>0$ such that $$|a(x,y)|\leq C\,\|x\|\|y\|,\qquad\forall x,y\in H.$$
+\end{definition}
+\begin{definition}
+Let $H$ be a real Hilbert space. A bilinear form $a:H\times H\rightarrow \mathbb{R}$ is \emph{coercive} if there exists a constant $\alpha>0$ such that
+$$a(x,x)\geq \alpha \|x\|^2,\qquad \forall x\in H.$$
+\end{definition}
+
+%\subsection*{Orthogonal Projection}
+%\begin{definition} Given a metric space $(E,d)$, and $V\subset E$, the distance between $A$ and a point $x\in E$ is denoted $d(x,V)$, and defined by $d(x,V)=\inf_{v\in V}d(v,x)$.
+%\end{definition}
+%\begin{theorem}[Projection] Let $H$ be a Hilbert space and $V\subsetneq H$ be a convex and closed subset of $H$. Then for all $x\in H$ there exist a unique $x^*\in V$, called the projection of $x$ on $V$, such that $\|x-x^*\|=d(x,V).$
+%\end{theorem}
+%From the Projection Theorem we have the next important Corollary:
+%\begin{corollary} Let $H$ be a real Hilbert space and $V\subsetneq H$ be a closed subspace. For any $x\in H$, there exists a unique $x^*\in V$ such that $\|x-x^*\|=d(x,V)$. In addition, $x^*$ is the orthogonal projection of $x$ on $V$:
+%\begin{equation}
+%\|x-x^*\|=d(x,V)\iff \forall y\in V: (x-x^*)\perp y.
+%\end{equation}
+%\end{corollary}
+\subsection*{Riesz representation theorem}
+\begin{theorem}[Riesz representation] Let $H$ be a Hilbert space. Then
+\begin{enumerate}
+\item For any fixed $x$ in $H$, the functional $f_x:H\rightarrow \mathbb{R}$ defined by $$f_x(t)=(x,t),$$ is a linear continuous form on $H$, i.e. $f_x\in H^*$ , and $$\|f_x\|_{H^*}=\|x\|_H.$$
+\item The function $F:H\rightarrow H^*$ defined by $F(x)=f_x$ is an isometric isomorphism from $H$ to $H^*$.
+\end{enumerate}
+\end{theorem}
+For a proof of this theorem, see Section 5.7 of \cite{trudinger1983}.
+\subsection*{The Stampacchia and Lax-Milgram Theorems}
+Stampacchia and Lax-Milgram Theorems are very important analysis tools that permit us to study the well-posedness of a large group of Partial Differential Equations (see, for instance, Chapter 9 and 10 in \cite{brezis2011}). Addressing well-posedness of problems for which it variational formulation concerns a varitational inequality we have the next
+\begin{theorem}[Stampacchia]Assume that $a$ is a continuous coercive bilinear form on the Hilbert space $(H,(\cdot,\cdot))$. Let $K\subset H$ be a nonempty closed and convex subset. Then, given any $\phi in H^*$, there exists a unique element $u\in K$ such that
+\begin{equation}
+	a(u,v-u)\geq \left( \phi,v-u\right),\qquad \forall v \in K.
+\end{equation}
+\end{theorem}
+as a consequence of this theorem, we have
+\begin{corollary}[Lax-Milgram Theorem]Assume that $a$ is a continuous coercive bilinear form on the Hilbert space $(H,(\cdot,\cdot))$. Then, given any $\phi\in H^*$, there exists a unique element $u\in H$ such that
+\begin{equation}
+a(u,v)=\left(\phi,v\right),\qquad \forall v\in H.
+\end{equation}
+Moreover, if $a$ is symmetric, then $u$ is characterized by the property
+\begin{equation*}
+u\in H \text{ and }\,\frac{1}{2}a(u,u)-\left(\phi,u\right)=\min_{v\in H}\left\{\frac{1}{2}a(v,v)-(\phi,v)\right\}.
+\end{equation*}
+\end{corollary}
+For a proof of Stampacchia and Lax-Milgram Theorems see \cite{brezis2011}.
+\section{$L^p$ spaces}
+\subsection*{Definition and some basic properties}
+\begin{definition}
+Given a real number $1\leq p < \infty$, we define the space $L^p(\Omega)$ by
+$$L^p(\Omega)=\{f:\Omega \rightarrow \mathbb{R}\text{ measurable such that } \int_\Omega |f|^p\,d\mu <\infty\}.$$
+And the next quantity can be proved to be a norm on $\lpOm{p}$
+$$\|f\|_{L^p(\Omega)} =\left(\int_\Omega |f|^p\,d\mu\right)^{\frac{1}{p}}.$$
+\end{definition}
+\begin{definition} Let $f$ be a function from $\Omega$ to $\mathbb{R}$. We define the ``essential supremum'' of $f$ as
+$$\text{ess sup}_{x\in \Omega}f(x)=\inf_{\mu(A)=0}\left(\sup_{x\in \Omega\setminus A} f(x)\right)=\inf\{M\in\mathbb{R}:f(x)\leq M \text{ a.e. in }\Omega\}.$$
+\end{definition}
+\begin{definition}
+We denote by $L^\infty(\Omega)$ the set of measurable functions from $\Omega$ to $\mathbb{R}$ such that their essential supremum is finite. Moreover, it can be proved that
+$$\|f\|_\lpOm{\infty}=\text{ess sup}_{x\in \Omega}f(x)$$
+is a norm for $\lpOm{\infty}$.
+\end{definition}
+
+We call \emph{H\"older conjugate} of $p$, $1< p<\infty$, the number $p'=1+\frac{1}{p-1}$, so that $\frac{1}{p}+\frac{1}{p'}=1$, also if $p=1$ then $p'=\infty$ and if $p=\infty$ then $p'=1$.
+
+\begin{lemma}[H\"older's Inequality] Let $p\in[1,\,\infty]$ and $p'$ be its H\"older conjugate. Let $f\in \lpOm{p}$ and $g\in \lpOm{p'}$. Then $f\,g\in \lpOm{1}$ and
+$$\|fg\|_\lpOm{1}\leq \|f\|_\lpOm{p}\|g\|_\lpOm{p'}.$$
+\end{lemma}
+
+As immediate consequences of H\"older's Inequality we have
+\begin{lemma}\label{lemma:lp1}
+Let $1<p\leq q\leq \infty,\,\Omega\subset \mathbb{R}^n,\,\mu(\Omega)<\infty$. Then
+\begin{itemize}
+\item $\lpOm{q}\subset \lpOm{p}$,
+\item $\|f\|_\lpOm{p}\leq C \|f\|_\lpOm{q}$, where $C$ only depends on $\Omega$.
+\end{itemize}
+\end{lemma}
+\begin{definition} We define the class of locally integrable functions on $\Omega$ as $$L_\text{loc}^1(\Omega)=\left\{f:f\in \lpom{1}\,\, \forall \omega \text{ compact measurable subset of }\Omega\right\}.$$
+\end{definition}
+As a consequence of $L_\text{loc}^1(\Omega)$ definition and Lemma \ref{lemma:lp1} we have the next
+\begin{lemma} For any $p$, $1\leq p \leq \infty$ $$\lpOm{p} \subset L^1_\text{loc}(\Omega).$$
+\end{lemma}
+\begin{lemma}\label{lemma:L1loc}Let $f\in L^1_\text{loc}(\Omega)$ such that $$\int_\Omega f\,\phi\,dx = 0,\qquad \forall \phi\in C_0^0(\Omega),$$
+\end{lemma}
+then $f=0$ a.e. on $\Omega$.
+\subsection*{Completeness and reflexivity}
+We say that a normed space $(X,\|\cdot\|)$ is \emph{complete} if for every converging sequence $(x_n)\rightarrow x$, we have $x\in X$.
+\begin{theorem}[Fischer-Riez]Let $p\in [1,\,\infty]$, $\Omega\subset \mathbb{R}^n,\,\mu(\Omega)>0$. Then $L^p(\Omega)$, with the corresponding norm defined above, is a Banach space.
+\end{theorem}
+\begin{theorem} The next identification holds
+$$\left(\lpOm{1}\right)^*=\lpOm{\infty}.$$
+\end{theorem}
+\begin{theorem}
+$\lpOm{p}$ is reflexive if and only if $1<p<\infty$. Moreover, the next identification hols $$\left(\lpOm{p}\right)^*=\lpOm{p'}.$$
+\end{theorem}
+\begin{remark}
+Since $\lpOm{1}$ is separable while its dual, which is isometrically isomorphic to $\lpOm{\infty}$, is not separable, neither $\lpOm{1}$ nor $\lpOm{\infty}$ can be reflexive. The dual of $\lpOm{\infty}$ is larger than $\lpOm{1}$.
+\end{remark}
+\begin{remark}
+From this last theorem it is clear that $\lpOm{2}$ is a Hilbert space.
+\end{remark}
+
+\subsection*{Approximation by Continuous functions}
+\begin{theorem}
+$C_0^\infty(\Omega)$ is dense in $\lpOm{p}$ for $1\leq p <\infty$.
+\end{theorem}
+The proofs of all these results concerning $L^p$ spaces can be found in Chapter 4 of \cite{brezis2011}.
+%\begin{definition}
+%The measure space $(\Omega,\mathcal{M},\mu)$ is said to be \emph{separable} if there exists a countable family $(\omega_k)$ of sets in $\mathcal{M}$ such that $\Omega$ coincides with the $\sigma$-algebra generated from $(\omega_k)$ (see section ``Systems of Sets", Chapter 1 of \cite{kolmogorov1970}).
+%\end{definition}
+%\begin{theorem}
+%Assume that $\Omega$ is a separable measure space. Then $\lpOm{p}$ is separable (in the topological sense) for any $p$, $1\leq p <\infty$.
+%\end{theorem}
+%\begin{remark}$C(\Omega)$ is a proper closed subspace of $\lpOm{\infty}$, so it is not dense in that space. Thus, neither is $C_0(\Omega)$ nor $C_0^\infty(\Omega)$, and $\lpOm{\infty}$ is not separable.
+%\end{remark}
+
+\section{Sobolev Spaces} This section starts introducing the concept of \emph{weak derivative}. For this, let $I\nobreak=\nobreak[0,1]\nobreak\subset\nobreak \mathbb{R}$, take some function $f\in C^1\left(I\right)$ and suppose the function $g$ is such that 
+\begin{equation}
+\frac{df}{dx}=g\qquad \text{on }I,\label{eq:class_der}
+\end{equation}
+multiplying this equation by some arbitrary function $\phi \in C_0^\infty(I)$ and integrating we have 
+\begin{align*}
+\int_0^1 \phi \frac{df}{dx}\,dx&=\int_0^1 \phi\,g\,dx, \\
+\left(\phi\,f\right)\left.\right|_0^1-\int_0^1 f \frac{d\phi}{dx}\,dx&=\int_0^1 \phi\,g\,dx, 
+\end{align*}
+but $\phi(0)=\phi(1)=0$ so we obtain
+\begin{equation}
+\int_0^1 f \frac{d\phi}{dx}\,dx=-\int_0^1 \phi\,g\,dx,\qquad \forall \phi \in C_0^\infty(I).\label{eq:weak_der}
+\end{equation}
+We see that for any function $f\in C^1(I)$, if $g$ accomplishes \eqref{class_der} it will accomplish \eqref{weak_der}, and the inverse calculations are also true (using Lemma \ref{lemma:L1loc} and some facts from Integration Theory), i.e. for any function $f\in C^1(I)$ for which $g$ accomplishes \eqref{weak_der}, then $g$ will accomplish \eqref{class_der}, in other words, $g$ will be the \emph{classical derivative} of $f$. However, we can ask for solving \eqref{weak_der} when $f$ have less regularity.
+
+Take this time $I=[-1,1]$ and the function $q(x)=|x|$, we have $q\in L^2(I)$ but $q\notin C^1(I)$. We ask for a function $Q \in L_\text{loc}^1(I)$ that solves the equation
+\begin{equation}
+\int_I q\frac{d\phi}{dx}\,dx=-\int_I \phi\,Q\,dx,\qquad \forall \phi \in C_0^\infty(I).\label{eq:weak_der2}
+\end{equation}
+For this, consider the function $Q\in L^2(I)$ such that 
+$$Q(x)=\left\{\begin{array}{ll}
+-1 & \text{if }-1\leq x \leq 0, \\
++1 & \text{if }0\leq x \leq 1,
+\end{array}\right.$$
+It can be easily proved that $Q$ accomplish \eqref{weak_der2} for $q$; moreover, as $Q\in L_\text{loc}^1(I)$, by using Lemmas \ref{lemma:lp1} and \ref{lemma:L1loc}, it can be easily proved that $Q$ is the only function in $L_\text{loc}^1(I)$ having that property (up to a set of zero measure). Thus, the discontinuous function $Q$ is some sort of ``new derivative" for the continuous not classical differentiable function $q$. At the same time, we try to look for some function $\mathcal{Q}\in L_\text{loc}^1(I)$ accomplishing now the equation
+\begin{equation}
+\int_I Q\frac{d\phi}{dx}\,dx=-\int_I \phi\,\mathcal{Q}\,dx,\qquad \forall \phi \in C_0^\infty(I).\label{eq:weak_der3}
+\end{equation}
+But this time it will not be possible if we find for $\mathcal{Q}\in L_\text{loc}^1(I)$. In fact, \eqref{weak_der3} can be solved in an even more general sense, but this is beyond the scope of this text. The interested reader can look for Section ``Distributions and Weak Derivatives'', Chap. I of \cite{adams1975} and also in \cite{cordaro2002}.
+
+\subsection*{Definitions} 
+As we discussed above, there are cases where this new sense of derivative can be found for functions in $L_\text{loc}^1(\Omega)$ and others where it can not. With this in mind, we write down the next
+\begin{definition} Let $f\in L_\text{loc}^1(\Omega)$, we say that $g_\alpha\in L_\text{loc}^1(\Omega)$ is the \emph{weak partial derivative of} $f$ if it satisfies
+\begin{equation}
+\int_\Omega f\,D^\alpha \phi\,dx=(-1)^{|\alpha|} \int_\Omega g_\alpha\,\phi\,dx,\qquad \forall \phi \in C_0^\infty(\Omega).
+\end{equation}
+\end{definition}
+\begin{definition}[Sobolev Spaces]We denote as $\wmp{m}{p}$ the class of weakly differentiable functions in $\lpOm{p}$ such that
+\begin{align*}
+\wmp{m}{p}&=\{u\in\lpOm{p}:D^{\alpha}u\in \lpOm{p} \text{ for }0\leq |\alpha| \leq m,\, D^{\alpha}u\text{: weak partial derivative of }u\},\\
+W^{m,\,p}_0(\Omega)&=\text{the closure of }C_0^\infty(\Omega)\text{ in }\wmp{m}{p}.
+\end{align*}
+So, $\left(\wmp{m}{p},\|\cdot\|_{m,p}\right)$ are called Sobolev Spaces over $\Omega$ with
+\begin{equation}
+\|u\|_{m,p}=\left\{\begin{array}{ll}
+\left(\sum_{0\leq|\alpha|\leq m}\|D^\alpha u\|^p_p \right) ^\frac{1}{p}&\text{if }1\leq p < \infty,\\
+\max_{0\leq|\alpha|\leq m}\|D^\alpha u\|_\infty&\text{if }p=\infty.
+\end{array}\right.
+\end{equation}
+
+Also we denote $H^m(\Omega)=\wmp{m}{2}$, $H_0^m(\Omega)=W^{m,\,2}_0(\Omega)$, $H^{-m}(\Omega)=\left(H^m(\Omega)\right)^*$ and $H_0^{-m}(\Omega)=\left(H_0^m(\Omega)\right)^*$.
+\end{definition}
+
+As a first property of Sobolev Spaces we have the next
+\begin{theorem}
+$\wmp{m}{p}$ is a Banach space.
+\end{theorem}
+\begin{theorem}$\wmp{m}{p}$ is separable for $1\leq p < \infty$; also, it is uniformly convex, and thus reflexive if $1<p<\infty$. In particular, therefore, $W^{m,2}(\Omega)$ is a separable Hilbert space with inner product
+$$(u,v)_m=\sum_{0\leq|\alpha|\leq m}\left(D^\alpha u,D^\alpha v\right),$$
+where $(u,v)=\int_\Omega u\,v\,\,dx$ is the inner product in $\lpOm{2}$.
+\end{theorem}
+Once the well-posedness of a problem is established, we may ask for the regularity of the solution. Sobolev Imbeddings are a set of results addressing that kind of question. Before presenting Sobolev Imbeddings, we need to talk about regularity of the domain $\Omega\subset \mathbb{R}^n$ on which the problem is been studied:
+\begin{definition}
+$\Omega$ is said to have the \emph{cone property} if there exists a finite cone $C$ such that each point $x\in \Omega$ is the vertex of a finite cone $C_x$ contained in $\Omega$ and congruent to $C$.
+\end{definition}
+\begin{definition}\label{def:local_lipschitz}
+$\Omega$ bounded is said to have the \emph{local Lipchitz property} if at each point $x$ on the boundary of $\Omega$ there is a neighborhood $U_x$ such that $\partial \Omega \cap U_x$ is the graph of a Lipchitz continuous function.
+\end{definition}
+
+\subsection*{Sobolev Imbeddings and Trace Theory}\label{sec:sobolev_imbeddings} A deep study of these Imbeddings, can be found in \cite{adams1975}, the interested reader can review that work for the proofs of the next results.
+\begin{definition}
+Let $X$, $Y$ be to normed spaces, a linear application $A:X\rightarrow Y$ is called \emph{compact} if for any sequence $(x_n)\subset X$ there exists a subsequence $(x_{n_k})$ such that the sequence $(A\,x_{n_k})$ is convergent in $Y$. We also say that $X$ is \emph{imbedded} in $Y$ and it is denoted $X\subset\subset Y$. This also means that there is a constant $K$, named the \emph{imbedding constant} such that, for any $y\in X$ we have $$\|y\|_X\leq K \|A\,y\|_Y.$$
+\end{definition}
+\begin{theorem}
+Let $\Omega$ be a domain in $\mathbb{R}^n$ having the cone property.
+\begin{itemize}
+\item If $mp<n$, then $\wmp{m}{p}\subset \subset \lpOm{q}$ for $p\leq q \leq np/(n-mp)$.
+\item  If $mp=n$, then $\wmp{m}{p}\subset \subset \lpOm{q}$ for $p\leq q<\infty$.
+\item  If $p=1$ and $m=n$, then $\wmp{m}{p}\subset \subset C_B^0(\Omega)$.
+\end{itemize}
+ The imbedding constants may be chosen to depend only on  $m$, $p$, $n$, $q$ and the cone $C$ determining the cone property for $\Omega$.
+\end{theorem}
+\begin{theorem}
+Let $\Omega$ be a domain in $\mathbb{R}^n$ having the cone property. \\If $mp>n$, then $\wmp{m}{p}\subset \subset C_B^0(\Omega)$. The imbedding constants may be chosen to depend only on  $m$, $p$, $n$, and the cone $C$ determining the cone property for $\Omega$.
+\end{theorem}
+\begin{corollary}
+If $mp>n$, $\wmp{m}{p}\subset \subset \lpOm{q}$ for $p\leq q\leq\infty$. The imbedding constants depend only on  $m$, $p$, $n$, $q$ and the cone $C$.
+\end{corollary}
+\begin{theorem}
+Let $\Omega$ be a bounded domain in $\mathbb{R}^n$ having the local Lipschitz property, and suppose that $mp>n\geq (m-1)p$. Then $\wmp{m}{p}\subset \subset C^{0,\,\lambda}(\bar{\Omega})$ for
+\begin{enumerate}
+\item $0<\lambda\leq m-n/p$ if $n>(m-1)p$, or
+\item $0<\lambda < 1$ if $n=(m-1)p$, or 
+\item $0<\lambda \leq 1$ if $p=1$, $n=m-1$.
+\end{enumerate}
+In particular $\wmp{m}{p}\subset \subset C^0(\bar{\Omega})$. The imbedding constants depend on $m$, $p$ and $n$.
+\end{theorem}
+\begin{definition}[Fractional Sobolev Spaces] Take $\Omega\subset \mathbb{R}^N$ finite measurable subdomain, $s,\,p\in \mathbb{R}$, $0<s<1$ and $1\leq p <\infty$, the fractional Sobolev Space $\wmp{s}{p}$ as
+$$\wmp{s}{p}=\left\{u\in \lpOm{p}:\,\frac{|u(x)-u(y)|}{\|x-y\|^{s+N/p}} \in L^p(\Omega \times \Omega)\right\},$$
+equipped with the natural norm. And set $H^{s}(\Omega)=\wmp{s}{2}$.
+\end{definition}
+
+Before establishing the main result we have the next fundamental
+\begin{lemma}
+ Let $1\leq p < \infty$. Let $\Omega = \mathbb{R}^N_+$. There exists a constant $C$ such that
+ $$\left(\int_{\mathbb{R}^{N-1}}|u(x',0)|^p\,dx'\right)^\frac{1}{p}\leq C\, \|u\|_\wmp{1}{p}.$$
+ \end{lemma}
+ From this Lemma it can be deduced that the map $u\rightarrow u|_{\partial \Omega}=\mathbb{R}^{N-1}\times \{0\}$ defined from $C_0^1\left(\mathbb{R}^N\right)$ into $\lpOm{p}$ extends, by density, to a bounded linear operator of $\wmp{1}{p}$ into $L^p(\partial \Omega)$. We call this operator the \emph{trace} of $u$ on $\partial \Omega$, denoted by $u|_{\partial \Omega}$. Assuming $\Omega$ accomplishes the local Lipschitz property, we have the next important properties of the trace are:
+ \begin{itemize}
+ \item If $u\in \wmp{1}{p}$, then in fact $u|_{\partial \Omega}\in W^{1-1/p,\,p}(\partial \Omega)$. Furthermore, the trace operator $u\rightarrow u|_{\partial \Omega}$ is surjective from $\wmp{1}{p}$ onto $W^{1-1/p,\,p}(\partial\Omega)$.
+ \item The kernel of the trace operator is $W_0^{1,\,p}(\Omega)$, i.e.,
+ $$W^{1,\,p}_0=\{u\in \wmp{1}{p}: u|_{\partial \Omega}=0\}.$$
+ \item We have Green's formulas, for any $u$, $v\in H^1(\Omega)$
+ $$\int_\Omega v\parder{u}{x}\,dx = - \int_\Omega u\parder{v}{x}+\int_{\partial \Omega}uv \cos(\mathbf{n},\mathbf{x})\,d\sigma$$
+ and
+ $$\int_\Omega v\parder{u}{y}\,dx = - \int_\Omega u\parder{v}{y}+\int_{\partial \Omega}uv \cos(\mathbf{n},\mathbf{y})\,d\sigma,$$
+where $\mathbf{n}$ is the outward unit vector normal to $\partial \Omega$ and $\mathbf{x}$, $\mathbf{y}$ are the unitary vector pointing positively along $x$ and $y$ resp.. Note that the surface integral have sense since $u$, $v\in L^2(\partial \Omega)$.
+ \end{itemize}
+ 
+ \subsection*{Regularity results}
+ Consider the following PDE
+ \begin{equation}\label{pde}
+ \begin{cases}
+ Lu= f =f_0+\sum_{i=1}^n \dfrac{\partial f_i}{\partial x_i}\quad \textbf{ in } \Omega\\
+ u=0 \quad \textbf{ on } \partial \Omega
+ \end{cases}
+ \end{equation}
+where $\Omega$ is an open set in $\mathbb{R}^n$ and $L$ is a uniformly elliptic of the form
+$$
+Lu=-\sum_{i,j=1}^n \dfrac{\partial }{\partial x_i}\left(a_{ij}\dfrac{\partial u}{\partial x_i}\right)
+$$
+We have the following theorem  (see for example \cite{rodriguez}, section 5.7)
+\begin{theorem}\label{reg:equa}
+Assume that $a_{ij} \in L^\infty(\Omega)$, $f_i \in L^p(\Omega)$, $f_0 \in L^{p/2}(\Omega)$, for $p >n \geq 2$ and $\Omega$ a bounded set with Lipschitz-boundary. If $u \in H^1_0(\Omega)$ is a weak solution of (\ref{pde}) then $u \in C^{0,\alpha}(\bar\Omega)
+$, and
+$$
+\|u\|_{ C^{0,\alpha}(\bar\Omega)}\leq C\left(\|f_0\|_{L^{p/2}(\Omega)}+\sum_{i=1}^n\|f_i\|_{L^p(\Omega)}\right)
+$$
+where the constant $C$ depends only on $n,p,\alpha,\Omega$ and $a_{ij}$.
+\end{theorem}
+Consider now the corresponding obstacle problem in the variational inequality form
+\begin{equation} \label{eq:ivgen}
+u\in K_\psi: a(u,v-u) \geq \int_{\Omega}f_0(v-u)-\sum_{i=1}^{n}\int_{\Omega}f_i\dfrac{\partial }{\partial x_i}(v-u)
+\end{equation}
+where $a(u,v)= \sum_{i,j=1}^n a_{ij}\dfrac{\partial u}{\partial x_i} \dfrac{\partial v}{\partial x_j}$ and
+\begin{equation}
+K_\psi= \left\{v \in H^1(\Omega): v \geq \psi \text{ in } \Omega \right\}
+\end{equation}
+We have the regularity result (see for example \cite{rodriguez}, section 5.7)
+\begin{theorem}\label{reg:inequa}
+Under the same asumptions of Theorem \ref{reg:equa}, assume in addition that, for some $0 < \beta <1$, $\psi \in C^{0,\beta}(\bar\Omega)$. Then the unique solution of (\ref{eq:ivgen}) is such that
+$$
+u \in  C^{0,\gamma}(\bar\Omega)\cap K_\psi
+$$
+with $0 < \gamma < 1$.
+\end{theorem}
+

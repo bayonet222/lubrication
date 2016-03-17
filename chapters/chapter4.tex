@@ -1,0 +1,558 @@
+%Chapter 4
+\chapter{Cavitation and cavitation models}
+\label{chap:cavitation_models}
+
+\lhead{Chapter 4. \emph{Cavitation and cavitation models}} % This is for the header on each page - perhaps a shortened title
+In \Chapref{maths_reynolds_equation} we have studied well-posedness of Reynolds equation in a subdomain $\omega\subset \Omega$, where $\Omega\subset \mathbb{R}^2$ is a measurable bounded domain. In this Chapter, we extend our study to the rest of the domain. As a consequence, $\Omega\setminus \omega$ will be a special area where Reynolds equation does not apply. That area will be called \emph{cavitated region} and its existence is related to the incapability of fluids to sustain negative pressures below some threshold called \emph{cavitation pressure}. The boundary $\partial \omega$ will be a new unknown of the problem determined by the cavitation model we choose.	
+
+\section{Basic cavitation physics}
+\label{sec:basic_cav_physics}
+Cavitation is a non-linear dynamic phenomenon that consists in the appearance, growth and collapse of \emph{cavities} or \emph{bubbles} in fluids due to an adiabatic process. Contrary to what happens in \emph{boiling}, where the appearance of vapor bubbles takes place due to a rise in temperature, cavitation appears when low pressures are reached at constant temperature.
+
+\emph{Vaporous cavitation} takes place when pressure reaches the vapor pressure of the fluid. Similarly, \emph{Gaseous cavitation} happens when pressure reaches the saturation pressure of gases dissolved in the fluid, \Figref{gaseous_cavitation} shows an illustration of it.
+\begin{figure}[ht!]
+\centering 
+\def\svgwidth{\textwidth}	
+\input{figs/gaseous_cavitation.pdf_tex}\caption[Illustration of gaseous cavitation]{Illustration of gaseous cavitation. In the cavitated zone the pressure is lower than 
+ some threshold  $p<p_\text{cav}$.}\label{fig:gaseous_cavitation}
+\end{figure}
+
+Among others \cite{knapp1970}, the consequences of cavitation can be: damage on the surface boundaries; extraneous effects, like noise and vibrations of the mechanisms involved with the flow; hydrodynamic effects due to the interruption of the continuity of the fluid phase. %Hydrodynamic effects of cavitation are the type of consequences this work is going to deal with.
+
+Cavitation modeling is a keystone when studying lubrication of tribological systems with textured surfaces, such as Journal Bearings or Piston-Ring/Liner \cite{priest2000,ausas07}. As an instance of this, in \Secref{cavitation_pure_squeeze} we present the \textit{Pure Squeeze Motion problem}, which is a  well known benchmark problem for cavitation modeling \cite{optasanu2000,ausas07}. 
+
+Half-Sommerfeld cavitation model is the simplest  cavitation model that can be found in literature. It was proposed by \citeauthor{gumbel1921} in \citeyear{gumbel1921} \cite{gumbel1921} based on a previous work made by \citeauthor{sommerfeld1904} in \citeyear{sommerfeld1904} \cite{sommerfeld1904}. Half-Sommerfeld cavitation model consists in solving Reynolds equation in the whole domain $\Omega$ with Dirichlet boundary conditions $p=0$, and once the pressure is obtained, at any point where $p<0$ the condition $p=0$ is imposed. In the next sections we describe the more sophisticated Reynolds and Elrod-Adams cavitation models.
+\section{Reynolds model}\label{sec:reynolds_model}
+Half-Sommerfeld model is a very simple model that suffers of an important defect: even when considering stationary states, half-Sommerfeld model does not accomplish mass-conservation. For showing this, first note that the non-dimensional mass flux function for one dimensional Reynolds equation is given by
+\begin{equation}
+J=-\frac{h^3}{2}\frac{\partial p}{\partial x	}+S\,\frac{h}{2},\label{eq:flux_J_reynolds}
+\end{equation}
+and, for any function, define the limits
+$$f_\pm(x)=\underset{\epsilon \rightarrow 0^+}{\lim}f(x\pm\epsilon).$$
+This way, mass-conservation in any point $x\in\Omega$ can be written as
+\begin{equation*}
+J_+(x)-J_-(x)=0.
+\end{equation*}
+Suppose $\zeta\in\partial w$ and the cavitated zone (given by half-Sommerfeld) is placed at right of $\zeta$ (see \Figref{mass_cons_half_sommerfeld}). Suppose also that $h$ is continuous at $\zeta$. Then,  we have 
+$$\left(\frac{\partial p}{\partial x}\right)_+=0,\qquad \,\left(\frac{\partial p}{\partial x}\right)_-<0,$$
+so 
+$$J_+(\zeta)-J_-(\zeta)=\frac{h^3}{2}\left(\frac{\partial p}{\partial x	}\right)_-<0,$$
+where lack of mass conservation can be observed.
+
+ \begin{figure}[ht!]
+ \centering 
+ \def\svgwidth{0.6\textwidth}	
+ \small{
+\input{figs/mass_cons_half_sommerfeld.pdf_tex}}
+\caption{Scheme of a solution using Half-Sommerfeld cavitation model.}\label{fig:mass_cons_half_sommerfeld}
+\end{figure}
+
+Swift H.W. in 1931 and Stieber W. in 1933 formulated mathematically a film rupture condition first suggested by Reynolds in 1886 (\emph{apud} Dowson et al. \cite{dowson1979}). Nowadays, these conditions are known as the Reynolds cavitation model. This model imposes the condition
+\begin{equation}
+\left(\frac{\partial p}{\partial x}\right)_+=\left(\frac{\partial p}{\partial x}\right)_-=0,\qquad \text{in }\partial \omega.\label{eq:reynolds_cond_1d}
+\end{equation}
+These conditions are commonly used in the literature for defining Reynolds model \cite{cameron1971,dowson1979,braun2010}. In \Secref{weak_form_reynolds_model} we study this model from another point of view, beyond these boundary conditions.
+\subsection{Variational Formulation for Reynolds cavitation model}
+\label{sec:weak_form_reynolds_model}
+We present here the Reynolds cavitation model by using a variational formulation. This can be found, for instance, in founding works of Kindelehrer and Stampacchia, which are summarized in \cite{kinderlehrer1980}. In the same context, in \cite{chambat1986} it can be found an interesting comparison with Elrod-Adams model.
+
+The half-Sommerfeld model was the first attempt to consider cavitation along with Reynolds equation. The heuristics of this model is simple: solve Reynolds equation and then cut off every pressure below some threshold $p_\text{cav}$ (for simplicity, hereafter we take $p_\text{cav}=0$). Reynolds model attempts to introduce this threshold in a smooth way, i.e., we may ask: given Reynolds equation and a domain $\Omega$, can we find a solution of this equation such that $p$ is non-negative? If the answer is positive, how does the nature of the mathematical problem change?
+
+\subsubsection*{The obstacle problem}
+Trying to answer this last question we arrive to a general way of considering restrictions to PDE's: \emph{Variational Inequalities}. A typical example of this kind of formulations arises when modeling the deformation of an elastic membrane and some obstacle restricts the deformation, as \Figref{obstacle_problem} shows.
+\begin{figure}[h!]
+\centering 
+\def\svgwidth{\textwidth}	
+\footnotesize{
+\input{figs/obstacle_problem.pdf_tex}\caption[Obstacle problem for an elastic membrane.]{Obstacle problem for an elastic membrane. The black arrows represent the force applied on the membrane surface. $t_1<t_2$ are two time steps of its evolution. $u(x)$ (red continuous line), $\hat{u}(x)$ (red dashed line) are the final states with the obstacle presence and without it resp.}\label{fig:obstacle_problem}}
+\end{figure}
+
+Let us describe the 1D modeling of the obstacle problem. Denote by $u(x,t)$ the position of the membrane at time $t$. The ends of the membrane are fixed in such a way that $$u(x=0,t)=u(x=1,t)=0\qquad\forall t\geq 0.$$Also, denote by $u(x)=\underset{t\rightarrow \infty}{\lim}u(x,t)$ the limit deformation of the membrane on time. Without the presence of an obstacle, the deformation of the membrane is modeled by the problem of finding $u:[0,1]\rightarrow [0,+\infty)$ such that
+\begin{align*}
+-T\left( \frac{u'(x)}{\sqrt{1+u'(x)^2}} \right)'&=f(x),\qquad\text{in } (0,1)\\
+u(0)=u(1)&=0,
+\end{align*}
+where $f(x)$ is the force per unit of length applied on the membrane surface, and $T$ is a parameter related to the tension on the membrane surface. If the deformations are small, i.e., $\alpha\approx 0$ in \figref{obstacle_problem}, the last equation can be approximated by the Poisson equation with boundary conditions
+\begin{align*}
+-T\,u''(x)&=f(x)\qquad\text{in } (0,1)\\
+u(0)=u(1)&=0.
+\end{align*}
+When an obstacle is present, we model the displacement of the membrane by finding $u:[0,1]\rightarrow [0,+\infty)$ such that
+\begin{align*}
+-T\,u''(x)&=f(x)\qquad\text{whenever }u(x)<\psi(x)\\
+u(x)&\leq \psi(x)\qquad\text{in } (0,1)\\
+u(0)=u(1)&=0,
+\end{align*}
+where $\psi>0$ is the function that describes the obstacle.
+
+The variational formulation of this obstacle problem is similar to the one given by \eqref{reynolds_weak_formulation}. In fact, using the same notation as before, it reads
+\begin{equation}
+B(u,\phi-u)\geq\langle f,\phi-u\rangle,\qquad\forall \phi \in K,
+\end{equation}
+where this time $K=K(\psi)$ is defined by $$K=\{v\in H_0^1\left(0,1\right):v\leq \psi \},$$
+and $B$ is the coercive bilinear form on $H_0^1\left(0,1\right)$ given by
+$$B(u,v)=\int_0^1 u'(x)v'(x)\,dx.$$
+
+\subsubsection*{Reynolds cavitation model as a variational inequality}
+In \Secref{weak_form_reynolds} we established the next variational formulation: find $p(\cdot,t)$ such that \eqref{reynolds_integral} is satisfied for any $\phi \in \hzerooneom$, where $t$ is a parameter. However, this time we are not looking for a solution in $\hzerooneom$ since, as discussed before, $p=0$ is a ``physical obstacle'' for the hydrodynamic pressure. Instead, let us define 
+\begin{equation}
+K=\{v\in \hzerooneOm :v\geq 0\},\label{eq:definition_K}
+\end{equation}
+and seek for a function $p(\cdot,t)\in K$ such that 
+\begin{align}
+\int_\Omega h^3\,\nabla p \nabla(\phi-p)\,dA \geq\int_\Omega h\frac{\partial }{\partial x}\left(\phi-p\right)\,dA-2\int_\Omega\parder{h}{t}\left(\phi-p\right)\,dA,\qquad \forall \phi \in K.\label{eq:reynolds_inequality}
+\end{align}
+This variational inequality is well known \cite{cimatti1976,kinderlehrer1980} and we will name it \emph{variational formulation} of the Reynolds cavitation model.
+
+As in the case of \Secref{weak_form_reynolds}, for assuring existence and uniqueness of $p(\cdot,t)\in K$ such that \eqref{reynolds_inequality} is fulfilled, all we need is $\parder{h}{t}(\cdot,t)\in H^{-1}(\Omega)$ and $h(\cdot,t)\in \lpOm{\infty}$ as the Stampacchia Theorem \ref{theo:stampacchia} establishes. Thus, we can relax the hypothesis on $h$ for the variational formulation of Reynolds equation. The regularity of the solution is studied, for instance, in \cite{kinderlehrer1980}  and a particular result due to   \citeauthor{rodrigues1987} \cite{rodrigues1987} is given in Theorem \ref{theo:reg_inequa}.
+
+
+\subsubsection*{Distributional equations of Reynolds model}
+Here we suppose $p\in \hzerooneOm \cap H^2(\Omega)$ is solution of \eqref{reynolds_inequality}, $h\in H^1(\Omega)\cap L^\infty(\Omega)$ and 
+$\partial_t h\in\lpOm{2}$.
+
+What would we obtain starting from the variational formulation of Reynolds cavitation model and some suitable regularity hypothesis?
+
+Integrating by parts \eqref{reynolds_inequality} we get
+\begin{align}
+\int_\Omega \left\{\nabla\cdot\left(-h^3\,\nabla p\right) +\parder{h}{x}+2\,\parder{h}{t}\right\}\left(\phi-p\right)\,dA  \geq 0,\qquad \forall \phi \in K,\label{eq:div_flux_var}
+\end{align}
+where we have used Theorem \ref{theo:product_differentiation} and the fact that $\phi-p\in \hzerooneOm$. Remember the definition \emph{pressurized zone} and \emph{cavitated zone} reads $$ \omega=\{(x,y)\in \Omega:p(x,y) >0\}\qquad\text{and}\qquad \Omega\setminus \omega$$
+resp.. It can be proved that $\Omega\setminus\omega$ is closed and $\omega$ is open \cite{kinderlehrer1980}. We also assume $\partial \omega$ is locally Lipschitz.
+
+Let us fix an arbitrary $f\in C^\infty_0(\omega)$. As $p>0$ in $\omega$, there exist some $\epsilon>0$ such that $p\pm \epsilon f\in K$, and so $p\pm \epsilon f =0$ in $\Omega\setminus\omega$. Putting $\phi=p\pm\epsilon f$ in \eqref{div_flux_var} we get
+\begin{equation*}
+\epsilon\int_{\omega} \left\{\nabla\cdot\left(-h^3\,\nabla p\right)+\parder{h}{x}+2\,\parder{h}{t}\right\} \left(\pm f\right)\,dA  \geq 0,
+\end{equation*}
+so we obtain 
+$$\int_{\omega} \left\{\nabla\cdot\left(-h^3\,\nabla p\right) +\parder{h}{x}+2\,\parder{h}{t}\right\}f\,dA  = 0,\qquad \forall f\in C_0^\infty (\omega)$$
+thus, from Lemma \ref{lemma:L1loc} we obtain
+\begin{equation}
+\nabla\cdot\left(h^3\nabla p\right)=\parder{h}{x}+2\,\parder{h}{t},\qquad\text{a.e. in }\omega.\label{eq:flux_J_omegaplus}
+\end{equation}
+We have recovered Reynolds equation (in distributional sense) in the pressurized zone $\omega$.
+
+To obtain an equation on $\Omega\setminus\omega$, take any function $\psi\in C^\infty_0(\Omega\setminus\omega):\psi\geq 0$, so $\psi+p\in K$. Putting $\phi=\psi+p$ in \eqref{div_flux_var} we obtain
+$$\int_{\Omega\setminus\omega}\left( \parder{h}{x}+2\,\parder{h}{t}\right) \psi \,dA\geq 0\qquad \forall \psi \in C^\infty_0(\Omega\setminus\omega):\psi\geq 0$$
+this way, by using Lemma \ref{lemma:L1loc_in} we get
+\begin{equation}
+\parder{h}{x}+2\,\parder{h}{t}\geq 0\qquad \text{a.e. in }\Omega\setminus\omega \label{eq:flux_J_omega0}.
+\end{equation}
+
+\begin{remark}
+\it
+In fact, for some cases it is possible to show that $\partial _x h +2\,\partial _t h=\mu$ in $\omega_0$, where $\mu$ is a non-negative Radon measure with support in $\omega_0$. The interested reader may review Section ``The Obstacle Problem: First Properties'' in \cite{kinderlehrer1980}.
+\end{remark}
+\begin{remark}\it
+For the stationary case, \eqref{flux_J_omega0} implies $\parder{h}{x} \geq 0$ in $\omega_0$. Therefore, Reynolds cavitation model only accepts cavitated regions placed at zones of divergent geometry. Analogously, for the pure squeeze motion, since the transport velocity is null the term $\partial _x h$ does not appears, then we have $\partial _t h \geq 0$, which also means that cavitation only take place at zones of divergent geometry.
+\end{remark}
+
+
+\subsubsection*{Implied boundary conditions for Reynolds model in stationary state}
+We seek for the boundary conditions Reynolds model implies for the stationary 1D case. The main hypothesis will be continuity of the gap function $h$. In 1D Reynolds model reads
+\begin{align*}
+\int_\Omega \left(h^3\,\parder{ p}{x}-h\right) \parder{}{x}(\phi-p)\,dx\geq 0,\qquad\forall \phi \in K
+\end{align*}
+where $\Omega=[a,b]$. Suppose $z\in \Sigma$ is a point placed at the boundary of the cavitated region such that $p(y)>0$ if $z-\epsilon < y < z$ and $p(y)=0$ if $z\leq y < z+\epsilon$ for some $\epsilon>0$ small enough. The variational formulation implies that for any $\phi \in H^1_0(V),\,\phi\geq 0$, with $V=[z-\epsilon,z+\epsilon]$, we have
+\begin{align*}
+\int_{z-\epsilon}^{z+\epsilon}\left(h^3\,\parder{ p}{x}-h\right) \parder{}{x}(\phi-p)\,dx\geq 0,
+\end{align*}
+we split the domain as
+\begin{align*}
+\int_{z-\epsilon}^{z}\left(h^3\,\parder{ p}{x}-h\right) \parder{}{x}(\phi-p)-\int_{z	}^{z+\epsilon}h\, \parder{}{x}(\phi-p)\,dx\geq 0.
+\end{align*}
+Assuming $h\in H^1(V)$ and $p\in H^2(V)$, we integrate by parts (using Theorem \ref{theo:product_differentiation}) to obtain
+\begin{align*}
+\int_{z-\epsilon}^{z}\parder{}{x}\left(h^3\,\parder{ p}{x}-h\right) (\phi-p)+\left(h^3\parder{p}{x}-h\right)_-\phi(z)+\int_{z	}^{z+\epsilon}\phi\,\parder{}{x}h\,dx+(h)_+\phi(z)\geq 0,
+\end{align*}
+where the sub-indices ``-'' and ``+'' denote the limits by the left and right of $z$ resp.. By \eqref{flux_J_omegaplus}, the first integral is null. And assuming $h$ is continuous ($h_-=h_+$) in $z$ we obtain
+\begin{align*}
+\left(h^3\parder{p}{x}\right)_-\phi(z)+\int_{z	}^{z+\epsilon}\phi\,\parder{}{x}h \,dx\geq 0,
+\end{align*}
+taking $\phi(z)>0$ and making $\epsilon$ tends to zero we obtain $\left(h^3\parder{p}{x}\right)_-\geq 0$, which implies
+$$\left(\parder{p}{x}\right)_-\geq 0$$
+however, since $p$ is positive at the left of $z$, we must have $\left(\parder{p}{x}\right)_-\leq 0$ so we obtain the well known boundary condition of Reynolds model
+$$\left(\parder{p}{x}\right)_-= 0.$$
+Therefore, if we have enough regularity on the solution, we recover condition \eqref{reynolds_cond_1d}, which is typically found in literature defining Reynolds cavitation model. A scheme of this condition for the 2D case is shown in \figref{2d_omega}.
+
+\begin{remark}
+\it A more detailed proof (by using Theorem \ref{theo:uprime_1d_continuous}) of the continuity of $\partial_x p$, allowing the obstacle to have discontinuities of the type $\partial _x \psi(x^-)\leq \partial _x \psi(x^+)$, can be found in Section 7, Chapter II of \cite{kinderlehrer1980}.
+\end{remark}
+\begin{figure}[h!]
+\centering 
+\def\svgwidth{\textwidth}	
+\footnotesize{
+\input{figs/2d_omega.pdf_tex}\caption[2D cavitated domain scheme.]{Scheme of a 2D cavitated domain. The red lines represent the pressure going to zero smoothly near $\omega_0$ (cavitated zone) when $h$ is sufficiently smooth.}\label{fig:2d_omega}}
+\end{figure}
+\section{Mass conservation in cavitation models}\label{sec:mass_cons_cav_models}
+In the last years, mass-conservation has been proved to be a key issue in the study of tribological systems involving textured surfaces. When considering textured surfaces, Ausas et al. \cite{ausas07} showed that Reynolds model makes a large underestimate of the cavitated area leading to inaccuracies in the calculated friction. This was done comparing the results of Reynolds model to the ones returned by Elrod-Adams model, which enforces mass-conservation. Y. Qiu and M. Khonsari \cite{qiu2009} also compared cavitation models, they showed that due to the underestimate of the cavitated zone, Reynolds model overestimates the load-carrying capacity when compared to Elrod-Adams model. Also, they showed a good correspondence between the cavitated zone found experimentally, in dimples made over a rotating disk, and the cavitated zone predicted by Elrod-Adams model. Consequently, it is interesting to study mass-flux behavior when considering Reynolds model, as this can give us baseline knowledge for understanding the mass-conservative model of Elrod-Adams.
+
+For simplicity, in this section we will consider the one dimensional lubrication problem. Thus, taking the non-dimensional transportation velocity $S$ equal to the unity, Reynolds equation reads
+$$\parder{}{x}\left( h^3\parder{p}{x}-h \right)=0.$$
+Now, consider the flux function of Reynolds model
+$$J=-\frac{h^3}{2}\parder{p}{x}+\frac{h}{2}.$$
+By \eqref{flux_J_omegaplus} we know that in the pressurized zone $\omega$, mass conservation is assured at any point since
+$$\parder{J}{x}=0,\qquad \text{in }\omega.$$
+However, by \eqref{flux_J_omega0} and the condition $p=0$, we know that in the cavitated zone
+$$\parder{J}{x} =\frac{1}{2}\parder{h}{x}\geq 0,\qquad \text{in }\Omega\setminus\omega.$$
+We observe that when the mass-flux is passing through a diverging region of the geometry ($\partial_x h>0$) there is an artificial mass-influx. Let us define as \emph{rupture point}
+%\footnote{a more precise definition, considering non-stationary cases, is made in \secref{ex_sol_stepped_shapes}}
+a point of $x\in\partial \omega$ where the flux is ``exiting'' $\omega$, i.e.,
+$$\bds{\hat{e}}_1\cdot \bds{\hat{n}}>0,$$
+where $\bds{\hat{n}}$ is the normal vector pointing outward $\omega$. Analogously, define as \emph{reformation point} a point of $\partial \omega$ where the flux is entering $\omega$, i.e.,
+$$\bds{\hat{e}}_1\cdot \bds{\hat{n}}<0.$$
+\begin{figure}[ht!]
+\centering 
+\def\svgwidth{\textwidth}	
+\input{figs/tubo_example1.pdf_tex}\caption[1D rupture and reformation scheme with Reynolds model]{Rupture and deformation in a 1D tube section with Reynolds model. Black opaque lines represent the fluid flux. Notice the fluid flux ``exiting" the pressurized region at the left rupture point and ``re-entering" the pressurized region at the reformation point.}\label{fig:mass_cons_example1}
+\end{figure}
+\Figref{mass_cons_example1} shows an example of a lubrication problem where cavitation is present. The blue continuous line represents the non-dimensional pressure. Please notice the condition of the normal derivative $\parder{p}{x}=0$ on both rupture and reformation points.
+
+We already know that in the full-film region we have $\parder{J}{x}=0$ and thus mass-conversation holds. This is because the Poiseuille flux ($-\frac{h^3}{2}\parder{p}{x}$) compensates the Couette flux ($\frac{h}{2}$) on that region. On the other hand, at the cavitated region there is no Poiseuille flux that could compensate Couette flux variations. This is why, as the cavitated region is placed at the divergent region, we have $\parder{J}{x}=\parder{h}{x}>0$ on the cavitated region.
+
+Observing \Figref{mass_cons_example1} one can hope that, if the surfaces being lubricated consist only of one pair of convergent and divergent zones, there will be only one cavitated region. Thus, the effect of the non-conservation of mass along the cavitated zone would be negligible. On the contrary, if there are several full-film regions sharing its boundaries with cavitated regions, the accumulated effect of the lack of mass-conservation might be important. Some good examples of this appear when considering textured surfaces, as can be found in \cite{ausas07}. Similar examples will be presented in the next section considering smooth textures.
+\section{Elrod-Adams model}\label{sec:elrod_adams_model}
+In an effort for assuring mass-conservation, Jakobson \cite{jakobson1}, Olsson \cite{olsson1} and Floberg \cite{floberg73,floberg74} provided the base of a theory that nowadays is known as the Jakobson, Floberg and Olsson (JFO) cavitation theory (\emph{apud} \cite{braun2010}). In these works the authors take into account the amount of liquid being transported through the cavitated zones, which can be important as suggested in the previous section.
+
+Making use of JFO theory, \citeauthor{elrod1974} \cite{elrod1974} exposed a generalized Reynolds equation and an algorithm for solving it by introducing a new variable $\theta$ that represents the fraction of liquid content at each point of the domain \cite{braun2010}. The transported quantity for this model is $h\theta$. In the full-film region, or pressurized region, we have $p>0$ and $\theta=1$. In the cavitated region, we have $p=0$ and $0\leq \theta \leq 1$. Considering this new variable, the non-dimensional Reynolds equation for Elrod-Adams cavitation model is written (using scales analogous to those from \Tabref{table_non_dim_step} with time scale $L/S$)
+\begin{equation}
+\nabla \cdot \left( \frac{h^3}{2}\nabla p \right) -\frac{S}{2}\parder{h\theta}{x} = \parder{h\theta}{t} ,\qquad\text{in }\Omega,
+\end{equation}
+where $S$ is the non-dimensional relative velocity of the surfaces, which is supposed to develop along the $x$-axis.
+
+This time the non-dimensional mass-flux function is given by (taking the transport velocity $S$ equal to unity)
+\begin{equation}
+\veca{J}=-\frac{h^3}{2}\nabla p+\frac{h\theta}{2}\bds{\hat{e}}_1,\qquad
+\text{in } \Omega.
+\end{equation}
+For stationary states, where the cavitation boundaries are not moving, the mass-flux entering $\Omega\setminus\omega$ at $\bds{x}\in \partial\omega$, and the mass-flux exiting $\omega$ at the same point can be written resp. as
+$$\underset{\epsilon \rightarrow 0^+}{\lim } \veca{J}(\bds{x}+\epsilon\,\bds{\hat{n}})\cdot \bds{\hat{n}}\quad \text{and}\qquad \underset{\epsilon \rightarrow 0^+}{\lim } \veca{J}(\bds{x}-\epsilon\,\bds{\hat{n}})\cdot \bds{\hat{n}},$$
+where $\bds{\hat{n}}$ is the unitary vector pointing outward $\partial\omega$. Defining the limits in $\bds{x}\in \partial \omega$ for some function $f$ $$f_\pm=\underset{\epsilon \rightarrow 0^+}{\lim } f(\bds{x}\pm\epsilon\,\bds{\hat{n}}),$$
+mass conservation implies the boundary conditions
+$$
+\left(\underset{\epsilon \rightarrow 0^+}{\lim } \veca{J}(\bds{x}+\epsilon\,\bds{\hat{n}})-\underset{\epsilon \rightarrow 0^+}{\lim } \veca{J}(\bds{x}-\epsilon\,\bds{\hat{n}})\right) \cdot \bds{\hat{n}}=\left(h_+\theta_+-h_-\theta_-\right)\Sigma',\qquad\forall \bds{x}\in \partial\omega.
+$$
+where $\Sigma'$ is the velocity at which $\partial\omega$ is moving. This condition is known as the \emph{Rankine-Hugoniot Condition} for mass-conservation (see, e.g., \cite{leveque2002}). So the boundary condition can also be written
+\begin{equation}
+\left( \veca{J}_+ - \veca{J}_- \right) \cdot \bds{\hat{n}}=\left(h_+\theta_+-h_-\theta_-\right)\Sigma'.\label{eq:boundary_cond_ea}
+\end{equation}
+If the system reaches an steady state (so $\Sigma'=0$) and $\bds{x}$ is a rupture point, this boundary condition implies
+\begin{align*}
+\left(-h^3_+\nabla p_++ (h\theta)_+ \bds{\hat{e}}_1 + h_-^3\nabla p_--(h\theta)_-\bds{\hat{e}}_1\right)\cdot \bds{\hat{n}}&=0\qquad \text{in }\bds{x},
+\end{align*}
+as $h_-=h_+=h$, $\theta_-=1$, $\nabla p _+=0$ and $\bds{\hat{e}}_1\cdot \bds{\hat{n}}>0$ we have $$h^3\nabla p_-\cdot \bds{\hat{n}} = h(1-\theta_+)\,\bds{\hat{e}}_1\cdot\bds{\hat{n}}\geq 0$$
+moreover, as $p$ is positive in $\omega$ we have $\nabla p_-\cdot \bds{\hat{n}}\leq 0$ and so
+$$\nabla p_-\cdot\bds{\hat{n}}=\left(\parder{p}{n}\right)_-=0,$$
+which is the same boundary condition of Reynolds model for rupture points. On the other hand, for reformation points ($\bds{\hat{e}}_1\cdot \bds{\hat{n}}<0$), applying condition \eqref*{boundary_cond_ea} we obtain
+$$h^3\left(\parder{p}{n}\right)_+=-h(1-\theta_-)\,\bds{\hat{e}}_1\cdot \bds{\hat{n}}\geq 0.$$
+Observe that this condition is different from the one from Reynolds model. If on the left side of the reformation point the fluid is not complete ($\theta<1$), a jump (or discontinuity) in the pressure gradient is developed in order to assure mass-conservation.
+
+\subsubsection*{A simple comparison with Reynolds model}
+\begin{figure}[ht!]
+\centering 
+\def\svgwidth{\textwidth}	
+\input{figs/tubo_example2.pdf_tex}\caption[1D rupture and reformation scheme with Elrod-Adams model]{Rupture and reformation in a 1D tube section with Elrod-Adams model. Black opaque lines represent the fluid flux, the red line represents pressure from Elrod-Adams model and the blue-dashed line represents pressure from Reynolds model.}\label{fig:mass_cons_example2}
+\end{figure}
+
+\Figref{mass_cons_example2} shows the same example we used for Reynolds model (see \Figref{mass_cons_example1}), this time including Elrod-Adams solution. The red line and the blue-dashed line represent the pressure given by Elrod-Adams and Reynolds models resp.. We observe that both solutions coincide in the first convergent region (left side). However, the first cavitated region of Elrod-Adams model (left side) is much larger than the one from Reynolds model. The second cavitated region is also larger for Elrod-Adams model. All this leads to a smaller pressure integral for Elrod-Adams model on $\Omega$.
+
+Remembering that for Reynolds model $\parder{J}{x}=\parder{h}{x}$ in the cavitated region, we can make the next remark while observing \Figref{mass_cons_example1}: the amount of fluid ($Q_1$) leaving the left  pressurized region is bigger than the amount of fluid ($Q_2$) entering the right pressurized region. On the contrary, for Elrod-Adams model, the amount of fluid entering passing through all $\Omega$ is always $Q_1$. This is why Reynolds model exhibits a larger pressure profile. This overestimation of pressure due to non mass-conservation of Reynolds model is also presented in \cite{ausas07,qiu2009}.
+
+Finally, we remark that the Elrod-Adams model can also be written as a variational problem for the steady state. Its formulation is similar to the one exhibited for Reynolds model in \Secref{weak_form_reynolds_model} and the interested reader can find it in \cite{bayada1982}.
+
+\section{Analytical solution examples}\label{sec:ex_analytic_sol}
+\subsection{Cavitation in Pure Squeeze Motion}\label{sec:cavitation_pure_squeeze}
+In this section we illustrate the differences between cavitation models when solving a simple benchmark problem. Pure Squeeze Motion between two parallel surfaces is going to be used for this purpose. The scheme of the problem is showed in \Figref{squeeze_scheme}.
+\begin{figure}[ht!]
+\centering 
+\def\svgwidth{\textwidth}	
+\footnotesize{
+\input{figs/squeeze_scheme.pdf_tex}\caption{Pure Squeeze problem scheme.}\label{fig:squeeze_scheme}}
+\end{figure}
+
+The lower surface is at rest, while the upper surface has a known motion in such a way the space between the surfaces is equal to $$h(t)=0.125\,\cos(4\pi t)+0.375,$$ and the sliding velocity for both surfaces is null. Also, the boundary conditions for pressure are $p(x=0,t)=p(x=1,t)=p_0=0.025.$
+
+Initially, we assume the space between the surfaces is fulfilled with fluid. Therefore, as immediately after $t=0$ the gap $h$ is shrinking, the pressure $p$ is going to be positive (Strong Maximum Principle, Theorem \ref{theo:strong_max_princ_reynolds}) and we will have $\omega=\,]0,1[$ and $\Omega\setminus\omega=\emptyset$. After that shrinking, the gap $h$ will expand and so there will be some time $t_\text{rup}$ at which the film ruptures and a cavitated zone appears.
+
+In $\omega$, Reynolds equation is valid and it can be written as 
+\begin{equation}
+\frac{1}{2}\frac{\partial^2 p}{\partial x^2}=\frac{1}{h^3}\,\frac{\partial h}{\partial t },\qquad \text{in }\omega.\label{eq:reynolds_squeeze}
+\end{equation}
+Thus, when the space between the surfaces diminish ($h'(t)<0$) and cavitation is not taken into account, the minimal pressure fall below the boundary conditions (Strong Maximum Principle). When cavitation is taken into account, the models we already exposed consider that pressure reaches some threshold level $p_\text{cav}$, here we take $p_\text{cav}=0$.
+
+As the problem is symmetric around $x=0.5$ in the $x$-axis, and the boundary conditions in $x=0,1$ are equal, the cavitated zone will also be symmetric around $x=0.5$, i.e., $\Omega\setminus\omega=[1-\Sigma(t),\,\Sigma(t)]$ where $\Sigma(t)\in [0.5,1[$ is the right boundary of the cavitated zone.
+\subsubsection*{Half-Sommerfeld model solution}
+In this case we only need to solve  \eqref{reynolds_squeeze} in the whole domain $\Omega
+=]0,1[$ and, for each time $t$, find the point $\Sigma\in\, [0.5,1[$ such that $p(\Sigma)=0$ (if there is any).
+\subsubsection*{Reynolds model solution} 
+For Reynolds model, we can integrate \eqref{reynolds_squeeze} on $]\Sigma(t),x[$ with $\Sigma(t)<x<1$, so
+\begin{align*}
+\int_\Sigma^x\frac{\partial^2 p}{\partial x^2}\,dx&=\int_\Sigma^x 2\frac{1}{h^3}\,\frac{\partial h}{\partial t }\,dx\\
+h^3\left(p'(x)-p'(\Sigma)\right)&=2\,\partial_t h\left(x-\Sigma\right),
+\end{align*}
+where $p'=\parder{p}{x}$ and we have used that $h$ does not depend on $x$. Reynolds model implies $p'(\Sigma)=0$, so integrating again on $]\Sigma,\,x[$ we obtain
+$$p(x)=2\frac{\partial_t h}{h^3}\left(\frac{x^2-\Sigma^2}{2}-\Sigma\left(x-\Sigma\right)\right),\qquad x\in\, ]\Sigma(t),1[.$$
+To find $\Sigma$, we use the boundary condition $p(1)=p_0$, so we have
+$$h^3 p_0=\partial_t h\left(1-\Sigma\right)^2, $$
+thus, for Reynolds model the cavitation boundary $\Sigma_r=\Sigma$ is given by
+\begin{equation}
+\Sigma_r(t)=1-\sqrt{\frac{p_0\,h(t)^3}{\partial_t h(t)}}.\label{eq:sigma_reynolds}
+\end{equation}
+\subsubsection*{Elrod-Adams model solution}
+
+As we said above, initially the whole domain $\Omega$ will be pressurized. Let us denote by $t_\text{rup}$ the time at which the cavitation begins. Denote also by $t_\text{ref}$ the time for which the cavitated zone is growing at any time $t\in\,]t_\text{rup},t_\text{ref}[$, which means that $\Sigma(t)$ is a rupture point on that time interval. Also, denote by $t_\text{end}$ the time for which the cavitated zone disappears (if there is any), i.e., $]t_{ref},t_\text{end}[$ is the time interval for which the cavitated zone is shrinking and $\Sigma(t)$ is a reformation point. 
+
+For $t\in\,[t_\text{rup},t_\text{ref}[$, $\Sigma(t)$ is a rupture point. Thus, the boundary conditions $\partial_x p=0$ at $\partial \omega$ are the same for Reynolds and Elrod-Adams model. Therefore, for Elrod-Adams model $\Sigma(t)$ is given by \eqref{sigma_reynolds}. But for $t\in \,]t_\text{ref},t_\text{end}[$ that equality is not valid anymore.
+
+To find $\Sigma$ for $t\in \,]t_\text{ref},t_\text{end}[$, we integrate \eqref{reynolds_squeeze} obtaining
+\begin{align}
+h^3\left(p'(x)-p'(\Sigma)\right)&=2\,\partial_t h\left(x-\Sigma\right).\label{eq:sigma2}
+\end{align}
+And using \eqref{boundary_cond_ea} we obtain the next mass-conservation condition on $\Sigma$:
+\begin{equation}
+h^3p'(\Sigma)=2\,\Sigma'h\left(\theta_--1\right),\label{eq:sigma3}
+\end{equation}
+where $\Sigma'$ is the velocity of $\Sigma$ and $\theta_-$ is the value of the saturation $\theta$ just at the left of $\Sigma$. Putting this in \eqref{sigma2} and integrating on $[\Sigma,x]$ we get
+\begin{equation}
+p(x)=\frac{2}{h^3}\left\{\partial_t h\left(\frac{x^2-\Sigma^2}{2}-\Sigma\left(x-\Sigma\right)\right)+\Sigma'h(\theta_--1)(x-\Sigma)\right\}.\label{eq:pressure_squeeze_ea}
+\end{equation}
+In consequence, for finding $p$ we need to calculate $\Sigma$. As before, we use the boundary condition $p(1)=p_0$ so we get the differential equation
+\begin{equation}
+\Sigma'(t)=\frac{\left(1-\Sigma\right)^2\partial_t h-p_0\, h^3}{2\,h\left(1-\Sigma\right)\left(1-\theta_-(\Sigma)\right)}.\label{eq:diff_sigma_ea}
+\end{equation}
+Where $\theta_-(\Sigma)$, the saturation just at the left of $\Sigma$, can be calculated by using the characteristic lines method as it is illustrated in \Figref{sol_squeeze_ea}.
+\begin{figure}[ht]
+\centering 
+\def\svgwidth{\textwidth}\small{
+\input{figs/sol_squeeze_ea.pdf_tex}}\caption[Characteristic lines for Pure Squeeze Motion]{Characteristic lines of $h\theta$.}\label{fig:sol_squeeze_ea}
+\end{figure}
+
+Using as initial condition $\Sigma(t_\text{ref})=\Sigma_r(t_\text{ref})$, \eqref{diff_sigma_ea} allows to find the boundary cavitation till the final time $t_\text{end}$. Finally, putting $\Sigma$ and $\Sigma'$ into \eqref{pressure_squeeze_ea} we can find the pressure field for the Elrod-Adams model.
+\subsubsection*{Comparison of the solutions}
+\begin{figure}[ht]
+\centering 
+\def\svgwidth{\textwidth}\footnotesize{
+\input{figs/squeeze_ea_rey_analitic.pdf_tex}}
+\caption[Comparison of cavitation models for a Pure Squeeze problem]{$\Sigma(t)$ for half Sommerfeld, Reynolds and Elrod-Adams cavitation models. The thickness function $H(t)$ is shown the continuous sinusoidal line.}\label{fig:squeeze_models_comparison}
+\end{figure}
+All models considered here show a rupture in the full-film region at time $t=0.25$, just when the space between the surfaces begins to expand (see \Figref{squeeze_models_comparison}). By the other hand, the collapse of the cavitated region is totally different when considering Elrod-Adams model. At time $t=0.5$, the upper surface is stopped, and immediately after that time the distance $h(t)$ will begin to shrink. When this occurs, both Half-Sommerfeld and Reynolds models show a collapse of the cavitated zone, for both models there is no cavitated zone until a rupture reappears at time $t=0.75$, when the distance $h(t)$ begins to expand again. On the contrary, the cavitated zone resulting from Elrod-Adams model does not collapse at $t=0.5$ but it remains until approximately $t=0.73$. Elrod-Adams model predicts the presence of cavitation at great part of the time at which the space $h(t)$ is shrinking!.
+%% HE CORREGIDO HASTA AQUI, ABRIL 23
+\newpage
+\subsection{Cavitation in a flat pad with a traveling pocket}\label{sec:ex_sol_stepped_shapes}
+\begin{figure}[ht!]
+ \centering 
+ \def\svgwidth{\textwidth}	
+\input{figs/esquema1.pdf_tex}\caption[Scheme of the rectangular wedges problem]{Scheme of the problem. The dashed red line illustrates the pressure profile.}\label{fig:scheme1}
+\end{figure}
+In this section we study a 1D problem consisting of two parallel surfaces in relative motion. As \Figref{scheme1} shows, the upper surfaces is flat and it is placed between $x=0$ and $x=1$. The lower surface is flat and placed at distance $h_1$ from the upper one, except for a pocket of depth $\Delta h=h_2-h_1$ and length $\ell$. This pocket is traveling at the same sliding speed $U$ of the lower surface. The pocket's left side position is denoted by $d_1(t)$ and its right side is denoted by $d_2(t)=d_1(t)+\ell$.
+
+At time $t=0$, we assume the pocket is just entering the region $\Omega=\,]0,\,1[$, which is written $d_1(t=0)=-\ell$. Also, we assume fully flooded conditions on $x=0$ and null pressure on $x=0$ and $x=1$, i.e.,
+\begin{equation}
+p(0,t)=p(1,t)=0,\qquad \theta(0,t)=1,\qquad\forall t>0.\label{eq:bound_conditions}
+\end{equation}
+
+\subsubsection*{Reynolds model solution}\label{sec:pocket_reynolds}
+As the pocket travels along $\Omega=[0,1]$ with constant velocity $S$, the gap function is described by $h(x,t)=h(x-S\,t)$ and we have $\partial_t h=-S\,\partial_x h$. This way, Reynolds equation for this problem reads
+\begin{equation*}
+\frac{\partial}{\partial x}\left( h^3 \frac{\partial p}{\partial x} \right)=-S\frac{\partial h}{\partial x},\qquad \forall t\geq 0, \text{ on }\Omega.
+\end{equation*}
+Also, the gap function can be written as
+$$h(x,t)=h_1+\Delta h\left(H(x+l-S\,t)-H(x-S\,t)\right),$$
+where $H(x)$ is the Heaviside function ($H(x)=0$ if $x<0$, $H(x)=1$ otherwise), which weak derivative is the Dirac's delta distribution $\parder{H(x)}{x}=\delta(x)$. With all this, we can write Reynolds equation as
+\begin{equation}
+\frac{\partial}{\partial x}\left( h^3 \frac{\partial p}{\partial x} \right)=-S\Delta h\left(\delta(x+\ell-S\,t)-\delta(x-St)\right),\qquad \forall t\geq 0, \text{ on }\Omega.\label{eq:reynolds_pocket_reynolds}
+\end{equation}
+For $t<\ell/S$, before the pocket enters completely into $\Omega$, \eqref{reynolds_pocket_reynolds} can be written as:
+$$\frac{\partial}{\partial x}\left( h^3 \frac{\partial p}{\partial x} \right)=S\Delta h\,\delta(x-d_2),\qquad \text{for } 0<t<\ell/S, \text{ on }\Omega,$$
+where we have used that $d_2(t)=St$. So, as the right hand side of this last equation is positive, we must have $p\leq 0$ because of the boundary conditions and the Maximum Principle, and so, as we are looking for non-negative pressures we have $p=0$ in $\Omega$. This result is clear from the observation that for $t<\ell/S$ the geometry is strictly divergent.
+
+For $\ell/S<t<1/S$, the time interval for which the pocket is completely inside $\Omega$, we integrate \eqref{reynolds_pocket_reynolds} obtaining
+\begin{equation}
+\parder{p}{x}=\frac{C}{h^3}-\frac{S\Delta h}{h^3}\left(H(x-d_1)-H(x-d_2)\right).\label{eq:reynolds_pocket_reynolds1}
+\end{equation}
+As $H_0^1(0,1)\subset C^0(0,1)$ (see \Secref{sobolev_imbeddings}), this equation means that $p$ is a piecewise linear and continuous function that changes its slope only at $x=d_1(t)$ and $x=d_1(t)+\ell$. Now, outside the pocket \eqref{reynolds_pocket_reynolds1}, can be written
+\begin{equation}
+\parder{p}{x}=\frac{C}{h_1^3},\qquad\text{for } x<St-\ell\text{ or }St<x.\label{eq:reynolds_pocket_reynolds2}
+\end{equation}
+Since $p(0)=0$ and $p$ must be non-negative, we only can have $C\geq 0$. Analogously, as $p(1)=0$ we must have $C\leq 0$, and so we have $C=0$. Thus, as $p$ is continuous, $p$ must be null on $\Omega$.
+\begin{figure}[hb]
+ \centering 
+ \def\svgwidth{\textwidth}
+\input{figs/esquema_interior_nocav.pdf_tex}\caption{Scheme of the solution for a single honed pocket without cavitation.}\label{fig:pressure_pocket_nocav}
+\end{figure}
+
+As the reader may guess, something has gone wrong with our ``solution procedure'' above. For illustrating our error let us reconsider the problem, this time without cavitation. From \Figref{pressure_pocket_nocav} we infer that, for accomplishing \eqref{reynolds_pocket_reynolds2}, we need to allow negative pressures.
+
+The error we made before was due to consider Reynolds equation as being valid through all $\Omega$. But Reynolds equations is not valid on the cavitated zone $\Omega\setminus\omega$. Here, we will guess (based on the illustration of \Figref{pressure_pocket_nocav}) that the cavitated zone corresponds to $[d_2(t),1]$ for any time $t$ such that $\ell/S<t<1/S$, and soon we will prove that such guess is correct. This way, the region where Reynolds equation is valid is written $\omega={}]0,d_2(t)[$, and the corresponding scheme of the solution is showed in \Figref{pressure_pocket_ansatz_reynoldscav}.
+
+\begin{figure}[hb]
+ \centering 
+ \def\svgwidth{\textwidth}
+\input{figs/esquema_interior_nocav1.pdf_tex}\caption{Scheme of an ansatz solution for a single honed pocket with Reynolds cavitation model.}\label{fig:pressure_pocket_ansatz_reynoldscav}
+\end{figure}
+Now, Reynolds equation is valid in $\omega$ and we write it as
+\begin{align}
+\parder{p}{x}&=\frac{C}{h^3}-\frac{S\Delta h}{h^3}H(x-d_1),\qquad\text{on }\omega,\label{eq:reynolds_pocket_reynolds_omega}\\
+p(0)&=p(d_2)=0.\label{eq:reynolds_pocket_reynolds_omega_BC}
+\end{align}
+For finding $C$ we integrate \eqref{reynolds_pocket_reynolds_omega} along with the boundary conditions so we obtain
+\begin{equation}
+C=\frac{S\ell \,h_1^3\Delta h }{d_1h_2^3+\ell h_1^3},\label{eq:pocket_def_C}
+\end{equation}
+and so 
+\begin{equation}
+p(d_1)=\frac{S\ell \,d_1\Delta h }{d_1h_2^3+\ell h_1^3}.\label{eq:reynolds_pocket_reynolds_pd1}
+\end{equation}
+In the next proposition we prove that this is, in fact, the solution for Reynolds cavitation model.
+\begin{proposition}
+Let $\ell/S<t<1/S$, then, the piecewise linear function $p$ defined by \eqref{reynolds_pocket_reynolds_omega} on $\omega=\,]0,d_2[$ and the boundary conditions \eqref*{reynolds_pocket_reynolds_omega_BC} along with $p=0$ on $\omega_0=[d_2,1]$ is the solution of the Reynolds cavitation model for $\Omega=[0,1]$.
+\begin{proof}
+We need to prove that $p$ accomplishes the variational formulation
+\begin{equation*}
+\int_0^1 h^3\,\partial_x p \,\partial_x(\phi-p) \,dx
+\geq S\int_0^1 h\, \partial_x(\phi-p)\,dx-2 \int_0^1 (\phi-p)\, \partial_t h\,dx \qquad \forall \phi\in K,
+\end{equation*}
+with $K=\{\phi \in H_0^1\left(0,1\right):\phi\geq 0\}$.
+
+We integrate the identity $\partial_t h=-S\,\partial_x h$ and integrate by parts, obtaining
+\begin{equation}
+\int_0^1 h^3\,\partial_x p \,\partial_x(\phi-p) \,dx
+\geq -S\int_0^1 h\,\partial_x(\phi-p)\,dx\,dx \qquad \forall \phi\in K.\label{eq:reynolds_inequality_pocket}
+\end{equation}
+Denote by $I_1$ the integral of the left-hand side. We can decompose $I_1$ as
+\begin{align*}
+I_1=\int_0^{d_1} h_1^3\,\partial_x p \,\partial_x(\phi-p) \,dx+\int_{d_1}^{d_2} h_2^3\,\partial_x p \,\partial_x(\phi-p) \,dx+\int_{d_2}^{1} h_1^3\,\partial_x p \,\partial_x(\phi-p)\,dx.
+\end{align*}
+Using \eqref*{reynolds_pocket_reynolds_omega} in this last equation, and the fact that $p=0$ on $[d_2,1]$, we have \begin{align}
+I_1=&\int_0^{d_1} h_1^3\,\partial_x p \,\partial_x(\phi-p) \,dx+\int_{d_1}^{d_2} h_2^3\,\partial_x p \,\partial_x(\phi-p) \,dx\nonumber\\
+=&-\frac{C^2}{h_1^3}d_1+\left(C-S\,\Delta h\right)\left(\phi(d_2)-\phi(d_1)\right)-\frac{l}{h_2^3}\left(C-S\,\Delta h\right)^2.\label{eq:aux_I1}
+\end{align}
+Denoting by $I_2$ the integral of the right-hand side of \eqref{reynolds_inequality_pocket} we have
+\begin{align*}
+I_2=-S\left(\int_0^{d_1} h_1\,\partial_x(\phi-p) \,dx+\int_{d_1}^{d_2} h_2\,\partial_x(\phi-p) \,\partial_x(\phi-p) \,dx+\int_{d_2}^{1} h_1\,\partial_x(\phi-p)\,dx\right),
+\end{align*}
+and using again \eqref*{reynolds_pocket_reynolds_omega} and $p=0$ on $[d_2,1]$ we obtain
+\begin{align}
+I_2=&-S\Delta h\left(\phi(d_2)-\phi(d_1)\right)+S\,C\left(\frac{d_1}{h_1^2}+\frac{\ell}{h_2^2}\right)-S^2\,\ell\frac{\Delta h}{h_2^2}.\label{eq:aux_I2}
+\end{align}
+Replacing \eqref{aux_I1,aux_I2} in \eqref{reynolds_inequality_pocket}, multiplying by $h_1^3h_2^3$ and rearranging the terms we obtain
+$$Ch_1^3h_2^3\,\phi(d_2)\geq h_1^3\ell\left(C-S\,\Delta h\right)^2+d_1C^2h_2^3+S\,C\left(d_1h_2^3h_1+\ell h_1^2h_2\right)-S^2\,\ell h_1^3h_2 \Delta h,$$
+as $C>0$ and this inequality must hold for any $\phi(d_2)\geq 0$, this is equivalent to
+$$h_1^3\ell\left(C-S\,\Delta h\right)^2+d_1C^2h_2^3+S\,C\left(d_1h_2^3h_1+\ell h_1^2h_2\right)-S^2\,\ell h_1^3h_2 \Delta h \leq 0.$$
+In fact, replacing $\Delta h=h_2-h_1$ and $C$ by its definition \eqref*{pocket_def_C}, we obtain that the left-hand side of the last inequality is equal to zero, and so the variational formulation holds for $p$.
+\end{proof}
+\end{proposition}
+Please observe that for $1 \leq  t <1 +\ell$ (while the pocket is exiting the domain), the pressure can be found just replacing the right side of the pocket, $d_2$, by 1.
+\subsubsection*{Elrod-Adams model solution}
+In this section we solve once more the problem of a flat pad with a traveling pocket, this time modeling cavitation through the Elrod-Adams model. We will find a significant qualitative difference between the solutions of both models.
+
+For Elrod-Adams cavitation model, the modified non-dimensional Reynolds equation can be written as
+\begin{equation}
+\frac{\partial}{\partial x}\left( h^3 \frac{\partial p}{\partial x} \right)=S\frac{\partial h\theta}{\partial x}+2\frac{\partial h\theta}{\partial t},\qquad \text{on }\Omega=[0,1],\label{eq:pocket_reynoldstheta}
+\end{equation}
+where $p$ the hydrodynamic pressure, $\theta$ the saturation field, $h$ the gap function and $S$ the velocity of the lower surface. This equation is not valid exclusively on the active region $\omega\subset\Omega$ but through all the domain $\Omega$.
+
+The variables that describe the pocket are the same as in the last section, i.e., the depth $\Delta h$ and its right and left side, $d_1$ and $d_2$ resp.. Also, the initial position of the pocket is the same as before, $d_1(t=0)=-\ell$.
+
+%\begin{figure}[ht!]
+% \centering 
+% \def\svgwidth{\textwidth}	
+%\input{figs/esquema_interior_ea.pdf_tex}\caption{Scheme of the solution for a single honed pocket. The red and blue lines represent the pressure $p$ and saturation function $\theta$ resp.}\label{fig:interior_scheme}
+%\end{figure}
+The mass-conservation (Rankine-Hugoniot condition) condition at an arbitrary point $x\in\Omega$ moving at velocity $V_x$ is written
+\begin{equation}
+\frac{S}{2}\left(h\theta\right)_+-\frac{h^3}{2}\partial_xp_+-\frac{S}{2}\left(h\theta\right)_-+\frac{h^3}{2}\partial_xp_-=\left(\left(h\theta\right)_+-\left(h\theta\right)_-\right)V_x.\label{eq:massflux}
+\end{equation}
+Let us remember that cavitation prevents pressure to take values below $p_{cav}$ (here $p_{cav}=0$), and the geometry is divergent for $0<t<\ell/S$. This way, it is clear that the solution for pressure, while the pocket is entering, is just $p(x,t)=0$ $\forall x\in \Omega$ and $0<t<\ell/S$.
+
+Now, imposing mass-conservation at $d_2$ we have:
+\begin{equation*}
+S h_1\theta_+-h_1^3\partial_xp_+-S h_2\theta_-+h_2^3\partial_xp_-=2\,S\left(h_1\theta_+-h_2\theta_-\right),
+\end{equation*}
+so
+\begin{equation}
+\theta_-=\frac{h_1}{h_2}+\frac{h_1^3\partial_xp_+-h^3_2\partial_xp_-}{S h_2},\qquad \text{on }x=d_2.
+\end{equation}
+For $0\leq t<\ell/S$ we have $\partial_x p =0$ everywhere, so the saturation $\theta$ on the very left of $d_2$ is given by
+\begin{equation}
+\theta_-=h_1/h_2.\label{eq:thetah1h2}
+\end{equation}
+As there is no pressure while the pocket is entering, by using (\ref{eq:thetah1h2}) and the fully flooded condition we can solve the saturation $\theta$ by the \emph{characteristics} method for the transport equation. This method is shown in \Figref{pocket_char1}.
+\begin{figure}[ht!]
+ \centering 
+ \def\svgwidth{\textwidth}	
+\input{figs/char_t1.pdf_tex}
+\caption[Characteristics lines of the transport equation of $h\theta$]{Characteristics lines of the transport equation of $h\theta$ for $0<t<t_1$.}\label{fig:pocket_char1}
+\end{figure}
+
+This way, we obtain the profiles of both fields $p$ and $\theta$ at $t=\ell/S$, i.e., $p=0$ on all $\Omega$ and
+$$\theta(x,\ell/S)=\left\{\begin{array}{cl}
+h_1/h_2 & \ell/2 \leq x\leq\ell,\\
+1&\text{elsewhere}.
+\end{array}\right.
+$$
+\begin{figure}[ht!]
+ \centering 
+ \def\svgwidth{\textwidth}
+\input{figs/esquema_interior_ea_t0.pdf_tex}
+\caption[Initial conditions of $\theta$ and $p$ for the problem of a traveling pocket]{Values of $p$ (lower pointed red line) and $\theta$ (upper dashed blue line) at $t=\ell/S$.}\label{fig:esquema_interior_ea_t0}
+\end{figure}
+
+The state of $p$ and $\theta$ at $t=\ell/S$ is shown in \Figref{esquema_interior_ea_t0}. Initially we have no pressurized zone. Now, consider $\ell/S<t<1$ and denote by $\beta(t)$ the right side of $\omega$, we have $\beta(t=\ell/S^+)=\ell/2$. We will show that, to find the behavior of $p$ and $\theta$ after $t=\ell/S$, we need to know the behavior of $\beta(t)$.
+
+Now, as $\beta(t)$ depends continuously on time, we already know the dependency of pressure with $\beta$. In fact, \eqref{reynolds_pocket_reynolds_omega,reynolds_pocket_reynolds_omega_BC} are valid changing $d_2$ by $\beta$, so we have
+\begin{align}
+\parder{p}{x}&=\frac{C}{h^3}-\frac{S\Delta h}{h^3}H(x-d_1),\qquad\text{on }\omega=\,]0,\beta[,\label{eq:reynolds_pocket_ea_omega}\\
+p(0)&=p(\beta)=0.\label{eq:reynolds_pocket_ea_omega_BC}
+\end{align}
+Similarly, changing $\ell$ by $\beta-d_1$, we have the equations
+\begin{equation}
+C=\frac{S(\beta-d_1) \,h_1^3\Delta h }{d_1h_2^3+(\beta-d_1) h_1^3},\label{eq:pocket_ea_def_C}
+\end{equation}
+and so 
+\begin{equation}
+p(d_1)=\frac{S(\beta-d_1) \,d_1\Delta h }{d_1h_2^3+(\beta-d_1) h_1^3}.\label{eq:ea_pocket_reynolds_pd1}
+\end{equation}
+
+%For proving that the right side of $\omega$ is exactly $\beta$, suppose it is placed at $\hat{\beta}<\beta$, applying \eqref{massflux} (mass conservation), we obtain:
+%\begin{equation}
+%\frac{S}{2}h_2-\frac{h_2^3}{2}\partial_xp_--\frac{S}{2}h_2+\frac{h_2^3}{2}\partial_xp_+=(h_2-h_2)\frac{d\hat{\beta}}{dt}=0,\label{eq:beta}
+%\end{equation}
+%where we used $\theta_-(\hat{\beta})=\theta_+(\hat{\beta})=1$, but as $\partial_xp_+=0$, we obtain $\partial_xp_-=0,$ which is a contradiction with our hypothesis on $\hat{\beta}$.
+
+%An analogous  argument can be used for proving that the left side of $\Omega_+$, denoted by $\alpha$, is the point $\alpha=0$. Because the characteristics lines for $h\theta$ on the left of $\alpha$, we must have $\theta_-=1$, and then \eqref{beta} holds replacing $\hat{\beta}$ by $\alpha$ and $h_2$ by $h_1$, so concluding $\partial_x p_+(\alpha)=0$ which can not be.
+
+Now, we need to find the time evolution of $\beta$. For this, let us write \eqref{massflux} for $\beta$. Knowing that $\partial_x p_+(\beta)=0$ and $\theta_-(\beta)=1$ we get:
+\begin{equation}
+\frac{h_2^3}{2}\partial_x p_-(\beta)=h_2\left(\theta_+(\beta)-1\right)\left(\beta'-\frac{S}{2}\right),\label{eq:grad1}
+\end{equation}
+being $\beta'$ the velocity of $\beta$. As $\partial_x p_-(\beta)<0$ and $\theta_+(\beta)<1$, we get $\beta'> S/2$. By the characteristics method we get $\theta_+(\beta)=h_1/h_2$ (see \Figref{char_beta}).
+\begin{figure}[ht!]
+ \centering 
+ \def\svgwidth{\textwidth}	
+\input{figs/char_beta.pdf_tex}\caption{Characteristic lines to find $\theta_+(\beta)$.}\label{fig:char_beta}
+\end{figure}
+
+ Putting this on \eqref{grad1}, we can write the relation
+ \begin{equation}
+ h_2^3\,\partial_x p_-(\beta) = (S-2\,\beta')\Delta h.\label{eq:grad_beta}
+ \end{equation}
+And from \eqref{reynolds_pocket_ea_omega,pocket_ea_def_C} we have that
+$$h_2^3\partial_x p_-(\beta)=\frac{S(\beta-d_1)h_1^3\Delta h}{d_1h_2^3+(\beta-d_1)h_1^3}-S\Delta h.$$
+Replacing this in \eqref{grad_beta} and rearranging terms we obtain that
+\begin{equation}
+\frac{d\beta}{dt}=\frac{S}{2}\left(1+\frac{h_2^3}{h_2^3+h_1^3(\beta/d_1-1)}\right).\label{eq:dbdt}
+\end{equation}
+Integrating this equation and using the initial condition $\beta(\ell/S)=\ell/2$ we can find the behavior of the cavitated zone (field $\theta$) and thus the pressure field.
+
+For $1\leq t <1 +\ell$ (while the pocket is exiting the domain), the solution we showed continues to be valid whenever $\beta<1$. After $\beta$ reaches the right side of the domain it must be replaced by $1$ in \eqref{ea_pocket_reynolds_pd1}.
+\subsubsection*{Comparison of the solutions}
+
+\begin{figure}[ht!]
+ \centering 
+ \def\svgwidth{\textwidth}	
+\input{figs/analitic_pocket_both_models.pdf_tex}
+\caption[Analytic solutions of Elrod-Adams and Reynolds cavitation models for three different times of the traveling pocket]{Analytic solutions of Elrod-Adams (in red) and Reynolds (in blue) cavitation models for three different times. The non-dimensional pressure profiles were amplified by a factor of 100.}\label{fig:pockets_analytic}
+\end{figure}
+
+\Figref{pockets_analytic} shows the analytic solutions found for both models, in blue the solution for Reynolds model and in red the solution for Elrod-Adams model. The parameters chosen for this example were $\Delta h=1$, $\ell=0.2$ and $h_1=1$. Different moments are shown, $t=0.17,\,0.42,\,0.77$. Notice that Reynolds model solution overestimate the peak on pressure approx. by a factor of 2. Also, the length of the cavitated zone for Elrod-Adams model is more than half of the pocket, while for the Reynolds model there is no cavitation at all.

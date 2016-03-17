@@ -1,0 +1,240 @@
+\chapter{Application: a study of sinusoidal textured slider bearings}
+\label{chap:slider_bearing}
+%% some literature referencing %% describe the application for the piston-ring %% here we present the article in a more "mathematical way" %% present the complete model of the slider referencing Hugo's thesis %% we study the "simplest" texture %% referencing the article, we show that the models and methods described before are useful for technology %% maybe to show some pocket textures
+
+\lhead{Chapter 6. \emph{Application: a study of sinusoidal textured slider bearings}} % This is for the header on each page - perhaps a shortened title
+\section{Introduction}
+
+During the last decade several studies have been done addressing the possibility of improving the tribological behavior of hydrodynamic bearings with the use of surface texturing technologies. Experimental and theoretical studies have shown reduction of friction by the introduction of textured surfaces, e.g., \cite{dobrica2010,gadeshi2012,etsion2013,
+checo2014a}, but the mechanisms behind this improvements are not yet well understood.
+\begin{figure}[h!]
+ \centering 
+ \def\svgwidth{\textwidth}	
+ \footnotesize{
+\input{figs/esquema_experimentoF.pdf_tex}}
+\caption{Slider bearing over and a sinusoidal textured runner scheme.}\label{fig:slider_bearing}
+\end{figure}
+
+In \cite{buscaglia05c}, by using Homogenization Technique, it is shown that if cavitation is not taken into account, the introduction of textures only augment friction and diminishes the minimal distance between surfaces (so-called \emph{minimum clearance}). This means that for having an improvement of the tribological behavior either, the perturbation of the surface must be outside the validity of the Homogenization Theory employed (an example of this is the Rayleigh step shown in \Secref{repre_analityc_sol}), or other physical phenomenon such as cavitation must be considered.
+
+%%CONFORMITY
+Recalling \Figref{conformity}, the degree of conformity between the bearing and the liner, for the slider bearing (\Figref{slider_bearing}), is computed by $R/L$. Making use of Reynolds model, \citeauthor{gadeshi2012} \cite{gadeshi2012}, and later \citeauthor{checo2014a} \cite{checo2014a} employing Elrod-Adams model, showed that for a fixed load it is possible to obtain a configuration that minimizes the friction only for moderate $R/L$ ($\approx 10$) or higher. These results
+are in agreement with pioneering experiments made by Costa \& Hutchins \cite{costa2007}, and with latter studies by Tomanik \cite{tomanik2008,tomanik2013}, 
+ Kovalchenko et al \cite{koval2011},
+Yin et al \cite{yin2012}, Scaraggi et al 
+\cite{scaraggi2013}, among others \cite{dobrica2010,ali2012,grabon2013}. 
+
+In this chapter we show that making use of the theory presented in the previous chapters, and keeping the characteristics of the slider bearing as simple as we can, we are able to perform interesting simulations whose results can reveal part of the nature of friction reduction mechanisms. Thus, focusing in simple hypotheses, we choose to \emph{texturize} the runner with a sinusoidal shape of periodicity $\lambda$ and depth $d$, as in \Figref{slider_bearing}. Also, we assume the profile of the slider to have a circular shape of curvature radius $R$.
+
+In the next section we setup the simulations details and establish the range chosen for the parameters $\lambda$, $d$, $R/L$, applied load $W^a$ and mass $m$ of the slider. 
+
+\section{Simulation details and untextured cases}\label{sec:chap6_sim_details}
+The values chosen for the different basic scales were: runner velocity $U=10$[m/s], slider length $L=10^{-3}$[m], $H=1\mu$[m] (1 micron), fluid viscosity $\mu=4\times 10^{-3}$[Pa$\cdot$s] and for the mass of the slider $m=0.048$[kg/m] per unit width. Those values are typical for compression rings of car engines \cite{checo2014b,gadeshi2012}. We also chose the applied load as being $W_a=40$[N/m] per unit length, this value was selected as to assure Hydrodynamic Lubrication conditions. The non-dimensionalization used are showed in \Tabref{slider_scales}.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lll}
+\toprule
+Quantity & Scale & Name\\ \midrule
+$x$, $\lambda$ & ${L}$ & Horizontal coordinate, texture period\\
+%
+$S$ & ${U}$ & Relative velocity\\
+%
+$R$ & $L$ & Slider curvature radius \\
+%
+$t$ & $\frac{L}{U}$ & Time\\
+%
+$h$ & $H$ & Gap thickness\\
+%
+$Z$, $d$ & $H$ & Slider vertical position, texture depth\\
+%
+$p$ & $\frac{6\mu U L}{H^2}$ & Pressure\\
+%
+$W^{a}, W^h$ & $\frac{6\mu U L^2}{H^2}$ & Applied and hydrodynamic forces\\
+%
+$F$ & $\frac{\mu U\,L}{H}$ & Friction force per unit width\\
+%
+$m$ & $\frac{6 L^4 \mu}{H^3 U}$ & Slider mass \\ \bottomrule
+\end{tabular}
+\caption{Basic and derived scales for the dynamic slider with sinusoidal textures.}\label{tab:slider_scales}
+\end{table}
+
+For sake of clarity, we summarize the mathematical problem to be solved during the simulations as:
+
+\framebox{
+\begin{minipage}[ht]{0.98\textwidth}
+Find the trajectory of the slider $Z(t)$, and fields pressure $p(t)$ and saturation $\theta(t)$, defined
+on $\Omega = {}[0,1]$, satisfying
+\begin{align}
+\parder{}{x} \left ( h^3 \parder{p}{x} \right ) ={}& S\,\parder{h\theta}{x} + 2\,\parder{h\theta}{t},\\
+m \frac{d^2Z}{dt^2} ={}& W^{h}(t)-W^a,
+\label{eqptheta}
+\end{align}
+along with the initial, boundary and complementary conditions
+\begin{equation}
+\left \{
+\begin{array}{ll}
+Z(t=0) = Z_{0},\, Z'(t=0) = V_{0}, &  \\
+p=0,&\text{in }\partial \Omega,\\
+\theta=1,&\text{in }x=0,\\
+p\geq 0,\,0<\theta\leq 1,&\text{in } \Omega,\\
+p\,(1-\theta)=0,&\text{in } \Omega,\\
+\end{array}\right.
+\end{equation}
+where
+\begin{align}
+W^{h}(t)={}&\int_{0}^{1} p(x,t)\,dx,\\
+h(x,t)={}& Z(t)+h_U(x) - h_L(x-S\,t),\\
+h_L(x)={}&- \frac{d}{2}\left(1\,-\,\cos(2\pi\,x/\lambda)\right),\,h_U(x)=\frac{L}{H}\left(R-\sqrt{R^2-(x-0.5)^2}\right).
+\end{align}
+and $Z_0$, $V_0$ are the initial position and velocity of the slider resp. assumed to be known. In fact, through all this Chapter we will take $V_0=0$ and $Z_0=4$.
+\end{minipage}}
+
+The non-dimensional friction force per unit width is computed as (see \eqref{dfriction_hL}):
+\begin{equation} \label{eq:adim-friction}
+F(t) = \int_0^1
+\left(6p\parder{h_{L}}{x} -3h\parder{p}{x} - \frac{\mu S}{h}g(\theta)
+\right )\,dx,
+\end{equation}
+where $g$ is taken as \begin{equation}
+g(\theta) = \left \{ \begin{array}{ll}
+\theta, & \text{if }\theta > \theta_s \\
+0, & \text{otherwise.} \end{array}\right.
+\end{equation}
+This parameter $\theta_s$ is a threshold for the onset on friction, it can be interpreted as the minimum lubricant fraction for shear forces to be transmitted from one surface to the other. Here, we set $\theta_s=0.95$, in \cite{checo2014a} it is observed that when choosing another value for $\theta_s$ the behavior of the contact is not altered significantly.
+
+Notice that the boundary condition $\theta(0,t)=1$ implies that the fluid film is always complete at the entrance of the domain. This implies the fully-flooded condition (see \Secref{fully-flooded}) and it guaranties, along with the applied-load chosen low enough, that we will work in the Hydrodynamic Lubrication Regime.
+
+As we consider the hydrodynamic regime, there is no necessity of including some model for \emph{contact pressure}, which only appears when considering mixed regimes of lubrication or similar. The interested reader may review \cite{tomanik2013} where the Greenwood-Williamson \cite{greenwood1970} model for contact pressure is used.
+
+%%FRICTION COEFFICIENT AND MINIMUM CLEARANCE
+\subsection{Quantities of interest}
+The simulations were done in such a way that a stationary state is reached at some time $T$, after that time, the variables acquire a periodic behavior on time, that periodicity has length $\lambda$ equal to the textures period. With this, we denote the time interval where the measures are going to be done as $\mathcal{T} = [T,\,T+\lambda]$.
+ 
+This way, from the non-dimensional friction coefficient (see \Secref{friction_step_wedge})
+\begin{equation}
+f(t) = \frac{H}{6L}\,\frac{F(t)}{W^{a}},
+\end{equation}
+which varies through time, we define the average friction coefficient as
+\begin{equation}
+\overline{f} ~=~\frac{1}{\lambda}~\int_\mathcal{T} f(t)\,dt,
+\end{equation}
+which characterizes the power lost due to friction. Observe the factor $\frac{H}{6\,L}$ appears since $F$ and $W^a$ are measured with different scales (see \Tabref{slider_scales}).
+
+We also define the {\em minimum clearance}
+\begin{equation}
+C_{\min}=\min_{x\in \Omega,\,t\in\mathcal{T} } h(x,t),
+\end{equation}
+which can be used to characterize surfaces wear in tribological systems.
+
+\subsection{Untextured cases}
+The first simulations we run are in absence of texture ($d=0$). This way, varying $R$ (which is equal to $R/L$ since we fix the length of the slider to $L=1$) as $R=2^n$, $n=2\ldots 10$, we obtain basis measures of $\bar{f}$ and $C_\text{min}$ that will be compared later with the textured cases.
+
+As an example, for $R=32$, $Z_0=4$ and $V_0=0$, we show in \Figref{sim1_chap6} the evolution of $Z(t)$, the friction coefficient $f(t)$ and $W^h(t)/W^a$. It can be observed that $W^h(t)$ starts being 8 times greater than the applied load so the slider tends first to rise, after that, $W^h(t)$ remains being a bit small than $W^a$. In fact, $W^h(t)$ converges to $W^a$ while the slider decelerate and tend to the equilibrium position $Z(t>T)=7.408$. On the other hand, the friction coefficient has no abrupt change while converging to $\bar{f}=9.56\times 10^{-2}$.
+
+\begin{figure}[ht]
+ \centering
+ \def\svgwidth{\textwidth}	
+ \footnotesize{
+\input{figs/sim1_chap6.pdf_tex}}
+\caption{Slider evolution for the untextured case for load $W^a$ and $R=32$.}\label{fig:sim1_chap6}
+\end{figure}
+%$R$ & $\bar{f}$ & $C_{\min}$ \\
+\begin{table}[ht]
+\begin{center}
+\begin{tabular}{llllllllll}
+\toprule
+R & 4 & 8 & 16 & 32 & 64 & 128 & 256 & 512 & 1024 \\
+\midrule
+$C_\text{min}$& 6.36 & 7.81 & 8.02 & 7.41 & 6.36& 5.23&4.33& 3.70 & 3.32 \\
+$\bar{f}\times 10^2$& $7.61$ & $7.45$&  $8.12$ &  $9.56$ &  $11.9$ & $15.4$ & $20.3$ & $26.1$ & $28.7$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{Friction coefficient $\bar{f}$ and clearance $C_{\min}$ for
+several values of $R$ once they reached the stationary state.}
+\label{tab:tableuntext}
+\end{table}
+Making the simulations for the values of $R$ selected above, we obtain the reference values showed in \Tabref{tableuntext} for $C_\text{min}$ and $\bar{f}$ (amplified by a factor of 100). We remark that there seems to be an optimal value for $R$ in the sense that the maximum value of $C_\text{min}$ is reached at $R=16$, this is congruent with the existence of a shape of the liner that maximizes the load-carrying capacity, as it was shown in \Secref{step_rayleigh} for the Rayleigh step wedge. It is also in line with a similar analysis made in Section 5.7 of \cite{cameron1971} for pad bearings.
+
+\section{Textures effects}
+\label{sec:chap6_textures_effects}
+
+Here we select values of $\lambda$ around 1, more precisely $\lambda\in \{0.1+k\,\Delta \lambda,\,k=0\ldots 47\}$, $\Delta \lambda=0.04$, with maximum value $1.98$. For the depth $d\in \{k\,\Delta d,\,k=1\ldots 51\}$, $\Delta \lambda=0.2$, with maximum value 10.2.
+
+It is convenient to define the relative difference $V_f$ between the friction coefficients for the untextured and textured cases, which reads
+$$V_f(d,\lambda) = \frac{\bar{f}(d,\lambda)-f_{\mbox{\scriptsize{untextured}}}}
+{f_{\mbox{\scriptsize{untextured}}}}.$$
+Analogously, the relative difference $V_C$ of the minimal clearance is
+defined as
+$$ V_C(d,\lambda) = \frac{C_{\min}(d,\lambda)-C_{\min,\mbox{\scriptsize{untextured}}}}
+{C_{\min,\mbox{\scriptsize{untextured}}}}.$$
+We select a moderate-conforming radius $R$=32 and a highly-conforming radius $R$=256. The associated results for both curvatures are shown in \Figref{maps_chap6}.
+\begin{figure}[ht]
+ \centering 
+ \def\svgwidth{\textwidth}	
+ \scriptsize{
+\input{figs/maps_chap6.pdf_tex}}
+\caption{Comparison of $C_\text{min}$ and $\bar{f}$ for several values of $\lambda$ and $d$ by relative differences $V_f$ (left side) and $V_C$ (right side) for $R$=$32,\,256$ (upper and lower figures resp.).}\label{fig:maps_chap6}
+\end{figure}
+
+\subsection{General observations}
+As it can be observed, for the two curvatures selected there exist configurations of the textures that diminish friction and there are other configurations that augment it. The same can be observed for the minimum clearance. A smooth behavior of these quantities is observed. Also, when $d$ tends to zero both $C_\text{min}(d,\lambda)$ and $\bar{f}(d,\lambda)$ tend to the respective values of the untextured case. In fact, additional simulations have shown that, for a fixed depth $d$, both $V_C$ and $V_f$ tend to zero as the period $\lambda$ grows.
+
+As mentioned in this chapter's introduction, these results are in line with the existing literature. In fact, the bigger $R/L$, the bigger the set of textures that allows an improvement in friction and minimum clearance is. These results were recently published in \cite{checo2014b}, where a more extensive analysis can be found.
+
+\subsection{An effect of the traveling bubbles}
+Although both $V_C$ and $V_f$ have a smooth dependence on the parameters, a discontinuous behavior can be observed for small values of $
+\lambda$ and $d\approx 8$ in both \Figref{maps_chap6}(a) and \Figref{maps_chap6}(b). To understand what happens there, we need to observe closer the behavior of $p$ and $\theta$ when the periodic state has been reached.
+
+\begin{figure}[ht]
+ \centering 
+ \def\svgwidth{\textwidth}	
+ \scriptsize{
+\input{figs/chap6_vard_32.pdf_tex}}
+\caption[Sudden change of $p$ and $\theta$ with a small change of $d$ and $\lambda$ fixed]{Sudden change of $p$ and $\theta$ with a small change of $d$ ($d=8.1$ on the left and $d=8.2$ on the right). Both with fixed curvature $R=32$ and an arbritrary time $t>T$. The red line is the pressure field amplified 100 times, the red dashed line corresponds to the pressure of the untextured case. The blue continuous line corresponds to the path the minimum value of $\theta$ makes when \emph{traveling} along the domain.}\label{fig:chap6_varying_d_r32}
+\end{figure}
+
+We fix the value of the periodicity as $\lambda=0.1$ and select some arbitrary time $t>T$. The resulting fields $p$ and $\theta$ are shown in \Figref{chap6_varying_d_r32}(a) for $d=8.1$ and in \Figref{chap6_varying_d_r32}(b) for $d=8.12$. In both figures the blue continues lines (with arrows) represent the path the minimum value of $\theta$ (which depends on $x$) \emph{follows} in time. Let us analyze both cases.
+
+For $d=8.1$, it is observed the presence of \emph{cavitation bubbles} in two very separated areas. In the very left of the domain, a bubble grows and collapses almost immediately, while a second bubble appears around $x=0.65$ and instead of collapsing it is transported outside the domain. As a consequence, the convergent region of the slider affects importantly the buildup of pressure. In fact, the pressure profile area is similar to the one generated in the untextured case (represented by the continuous red line), to which is summed up the effects of each convergent region of the ``sinusoidal pockets''.
+
+For $d=8.2$, we observe the bubbles generated in the left side of the domain travel all along collapsing near $x=0.5$, immediately after this collapse, a new bubble appears and travels outside the domain. This presence of cavitation on most part of the domain affects the pressure buildup. Thus, this time the convergence of the slider has less influence in the pressure profile, it only modulates the peak of the pressurized zones generated by the convergent parts of each sinusoidal pocket. This affects the load-carrying capacity and, in order to support the applied load, the slider equilibrium position diminishes dramatically.
+
+\subsection{Hysteresis of the slider}
+Would this abrupt change in the equilibrium position of the slider occurs if we change the system configuration by successive approximations? For instance, if once the slider reaches the stationary state we diminish $d$ slightly, and diminish it again after reaching the new stationary state. What would be the final equilibrium variables?.
+\begin{figure}[ht]
+ \centering 
+ \def\svgwidth{\textwidth}
+ \scriptsize{
+\input{figs/hysteresis.pdf_tex}}
+\caption{Hysteresis of the statationary state.}\label{fig:hysteresis}
+\end{figure}
+
+Two different simulations for a fixed curvature $R=32$ are shown in \Figref{hysteresis}. The first simulation, Case A with result in blue, is made with a constant depth $d=8.2$. The second simulation, Case B with result in red, is such that $d(t)=8.1$ for $0\leq t < 10$, $d(t)=8.15$ for $10 \leq t < 20$ and $d(t)=8.2$ for $20\leq t $. For the former case the stationary average position is equal to $\bar{Z}=2.27$; for the latter case, after the changes of $d$ are done and the stationary state is reached, the stationary average position is equal to $\bar{Z}=4.62$.
+
+This unexpected fact is known as Hysteresis, which means that the state of the slider at a particular time $t$ depends on the history of the system.
+
+\subsection{Cavitation induced oscillations}
+
+Observing \Figref{chap6_varying_d_r32}, it can be noticed that for both cases considered, $d=8.1,\,8.2$, the cavitation bubbles collapse in different places. For $d=8.1$ the cavitation bubble collapses at the left of the domain, near the entrance of fluid, and there exists a pressurized zone that extends through more than half of the domain (among other small pressurized zones). On the contrary, for $d=8.2$ the bubble collapses at the middle of the domain and the cavitation bubble reappears almost immediately, and so there are present many pressurized zones with extension of order $1/\lambda$.
+
+These observations are also valid for both cases A and B presented in the last section. These bubbles collapse were observed to occur during a very small lapse of time. The last creates a sudden expansion of the pressurized zone located at the right of the bubble just collapsed. This sudden change in pressure affects the hydrodynamic force creating oscillations of the position of the slider. These oscillations are shown in \Figref{cav_oscillations} for the stationary state.
+
+\begin{figure}[ht]
+ \centering 
+ \def\svgwidth{\textwidth}
+ \scriptsize{
+\input{figs/oscilaciones.pdf_tex}}
+\caption[Hydrodynamic force and slider position oscillations induced by sudden cavitation bubbles collapse]{Hydrodynamic force and slider position oscillations induced by sudden cavitation bubbles collapse for both cases A (in blue) and B (in red).}\label{fig:cav_oscillations}
+\end{figure}
+
+Please note that the amplitude of the oscillations of the hydrodynamic force $W^h(t)$ is about 5\% and 20\% of the applied charge $W^a$ for case A and B respectively. These differences may be explained by observing that the pressurized zone placed at the right of the collapsed bubble is around 6 times bigger for Case B than for Case A, which leads to a bigger pressure build-up in Case B. On the other hand, the oscillations of $Z(t)$ are negligible since those are of order $1\times 10^{-5}$[$\mu$m]. Nevertheless, these oscillations associated to sudden collapses of the cavitation bubbles may be an interesting source of future work. Particularly, it would be interesting to address the dependence of these oscillations with the mass of the slider.
+ 
+%\section{Conclusions}
+%\label{sec:chap6_conclusions}
+%We have shown that the models and resolution algorithms presented and studied along the previous chapter of document can be used effectively for the simulation of slider bearings and the results are in line with the literature.
+%
+%Moreover, interesting phenomena can be revealed, such as the catastrophic event depending on the collapsing of the cavitation bubbles, and the hysteresis of the stationary state. Also, we have seen how the convergent-divergent geometries of the sinusoidal pockets different rolls depending on the pressurized zone configuration.
+%
+%Nevertheless, we must emphasis that such discoveries depends on the models used, particularly in the Elrod-Adams model that is not free of criticism, see for instance \cite{organisciak2007,buscaglia13}.

@@ -1,0 +1,1440 @@
+ 
+
+\begin{longtable}[l]{p{50pt} p{400pt} }
+\textbf{Symbol} &  \textbf{Description}  \\
+$a,b$ & the pad occupies the region $a < x < b$ \\
+$d$ & texture depth \\
+$d_{\mbox{\scriptsize lub}}$ & lubricant film thickness at inlet boundary \\
+$f$ & instanteneous friction coefficient \\
+$\overline{f}$ & time-averaged friction coefficient \\
+$g$ & function controlling the onset of friction in the Couette term \\
+$h$ & clearance between runner and pad (in the $z$ direction) \\
+$h_L$ & function describing the texture shape \\
+$h_U$ & function characterizing the pad profile  \\
+$m$ & pad linear mass per unit width\\
+$p$ & hydrodynamic pressure \\
+$t$ & time variable\\
+$u$ & relative velocity between the pad and the runner \\
+$x$, $z$ & coordinate directions  \\
+$x_{\ell}$,$x_{r}$ & left and right boundaries of the computational domain  \\
+$L$ & pad length\\
+$C$ & minimum clearance \\
+$F$ & friction force per unit width\\
+$H$ & non-dimensionalization length for $z$, $Z$ and $e$ \\
+$R$ & curvature radius of the pad's profile \\
+$U$ & non-dimensionalization for the relative velocity $u$ \\
+$W^{a}$ & applied load per unit width\\
+$W^{h}$ & hydrodynamic force per unit width\\
+$Z$ & pad position in the $z$ direction \\
+$\theta$ & saturation variable \\
+$\theta_s$ & threshold for the onset of friction in the Couette term \\
+$\lambda$ & period of textures  \\
+$\mu$ & dynamic viscosity \\
+$\Sigma$ & cavitation boundary \\
+$\Omega^0$ & cavitated region \\
+$\Omega^+$ & pressurized region \\
+\end{longtable}
+
+\setcounter{table}{0} 
+
+\section{INTRODUCTION}
+
+Textured tribological surfaces have attracted much attention of
+the research community lately. After a significant number of
+experimental and theoretical studies, the possibility of
+reducing friction by means of microtextures has been established,
+together with a basic understanding of why this happens (at
+least in the hydrodynamic regime) \cite{dobrica2010,gad2012,etsion2013,checo13}.
+
+That certain textures reduce friction in 
+some hydrodynamic bearings is by no means an
+obvious phenomenon. Buscaglia et al \cite{buscaglia05c,buscaglia07} performed
+asymptotic analyses of general smooth (i.e., untextured) surfaces 
+by introducing short-wavelength
+periodic perturbations of arbitrary shape and obtained
+that the untextured shape {\em always} maximizes the load 
+carrying capacity and minimizes the friction coefficient.
+This implies that, for friction reduction to take place,
+there exist two possibilities: It can be a consequence 
+of a {\em finite} perturbation (outside the validity of
+asymptotic theory),
+{\em or} involve physical mechanisms which were
+not considered in the aforementioned mathematical studies, such as
+{\em cavitation}. 
+
+In a recent study, Checo et al \cite{checo13} discussed
+several hundred numerical simulations and concluded that
+in fact {\em both} of the previous possibilities hold
+true in textured bearings that exhibit less friction than
+their untextured counterparts. As had already been
+advanced by Etsion \cite{etsion2013}, friction reduction
+only occurs in high-conformity bearings, in which the
+surfaces are so parallel that a texture of some suitable
+size and depth manages to produce local cavitation.
+
+High-conformity bearings are not unfrequent in technology.
+Assuming a bearing of length $L$ with a nominally planar surface
+opposing a surface with curvature radius $R$, the degree
+of conformity can be measured by the quotient $R/L$. For
+the compression ring of an internal combustion
+engine $R/L$ is already quite high (about $40$) \cite{gad2012}, 
+and it is much higher for other piston rings 
+(oil rings in particular) and for other contacts such as
+seals.
+
+It was numerically shown by Gadeschi et al \cite{gad2012} with a
+non-mass-conserving model, and later by Checo et al \cite{checo13}
+with a mass-conserving model, that for a given load the
+minimal friction is in general obtained with a moderate
+$R/L$ ratio (of the order of 10). 
+Further, their results indicate that  moderate-conformity contacts
+cannot be improved by texturing the surfaces.
+
+Their numerical findings also show, on the other hand, that high-conformity
+contacts can indeed be improved by texturing. The friction cannot
+be reduced to the point of becoming smaller than that of
+smooth bearings with moderate conformity, but nevertheless
+significant reduction appears to be achievable. These findings
+are consistent with pioneering experimental results of Costa \& Hutchins \cite{costa2007}, and with more recent studies by Kovalchenko et al \cite{koval2011},
+Yin et al \cite{yin2012}, Tomanik \cite{tomanik2013}, Scaraggi et al 
+\cite{scaraggi2013}, among others\cite{qiu11,grabon2013,cross2013,zhang2012}.
+
+Friction-reducing texturing is especially
+practical when the texture is placed on the surface that
+exhibits less wear (e.g.; the runner of a thrust bearing, the
+cylinder liner of a ring/liner contact \cite{tomanik2013}). The reason for this is
+that, since the curvature
+radius $R$ increases with wear, the texture (if undamaged)
+becomes more beneficial as time evolves.
+
+However, though the general picture seems to be coming to
+a consensus, little is still known about the actual physical
+mechanisms that take place at a cavitating microtextured
+contact. Detailed quantitative assessments that allow for
+the practical selection of a suitable texture for a
+specific device are also very scarce.
+
+For these reasons, in this article we go back to the basics and
+study the arguably simplest bearing: an infinitely-wide
+thrust bearing with a circular-arc-shaped pad. This bearing
+is assumed sliding on
+a runner with the arguably simplest texture: a sinusoidal one.
+The study is conducted with Elrod-Adams model, which though
+not free of criticism \cite{ausas2013, buscaglia2013},
+is the most accepted model for hydrodynamic lubrication with
+cavitation. This model is mass-conserving, a property that as shown
+by Ausas et al \cite{ausas07} is crucial for obtaining realistic
+results when simulating textured bearings. The finite volume
+code that implements the model is thoroughly described by
+Ausas et al \cite{ausas09}.
+
+The plan of this paper is as follows: In Section 2 we briefly
+recall the Elrod-Adams model and introduce the problem under consideration
+and its non-dimensionalization. Section 3 discusses the numerical
+aspects of the work and the general setting of the computational
+experiments. Section 4 is devoted to reporting and discussing the
+numerical results, by first providing detailed analyses of three
+representative cases and then showing extensive charts of
+friction coefficient and clearance as functions of the
+problem parameters. The basic mechanism
+of friction reduction identified in this work is a local 
+pressurization of the convergent
+microwedges at each texture cell, accompanied by local cavitation
+at the divergent microwedges. The cavitation bubble that forms
+at each texture cell is crucial for preventing the appearance of
+local negative pressure peaks that would cancel out the positive
+lift force generated at the convergent microwedges. This is
+consistent with mechanisms suggested by other authors 
+\cite{fowell07,gad2012}, and puts forward
+the importance of cavitation bubbles. 
+Section 5 is devoted to a thorough discussion of the numerical
+results, identifying and interpreting trends in the predictions
+of the model. Concluding remarks are left for Section 6.
+
+\section{MODEL}
+
+
+As shown in Fig. \ref{fig:domain}, the direction of the motion of the pad is chosen to be $x$, parallel to the runner surface. 
+The textures on the runner are given by a function $z=-h_L(x)\leq 0$ ($h_L(x)$=0 for the untextured liner).
+
+\begin{figure}
+    \begin{center}
+	{\scalebox{1.0}{\input{figs/domain_new.pdf_t}}}
+   \end{center}
+\caption{Scheme of a the domain along the pad's 
+direction of motion, with the forces acting on it.}
+\label{fig:domain}
+\end{figure}
+
+
+A single pad with a profile $h_U(x)$ is assumed sliding with constant
+velocity $-u$ against the runner. The pad is free to move vertically under the
+applied forces. The profile $h_U(x)$ 
+satisfies 
+$$\min h_U(x)=0$$ 
+and its analytical expression corresponds to an arc of circumference 
+of radius $R$. 
+The computational domain is attached to the pad, which is assumed to be
+of length $L$ and to extend between $x=a$ and $x=b$. The runner thus moves
+in the positive $x$ direction with constant velocity $u$.
+Outside of the pad's location the gap between 
+the surfaces is assumed uniform of thickness $e$, large enough not to
+affect the results. The (artificial)
+simulation boundaries are located at $x=x_\ell<a$ and
+$x=x_r > b$. 
+
+
+
+Under the assumptions above, the gap between the pad
+and the runner is given by
+\begin{equation}
+h(x,t)= \left \{
+\begin{array}{ll}
+h_L(x-u\,t)+h_U(x)+Z(t)&\mbox{if}~~a < x < b\\
+h_L(x-u\,t)+e& \mbox{otherwise}
+\end{array} \right.
+\end{equation}
+where $Z(t)$ denotes the vertical distance between the pad and the
+$z$=0 line. The instantaneous {\em clearance} $C(t)$ is defined as
+$$
+C(t) ~=~ \min_{x\,\in\,(a,b)} ~h(x,t)
+$$
+
+\subsection{Hydrodynamics and cavitation modeling}
+
+We adopt the well-known Elrod-Adams model \cite{elrod1}, which
+incorporates into a single formulation Reynolds equation for the
+pressurized region and Jacobsson-Floberg-Olsson boundary conditions.
+This model is mass conserving, which  
+is essential for obtaining physically meaningful results
+in lubrication problems involving textured surfaces \cite{ausas07}.
+
+
+The model postulates the computation of two fields, $p$ and $\theta$,
+which correspond to the hydrodynamic pressure and to an auxiliary
+saturation-like variable, respectively, that (weakly) satisfy the equation
+\begin{equation}
+\frac{\partial }{\partial x} \left ( \frac{h^3}{12 \mu} \frac{\partial p}{\partial x}\right ) =  
+ \frac{u}{2} \,\frac{\partial\, h\theta}{\partial x} + 
+ \frac{\partial\, h\theta}{\partial t}
+\label{eqpthetadim}
+\end{equation}
+under the complementarity conditions
+\begin{equation}
+\left \{
+\begin{array}{l}
+p~>~0 \qquad \Rightarrow \qquad \theta~ =~ 1 \\
+\theta~<~1\qquad \Rightarrow \qquad p~=~0\\
+0~\leq~\theta~\leq~1
+\end{array}
+\right.
+\end{equation}
+where $\mu$ is the viscosity of the lubricant. 
+
+For the  contact we assume that the
+lubricant-film thickness is known 
+(and constant, equal to $d_{\mbox{\scriptsize lub}}$)
+far upstream of the pad. This amounts to imposing
+that $\theta = d_{\mbox{\scriptsize lub}}/h$ at the boundary of
+the computational domain. More precisely, if the computational
+domain corresponds to $x_\ell < x < x_r$, then assuming $u>0$
+we impose $\theta(x_\ell,t) = d_{\mbox{\scriptsize lub}}/h(x_\ell,t)$.
+%As already said, the boundary conditions along $x_2=0$ and
+%$x_2=w$ are defined so as to enforce the proper periodicity in that direction.
+An initial condition for $\theta$ is also provided.
+
+At each instant the domain
+spontaneously divides into a {\em pressurized} region, $\Omega^+$, where
+$p>0$, and a {\em cavitated} region, $\Omega^0$, where the film is not
+full ($\theta < 1$, see Fig. \ref{fig:domain}). At the boundary between $\Omega^+$ and
+$\Omega^0$, the so-called cavitation boundary $\Sigma$, the
+Elrod-Adams model automatically imposes mass-conservation.
+
+\subsection{Pad dynamics and friction forces}
+
+The dynamics of the pad is governed by the forces acting on it
+along the $z$-direction. These forces are described below.
+
+The {\em applied load} points downdwards (i.e.; along $-z$) and is 
+assumed constant.
+We denote by $W^{a}$ its value {\em per unit width}.
+
+The {\em hydrodynamic force} originates from the pressure 
+$p(x,t)$ that
+develops in bearing. Its
+value per unit width is given by
+\begin{equation}
+W^{h}(t)=\int_a^{b} p(x,t)~dx
+\end{equation}
+
+All lubricant films obtained 
+in the simulations are thick enough to exclude the possibility of direct
+contact between the pad and the runner.
+Solid-solid forces are therefore neglected.
+
+If $m$ is the mass of the pad per unit
+width, the dynamical equation for the pad's vertical 
+displacement reads
+\begin{equation}
+m \frac{d^2Z}{dt^2}  =  -W^{a}(t)+W^{h}(t)
+\label{eqdynamics}
+\end{equation}
+This is supplemented with initial conditions for
+$Z$ and $Z'$ at $t=0$. 
+
+The friction force per unit width is given by
+\begin{equation}
+F = \int_a^{b}
+\left ( \frac{\mu u\,g(\theta)}{h}+\frac{1}{2}h\frac{\partial p}{\partial x} + p\frac{\partial h_{L}}{\partial x}
+ \,\right ) ~dx
+\end{equation}
+where the function $g(\theta)$ is taken as 
+\begin{equation}
+g(\theta) ~=~\theta\,s(\theta)
+\end{equation}
+with $s(\theta)$ the switch function 
+\begin{equation}
+s(\theta) = \left \{ \begin{array}{ll}
+1 & \mbox{if}~~\theta > \theta_s \\
+0 & \mbox{otherwise} \end{array}\right.
+\end{equation}
+In this friction model $\theta_s$ is a threshold for the onset
+of friction, interpreted as the minimum lubricant fraction needed
+for shear
+forces to be transmitted from one surface to the other. In all
+calculations the value $\theta_s = 0.95$ has been adopted. Choosing
+another value for $\theta_s$ has been shown to not alter
+the behavior of the contact significantly \cite{checo13}. Notice
+from the definition of $g(\theta)$
+that for $\theta > \theta_s$ the friction is calculated with
+an ``effective viscosity'' equal to $\theta\,\mu$.
+The friction coefficient then results from
+\begin{equation}
+f = \frac{F}{W^{a}}
+\end{equation}
+
+Remark: The term $p \frac{\partial h_L}{\partial x}$ is not a shear
+force. Instead, it corresponds to
+the projection of the pressure force along $x$ when the normal to the
+liner is not along $z$. This term is omitted in the
+literature, which mostly considers textures on the pad. Notice that
+this term is necessary for the forces on the pad and on the runner
+to be equal and opposite (action-reaction principle).
+
+
+\subsection{Non-dimensionalization and final equations}
+
+We consider a non-dimensionalization of the equations based on a
+velocity scale $U$ (taken as equal to $u$), a length scale
+$L$ (taken as equal to the pad's length), and a film thickness
+scale $H$. No obvious candidate for $H$ is available because we will be 
+comparing results with different pad's curvatures and different
+texture depths, so that for now we leave $H$ unspecified. All computations are
+non-dimensional.
+
+The scales above, together with the viscosity $\mu$ of the lubricant,
+lead to the following derived scales for the different
+quantities
+
+\begin{table}[htb]
+\begin{center} \caption{Basic and derived scales}
+\vspace{0.3cm}
+\begin{tabular}{|l|l|l|}
+\hline
+Quantity & Scale & Name\\ \hline
+& & \\
+$x$,$\lambda$ & ${L}$ & horizontal coordinate, texture period\\
+%& & &\\
+$u$ & ${U}$ & relative velocity\\
+%& & &\\
+$R$ & ${L}$ & pad's profile curvature radius\\
+%& & &\\
+$t$ & $\frac{L}{U}$ & time\\
+%& & &\\
+$h$, $C$ & $H$ & gap thickness, minimum clearance\\
+%& & &\\
+$Z$,$d$ & $H$ & pad's vertical position, texture depth\\
+%& & &\\
+$p$ & $\frac{6\mu U L}{H^2}$ & pressure\\
+%& & &\\
+$W^{a}, W^h$ & $\frac{6\mu U L^2}{H^2}$ & applied and hydrodynamic forces per unit width\\
+%& & &\\
+$F$ & $\frac{\mu U L}{H}$ & friction force per unit width\\
+%& & &\\
+$m$ & $\frac{6 L^4 \mu}{H^3 U}$ & mass per unit width \\ & & \\\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+Notice that, since the scales for radial and friction forces
+are different, the friction coefficient is given by
+\begin{equation}
+f = \frac{H}{6L}~\frac{\hat{F}}{\hat{W}^{a}}
+\end{equation}
+where the carets (hats) denote the corresponding non-dimensional
+quantity.
+
+Upon non-dimensionalization of all variables, and 
+omitting all carets for simplicity, 
+the complete non-dimensional mathematical
+problem to be solved reads:
+
+``Find trajectory $Z(t)$, and fields $p(t)$, $\theta(t)$, defined
+on $\Omega = (x_\ell,x_r)$, satisfying
+\begin{equation}
+\left \{
+\begin{array}{l}
+Z(0) ~ = ~ Z_{0}, \qquad Z'(0) ~ = ~ V_{0}, \\
+\theta(x_\ell,t) = d_{\mbox{\scriptsize lub}}/h(x_\ell,t) \\
+p~>~0 \qquad \Rightarrow \qquad \theta~ =~ 1 \\
+\theta~<~1\qquad \Rightarrow \qquad p~=~0\\
+0~\leq~\theta~\leq~1
+\end{array}
+\right.
+\end{equation}
+and
+\begin{eqnarray}
+m \frac{d^2Z}{dt^2}  &=&  -W^{a}+W^{h}(t)
+\label{eqdynamics_a}\\
+\frac{\partial }{\partial x} \left ( h^3 \frac{\partial p}{\partial x} \right ) &=&  
+ u \,\frac{\partial\, h\theta}{\partial x} + 
+ 2\,\frac{\partial\, h\theta}{\partial t}
+\label{eqptheta}
+\end{eqnarray}
+where
+\begin{eqnarray}
+h(x,t)&=& \left \{
+\begin{array}{ll}
+h_L(x-u\,t)+h_U(x)+Z(t)&\mbox{if}~~a < x < b\\
+h_L(x-u\,t)+e& \mbox{otherwise}
+\end{array} \right. ,\\
+W^{h}(t)&=&\int_{a}^{b} p(x,t)~dx~,
+\end{eqnarray}
+and the functions $h_L(x)$ and $h_U(x)$ are known explicitly.''
+
+The formula for the non-dimensional friction force per unit width is:
+\begin{equation} \label{eq:adim-friction}
+F = \int_a^{b}
+\left ( \frac{\mu u\,g(\theta)}{h}+3h\frac{\partial p}{\partial x}
++6p\frac{\partial h_{L}}{\partial x}
+ \,\right ) ~dx
+\end{equation}
+Notice the term $6\,p\,\frac{\partial h_L}{\partial x}$, 
+which appears only when the texture moves across the domain
+and is omitted in much of the literature.
+
+\section{NUMERICAL METHOD AND DESCRIPTION OF NUMERICAL TESTS}
+
+The numerical treatment is exactly that described in
+Ausas et al\cite{ausas09}. %hugo: esa cita sale mal
+It consists of a finite volume, mass-conserving
+method with upwinding discretization of the Couette flux and
+centered discretization of the Poiseuille flux, together with an iterative
+imposition of the cavitation conditions ($p \geq 0$;
+$\theta < 1\,\Rightarrow\,p=0$; $p>0\,\Rightarrow\,\theta=1$)
+by means of a Gauss-Seidel-type algorithm. 
+The dynamical equation (\ref{eqdynamics_a}) for
+$Z(t)$ is discretized by a Newmark scheme, which is built into
+the overall iterative process. 
+
+Although the study focuses
+on one-dimensional problems, it is only recently that 
+numerical assessments as detailed as those reported in this
+article have become affordable. 
+Further, since we
+consider the texture to be on the runner and thus moving through
+the computational domain, the hydrodynamic simulation must
+be run in unsteady mode, with a small enough time
+step to capture the vertical oscillations of the pad as
+textures pass under it. 
+
+An effort has been made in this work to refine
+the space and time discretizations until the results become
+discretization-independent.
+Very fine spatial meshes are needed for this,
+because each texture cell needs
+to be discretized into one hundred or more
+finite volumes. The coarsest spatial mesh used consisted of $512$ 
+cells along $x$, and some simulations were double-checked with up to $4096$
+cells. Although the method is fully-implicit, a unit-CFL condition
+was enforced, leading to time steps that ranged from $\Delta t = 4\times 10^{-3}$
+to $\Delta t = 5 \times 10^{-4}$. 
+
+The many thousands of computer runs compiled
+in the next sections were made feasible by the
+high robustness of the algorithm implemented in our in-house code\cite{ausas09}), %hugo: tambien
+together with multigrid acceleration by the
+Full Approximation Scheme\cite{fulton1986,venner2000}%hugo, tambien
+and an effective shared-memory strategy.
+The typical running time of one simulation
+on the 512-cells mesh is about five minutes in a state-of-the-art desktop,
+while about three hours are needed for the finest mesh.
+
+
+The numerical experiments consider velocity and applied load as constant.
+The runner's texture is assumed periodic, with period $\lambda$, i.e.;
+$$
+h_L(x) = h_L(x+\lambda)\qquad \qquad \forall \,x
+$$
+An initial transient takes place as the pad adjusts its average
+vertical position. This transient lasts between 1 and 8 time units.
+After it, the pad reaches a periodic vertical
+motion, with time period $\lambda$ (notice that the non-dimensional
+velocity is $u \equiv 1$), and all quantities become periodic.
+
+The contacting surface of the pad is assumed to be a sector of
+a circular cylinder of radius $R$, with $R$ varying between
+$4$ and $1024$. Since the length of the pad is $1$,
+radii $R$ greater than about $128$ correspond to essentially
+conformal contacts. A value $R \simeq 40$ is typical of compression
+rings in the automobile industry \cite{gad2012}.
+
+Let us analyze on what non-dimensional parameters the solution of
+the problem depends.
+Since we focus on the periodic regime, the initial conditions for
+$\theta$, $Z$ and $Z'$ are irrelevant. In this first study we
+have decided not to address starvation effects. For this purpose,
+$d_{\mbox{\scriptsize{lub}}}$ was chosen
+large enough to assure fully-flooded conditions, thus making this
+parameter also irrelevant.
+There only remain two parameters
+in the model: The mass per unit width $m$ and the applied load $W^a$.
+
+The default values that we select for these parameters are
+$$
+m_0 = 2\times 10^{-5} \qquad \mbox{and} \qquad
+W^a_0 = 1.666\times 10^{-4}
+$$
+Along the experiments, other values were tested so as to
+assess the problem's sensitivity to the data.
+
+When considering realistic scale values such as $U=10$ m/s, $L = 10^{-3}$ m,
+$H = 1$ micron, $\mu = 4\times 10^{-3}$ Pa-s, the value selected
+for $m_0$ corresponds to
+$0.048$ kg$/$m, which is typical of compression rings in car engines.
+
+The value selected for $W^a_0$, with the same scales as above,
+corresponds to an applied load of 40 N/m, also in the range of
+pre-stress loads of piston rings. A more popular non-dimensionalization
+of the applied load is provided by the Stribeck number $S$,
+defined by $S = \frac{\mu\,u}{W^{a}}$ (the quantities on the right-hand
+side are dimensional this time). 
+Back to non-dimensional variables, the previous relation 
+in our non-dimensionalization becomes
+\begin{equation}
+S = \frac{H^2}{6\,L^2}~\frac{\hat{u}}{\hat{W}^{a}}
+\label{stribeck2}
+\end{equation}
+so that $W^a_0$ corresponds to a Stribeck number $S_0 = 10^{-3}$.
+
+Finally, let us define the main tribological quantities that will
+be extracted from the numerical simulations.
+The instantaneous friction coefficient $f(t)$ and clearance $C(t)$
+depend periodically on time once the bearing has reached its periodic
+regime. The tribological quantities that will be considered representative
+of the periodic regime are the {\em average friction coefficient}
+\begin{equation}
+\overline{f} ~=~\frac{1}{\lambda}~\int_T^{T+\lambda}f(t)~dt
+\end{equation}
+which characterizes the power lost to friction,
+and the {\em minimum clearance}
+\begin{equation}
+C_{\min}~=~\min_{T\leq t \leq T+\lambda}~C(t)
+\end{equation}
+which can be used to characterize wear. In the previous definitions
+$T$ is large enough for the bearing to have reached its periodic regime
+(i.e.; $T>8$).
+
+
+\section{EFFECTS OF THE RUNNER'S TEXTURE}
+\label{section4}
+
+A large set of experiments was conducted in the simplified setting of 
+one-dimensional transverse textures. Further, the runner was assumed to be sinusoidal
+of depth $d$, namely
+\begin{equation}
+h_L(x)= d~\frac{1\,-\,\cos(2\,\pi\,x/\lambda)}{2}
+\end{equation}
+(notice that $h_L$ is a ``depth'' (positive downwards), so that it is minimal at
+crests and maximal at troughs).
+Such a runner was selected so as to observe the dynamics of the system
+under maximal smoothness of the contacting surfaces. The applied
+load was fixed at $W^a_0$ corresponding to a Stribeck number
+$S=10^{-3}$. At this load, the equilibrium clearance of the pad for an
+untextured runner depends on $R$ as shown in Table \ref{tableuntext}, which
+also shows the friction coefficient for each $R$. The minimal friction
+is obtained for $R = 8$, while the maximum clearance takes place for $R=16$.
+Notice that for an untextured runner the equilibrium values of
+$f$ and $C$ do not depend on $m$.
+
+\begin{table} 
+\begin{center}
+\begin{tabular}{ccc}
+\hline
+ & & \\
+$R$ & $f$ & $C_{\min}$ \\
+& & \\
+\hline
+& & \\
+4 &  $7.607 \times 10^{-2}$ & 6.369\\
+8 &  $7.449 \times 10^{-2}$ & 7.809\\
+16 &  $8.122\times 10^{-2}$ & 8.021\\
+32 &  $9.562\times 10^{-2}$ & 7.408\\
+64 &  $1.189\times 10^{-1}$ & 6.363\\
+128 &  $1.536\times 10^{-1}$ & 5.231\\
+256 &  $2.030\times 10^{-1}$ &  4.325\\
+512 &  $2.612\times 10^{-1}$ & 3.695\\
+$~~~~$ 1024$~~~~$ &  $~~~~2.871\times 10^{-1}~~~~$ & $~~~~$3.324$~~~~$\\
+& & \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Friction coefficient $f$ and clearance $C_{\min}$ for pad's with
+several values of $R$ once they reached the equilibrium position
+over an {\em untextured} runner. The computations were made
+for a load $W^a = W^a_0$.}
+\label{tableuntext}
+\end{table}
+
+\subsection{General description of the intervening phenomena}
+\label{gendescrip}
+
+The study was conducted for different values of the texture
+parameters $d$ and $\lambda$, also considering different values of
+the pad's curvature radius $R$. The mass of the pad was fixed
+at $m=m_0$. Some selected
+cases are discussed below (see Table \ref{tablecases} for details of
+each case). Notice that some cases have rather large values of $\lambda$,
+of the order of the pad's length. Though this could be viewed as
+a ``waviness'' of the runner instead of as a texture, we keep the 
+word ``texture'' for all values of $\lambda$.
+
+\begin{table}
+\begin{center}
+\begin{tabular}{ccccccccc}
+\hline
+ & & & & & & & &\\
+Case \# & $W^a$ & $R$ & $\lambda$ & $d$ & $\overline{f}$ & $C_{\min}$ & $V_f$ & $V_C$ \\
+& & & & & & & & \\
+\hline
+& & & & & & & & \\
+$~~~$1$~~~$ &  $~~1.66\times 10^{-4}~~$ &  $~~~$32$~~~$& $~~~$1$~~~$ & $~~~$5$~~~$ & $0.082$ & $6.89$ & -14\% & -7\%\\ %gustavo
+& & & & & & & & \\
+$~~~$2$~~~$ &  $~~1.66\times 10^{-4}~~$ & $~~~$32$~~~$& $~~~$0.1$~~~$ & $~~~$5$~~~$ & $0.114$ & $5.66$ & +19\% & -24\%\\
+& & & & & & & & \\
+$~~~$3$~~~$ &  $~~1.66\times 10^{-4}~~$ & $~~~$256$~~~$& $~~~$0.1$~~~$ & $~~~$5$~~~$ & $~~0.193~~$& $~~2.52~~$ & -5\% & -42\%\\
+& & & & & & &  &\\
+$~~~$4$~~~$ &  $~~1.66\times 10^{-4}~~$ & $~~~$256$~~~$& $~~~$1$~~~$ & $~~~$5$~~~$ & $~~0.084~~$& $~~6.33~~$ & -59\% & +46\%\\
+& & & & & & & & \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Details of the cases discussed in Sections \ref{section4}.
+$W^a$ stands for the applied load, $m$ for the linear mass,
+$R$ for the curvature radius of the pad, 
+$\lambda$ for the texture's period (wavelength),
+$d$ for its depth, $\overline{f}$ for the numerically obtained average
+friction coefficient and $C_{\min}$ for the numerically obtained minimum
+clearance. $V_f$ and $V_C$ stand for the relative variations of $\overline{f}$
+and $C_{\min}$ with respect to the untextured case.
+All quantities are non-dimensional. Notice that Case 4 is
+introduced in subsection \ref{r256}.
+}
+\label{tablecases}
+\end{table}
+
+
+{\bf Case 1:} Consider first a ring with a moderate value of $R=32$, sliding on a
+runner with a texture of period equal to the pad length ($\lambda = 1$) and 
+depth $d=5$. The system behavior is then periodic in time with period equal
+to one. Redefining $t=0$ as the instant at which the texture crest is exactly
+under the left edge of the pad, profiles of $p$ and $\theta$ are shown in
+Fig. \ref{figR32bubbles} for $t=0$, $0.25$, $0.5$ and $0.75$. 
+
+At $t=0$ the crests of the texture coincide with the left ($x=0.5$)
+and right ($x=1.5$) edges of the pad, while the trough coincides
+with the pad's centerline ($x=1$). Notice that, {\em since the texture
+is moving with the runner}, 
+its {\em convergent} wedge corresponds to the sector between a crest
+and its neighboring trough {\em to its right}, where the upward
+normal is tilted {\em to the right}. This is the opposite to what occurs
+on the pad's surface, in which the {\em convergent} wedge corresponds
+to the left half of the pad, at which the (downward) normal is tilted
+to the left.
+Analogously, if the upward normal
+to the runner is tilted to the left this corresponds to a {\em divergent}
+wedge.
+
+At $t=0$, thus, the
+convergent wedge of the texture is located under the left half
+of the pad, coincident with the convergent wedge of the pad's surface.
+This leads to a pressure profile similar to that of the
+untextured case, but much larger in value. At $t=0.25$ the pressure
+peak has moved to the right, accompanying the texture's convergent wedge,
+and the net effect is still that of increasing the average pressure under the pad.
+At $t=0.5$ the texture's crest is under the pad's center, leaving the
+left half of the pad over the texture's divergent wedge and consequently
+at zero pressure. A cavitation bubble develops
+there, which is evident from the $\theta$ profile ($\theta < 1$ implies
+cavitation). This cavitation bubble,
+which first appears at $t\simeq 0.304$ and $x \simeq 0.514$,
+grows and moves to the right with the divergent wedge that
+generates it, passing under the pad's center and eventually leaving the pad to
+the right. In fact, this same cavitated region but corresponding to the
+previous texture cell can be observed leaving the pad at $t=0.5$ (just
+notice the region with $\theta < 1$ near $x=1.5$).
+The cavitated region is always located at the {\em divergent}
+wedge of the texture and travels with it. Its right boundary is a
+{\em rupture} boundary, and as expected $\theta$ is continuous there
+and $\partial p/\partial x=0$. The left boundary of the cavitated region
+is a {\em reformation} boundary, and as such the $\theta$ profile is
+very steep there, and $\partial p/\partial x$ exhibits a jump. 
+
+{\em Remark:} It is worth pointing out that the profiles at $t=0$ 
+show a cavitation boundary at $x \simeq 1.15$ for both the textured
+and the untextured cases. This boundary is a {\em rupture} boundary
+in the untextured runner and a {\em reformation} boundary
+in the textured one.
+
+{\bf Case 2:} With the same pad ($R=32$) and the same texture depth ($d=5$), it is
+interesting to consider a texture size much smaller than the pad's length.
+Figure \ref{figR32bubblesper01} shows profiles of $p$ and $\theta$ at
+four instants of the periodic regime obtained with $\lambda = 0.1$.
+Since the time period is equal to $\lambda$, and again defining $t=0$
+when a crest is at the left edge of the pad, the instants shown in 
+Fig.  \ref{figR32bubblesper01} correspond to $t=0$, $0.025$, $0.05$
+and $0.075$. 
+
+In this case the convergent wedge of the pad dominates the pressure
+field in the left part of the contact. No cavitation bubbles form
+there, and the effect of the texture is merely a modulation of the
+pressure field with local maxima/minima at the convergent/divergent
+wedges of the runner, respectively. The right part of the contact,
+on the other hand, exhibits moving pressurized regions (local
+pressure peaks) that are
+absent in the untextured case. The texture's convergent wedges generate
+locally pressurized regions, with cavitation bubbles between them, and
+all this structure moves to the right with the runner. 
+
+{\em Remark:} In fact, a careful analysis of the $\theta$ field
+near the left edge of the pad shows that a tiny cavitation bubble
+appears there when the divergent wedge of the texture enters the
+contact, but it collapses soon afterwards and has no significant
+effect on the pressure field. Cavitation bubbles that appear near
+the left edge and collapse (or not) under the pad are discussed
+further later on.
+
+{\bf Case 3:} The last case we consider in this general description corresponds
+to the same texture as before ($\lambda = 0.1$, $d=5$), but now
+with a high-conformity pad ($R=256$). The corresponding profiles of
+$p$ and $\theta$ at times $t=0$, $0.025$, $0.05$ and $0.075$ are shown
+in Fig. \ref{figR256bubbles}. One observes that a cavitation bubble
+develops whenever the divergent wedge of a texture enters the contact,
+and that this bubble then travels with the texture until leaving the
+pad at its right edge. Also, a locally pressurized region develops
+at the convergent wedges of each texture and travels with it. The
+height of the pressure peaks are slightly modulated by the pad's
+shape, but there is no doubt that the overall solution is governed
+by the runner's texture. The cavitation bubbles generated at each
+texture impose a zero-pressure boundary condition for the pressurized
+region that develop at the convergent texture wedges. The global pressure
+field simply consists of the juxtaposition of these otherwise
+independent local pressure peaks.
+
+\begin{figure}[h]
+     \begin{center}
+	\scalebox{0.7}{\input{figs/1D_R32_lambda_1.pdf_t}}
+    \end{center}
+\caption{Instantaneous profiles of pressure $p$ (in red) and saturation $\theta$ (in blue) for a bearing with $R=32$, $d=5$ and $\lambda=1$ (Case 1 in the text) 
+at $t=0$, 0.25, 
+0.50 and 0.75 (from top to bottom) once the periodic regime has been attained. 
+The steady pressure profile corresponding to the untextured runner 
+is also plotted for comparison (in green).}  
+\label{figR32bubbles}
+\end{figure}
+
+
+\begin{figure}[h]
+     \begin{center}
+	\scalebox{0.7}{\input{figs/1D_R32_lambda_01.pdf_t}}
+    \end{center}
+\caption{Instantaneous profiles of pressure $p$ (in red) and saturation $\theta$ (in blue) for a bearing with $R=32$, $d=5$ and $\lambda=0.1$ (Case 2 in the text) 
+at $t=0$, 0.025, 
+0.050 and 0.075 (from top to bottom) once the periodic regime has been attained. 
+The steady pressure profile corresponding to the untextured runner 
+is also plotted for comparison (in green).
+}  
+\label{figR32bubblesper01}
+\end{figure}
+
+\begin{figure}[h]
+     \begin{center}
+	\scalebox{0.7}{\input{figs/1D_R256_lambda_01.pdf_t}}
+    \end{center}
+\caption{
+Instantaneous profiles of pressure $p$ (in red) and saturation $\theta$ (in blue) for a bearing with $R=256$, $d=5$ and $\lambda=0.1$ (Case 3 in the text) 
+at $t=0$, 0.025, 
+0.050 and 0.075 (from top to bottom) once the periodic regime has been attained. 
+The pressure profile corresponding to the untextured runner 
+is also plotted for comparison (in green).
+}  
+\label{figR256bubbles}
+\end{figure}
+
+\begin{figure}[h]
+     \begin{center}
+	\subfigure[][]{\scalebox{0.65}{\input{figs/map_R32_f_new.pdf_t}} \label{fig:R32f}}
+	\subfigure[][]{\scalebox{0.65}{\input{figs/map_R32_C_new.pdf_t}} \label{fig:R32C}} \\
+	\subfigure[][]{\scalebox{0.65}{\input{figs/map_R256_f_new.pdf_t}} \label{fig:R256f}}
+	\subfigure[][]{\scalebox{0.65}{\input{figs/map_R256_C_new.pdf_t}} \label{fig:R256C}}	
+    \end{center}
+\caption{Relative differences \subref{fig:R32f} $V_{f}$ and  \subref{fig:R32C} $V_C$ (expressed in percentages) with respect to the untextured runner, as functions of the
+texture parameters $d$ and $\lambda$ for a pad with $R$=32. The colorbars (as the isolines) indicate these percentages. Parts \subref{fig:R256f} and \subref{fig:R256C} of the
+Figure show analogous plots for $R$=256. All simulations computed with $W^a=W^a_0$ and $m=m_0$. The specific cases 1 to 4 discussed in the text are shown as white dots.
+}  
+\label{fig:maps}
+\end{figure}
+
+\begin{figure}[h]
+     \begin{center}
+	\scalebox{0.7}{\input{figs/discont.pdf_t}}
+    \end{center}
+\caption{Profiles of $p$ and $\theta$ in the periodic regime corresponding to
+bearings with $\lambda$=0.1, $R$=32, $m = m_0$ and $W^a=W^a_0$. The depth for the top 
+graph is $d$=8.15 and for bottom one it is $d$=8.20.}  
+\label{fig:disc}
+\end{figure}
+
+\begin{figure}[h]
+     \begin{center}
+	\scalebox{0.8}{\input{figs/disc_R32_Z.pdf_t}}
+    \end{center}
+\caption{$Z(t)$ for textured bearings with $\lambda$=0.1, $R$=32, $m=m_0$ and 
+$W^a = W^a_0$. 
+Noticed the dramatic change in behavior when $d$ changes from $8.15$ to $8.20$.} 
+\label{fig:disc-Z}
+\end{figure}
+
+
+\begin{figure}[h]
+     \begin{center}
+	\scalebox{0.7}{\input{figs/1D_R256_lambda_1.pdf_t}}
+    \end{center}
+\caption{
+Instantaneous profiles of pressure $p$ (in red) and saturation $\theta$ (in blue) for a bearing with $R=256$, $d=5$ and $\lambda=1$ (Case 4 in the text) 
+at $t=0$, 0.025, 
+0.050 and 0.075 (from top to bottom) once the periodic regime has been attained. 
+The pressure profile corresponding to the untextured runner 
+is also plotted for comparison (in green).
+}  
+\label{figR256bubblesper1}
+\end{figure}
+
+
+
+\begin{figure}[h]
+     \begin{center}
+	\subfigure[][]{\scalebox{0.62}{\input{figs/1D_R32_Z.pdf_t}}\label{fig:32-Z}} 
+	\subfigure[][]{\scalebox{0.62}{\input{figs/1D_R256_Z.pdf_t}}\label{fig:256-Z}} \\	
+    \end{center}
+\caption{Ring position $Z(t)$ and friction force $F(t)$ (detail in figure) for rings with a curvature radius $R$ of \subref{fig:32-Z} 32 
+\subref{fig:256-Z} 256. The texture parameters are $\lambda$=1.0 and $d$=5. Notice that (a) corresponds to Case 1 in the text, while (b) corresponds to Case 4.}  
+\label{fig:cases1and4}
+\end{figure}
+
+
+
+\subsection{Friction and clearance charts}
+
+In this section we explore parameter space for the selected configuration.
+Thousands of runs were made varying $R$ between 4 and 1024,
+$\lambda$ between 0.1 and 2, $d$ between 0 and 10, 
+and $S=10^{-3}$ or $S=0.5\times 10^{-3}$.
+
+\subsubsection{R=32}
+
+Very little or no friction reduction appears for $R=16$ or smaller.
+A bearing of $R=32$ can be thus considered of moderate conformity
+for this configuration. Taking $m=m_0$ and $W^a=W^a_0$ the parameters
+are those of which one specific example was discussed as Case 1
+of Section \ref{gendescrip}. For the specific depth $d=5$ and
+the specific period $\lambda=1$ we observed in Fig. 
+\ref{figR32bubbles} the pressure and saturation fields. The average friction
+coefficient $\bar{f}$ is 14\% smaller for Case 1 than for an %gustavo
+untextured runner. This significant improvement is however
+accompanied by an 7\% loss in minimum clearance, suggesting %gustavo
+an increase in wear.
+
+It is interesting to see these values in the context of values
+obtained for all other possible textures, at least within some
+ranges. For this purpose, we performed 2500 simulations spanning
+the whole ranges of $d$ and $\lambda$ and plotted two-dimensional
+contours in the $d-\lambda$ plane in Fig. \ref{fig:maps}. The quantities plotted are:
+\begin{itemize}
+\item The relative variation $V_f$ of the average friction coefficient,
+defined as
+$$
+V_f(d,\lambda) = \frac{\bar{f}(d,\lambda)-f_{\mbox{\scriptsize{untextured}}}}
+{f_{\mbox{\scriptsize{untextured}}}}
+$$
+\item The relative variation $V_C$ of the minimal clearance,
+defined as
+$$
+V_C(d,\lambda) = \frac{C_{\min}(d,\lambda)-C_{\min,\mbox{\scriptsize{untextured}}}}
+{C_{\min,\mbox{\scriptsize{untextured}}}}
+$$
+\end{itemize}
+Please notice that the untextured case corresponds to the vertical
+axis of the plots ($d=0$). 
+
+In Fig. \ref{fig:maps}(a) a contour map of $V_f$ is shown.
+The axis $d=0$ has obviously $V_f=0$, and one observes that,
+depending on whether $\lambda > 0.5$ or not, $V_f$ becomes
+negative or positive when the texture depth $d$ is increased.
+For $\lambda > 0.5$ the friction diminishes as the texture
+is made deeper. Relative diminutions of about 30\% can %gustavo
+be seen at the top right corner of the chart, corresponding to
+$d=10$ and $\lambda=2$. Interestingly, for some given depth
+there exists an optimum period in terms of friction. It is
+roughly of value $\lambda=1$ (texture's wavelength equal to the
+pad's length), but it increases with $d$ to about $1.7$ for
+$d=10$. Notice that Case 1 discussed in Section \ref{gendescrip}
+lies close to the optimum period for $d=5$. From the
+position on the diagram one may conclude that Case 1 is
+indeed representative of the friction-reducing textures
+for pads with $R=32$.
+
+The contour map of $V_C$ shown in Fig. \ref{fig:maps}(b),
+in turn, shows that all textures have minimal clearances smaller
+than that obtained with an untextured runner. Only negative
+values of $V_C$ are observed in the chart. 
+
+An interesting
+phenomenon occurs at the bottom right sector of Figs.
+\ref{fig:maps}(a) and (b). Steep changes in $C_{\min}$
+when $d$ is varied around $d=8$ are evident in the
+sector $\lambda < 0.2$. Significant variations of
+$\bar{f}$ are also observed there.  The physics behind
+this phenomenon can be understood starting from
+Case 2 in Section \ref{gendescrip}, which has $d=5$ and
+$\lambda=0.1$. The texture-generated oscillations in the 
+pressure field (see Fig. \ref{figR32bubblesper01}) are superposed
+on the baseline pressurization curve generated by
+the pad's geometry, of which the pressure profile 
+generated on the untextured runner provides an estimate.
+As $d$ is increased keeping the other parameters 
+fixed at the values of Case 2, some of the pressure
+oscillations touch the cavitation pressure and
+bubbles appear near the left edge of the pad. For $d=8.15$
+the $p$ and $\theta$ profiles are as shown in Figure \ref{fig:disc}
+(top graph). A bubble is seen to have grown on the
+left side of the pad. This cavitation bubble travels
+to the right with the divergent microwedge that generated
+it, but does not succeed to pass under the pad's center.
+Along its travel to the right, at some instant it 
+gets pressurized and collapses (the value of $\theta$
+goes back to 1 and the pressure becomes positive when
+the microwedge reaches $x \simeq 0.7$).
+One other bubble is generated at the same divergent
+wedge when it gets to $x \simeq 1.15$, as can be
+seen in the figure, which then travels until the right
+edge of the pad.
+
+Between $d=8.15$ and $d=8.2$ a catastrophic event
+(in the mathematical sense) takes place. Increasing
+the texture depth makes the divergent microwedges steeper
+and the cavitation bubbles created near the inlet now
+travel under the pad without collapsing until the right edge.
+The pressure field undergoes a major change, since
+the relatively large pressurization region that existed
+between $x=0.7$ and $x=1.15$ now has disappeared.
+The pad looses lift and only re-encounters equilibrium
+at a much lower position. All these features can be
+seen in Fig. \ref{fig:disc} (bottom graph). In Fig. \ref{fig:disc-Z}
+we plot the vertical movement of the pad as a
+function of time when the pad starts from the
+position $Z(0)=4$. For $d\leq 8.15$ it climbs to
+values of $Z$ of about $4.5$, but for $d\geq 8.2$
+it descends to about $2$ units from the $x$-axis.
+
+This interesting phenomenon, which does not depend on
+the model adopted for the friction force, 
+suggests caution against carelessly increasing
+the depth of the texture, since tribological performance
+deteriorates substantially if this transition occurs.
+Experimental investigations could bring light
+onto the actual physical occurrence of this prediction of the
+Elrod-Adams model. Cases of high sensitivity of the friction coefficient
+to the texture depth have already been experimentally detected
+by Scaraggi {\em et al} \cite{scar2013b}.
+
+
+\subsubsection{R=256}
+\label{r256}
+
+Case 3 of Section \ref{gendescrip} has $R=256$, $d=5$
+and $\lambda = 0.1$. It corresponds to the central point
+of the horizontal axis in the graphs of $V_f$ and $V_C$
+in Figs. \ref{fig:maps} (c) and (d). Again, 2500 simulations
+were performed to compute the data for these graphs.
+
+The value $R=256$ corresponds to a high-conformity contact,
+in which the pressure field consists of a train of local
+pressurized regions (one at each convergent microwedge)
+traveling under the pad (see Fig. \ref{figR256bubbles}). 
+Case 3 is an example of a
+poorly designed texture, because increasing the period
+$\lambda$ a little (to $0.4$ for example) would reduce
+the friction by about 40\% while keeping the minimum
+clearance at a value similar to that of the untextured
+bearing. The best predicted performances in terms of
+both friction and wear correspond to $\lambda\simeq 1.5$
+and $d=10$.
+
+In order not to depart too much from Cases 1-3 while
+investigating the friction-reducing sector of the charts,
+let us consider {\bf Case 4}, which has the
+same runner as Case 1 but with the pad of Case 3; i.e.,
+$$
+\mbox{\bf Case 4: } R=256,\qquad d=5, \qquad \lambda=1
+$$
+For this bearing, the texture brings more than 60\%
+improvement in friction together with 40\% increase
+in minimum clearance, as compared to the untextured results.
+Instantaneous plots of pressure and saturation at
+$t=0$, $0.25$, $0.5$ and $0.75$ are shown in Fig.
+\ref{figR256bubblesper1}. Instead of the train of ten bubbles
+and ten pressure peaks
+translating under the pad as it was in Case 3, one now 
+essentially observes a
+single cavitation bubble and a single pressurized region
+during most of the period. The larger size of the instantaneous
+pressurized region allows the pressure (and consequently the hydrodynamic
+force) to attain values comparable to those of the untextured
+case without diminishing (in fact, increasing) the clearance
+with respect to the untextured value. A comparison of $Z(t)$
+and $F(t)$ for Cases 1 and 4 can be found in Fig. \ref{fig:cases1and4},
+where the complete evolution from an initial position $Z(0)=4$
+is shown (the instantaneous friction force is depicted just
+for one period). Notice that both cases, though having widely
+different values of $R$, have similar average $F$.
+
+\subsection{Increasing the load}
+
+A high sensitivity to the load is not a positive characteristic
+for a bearing. Even if the bearing works under constant
+{\em dimensional} load and at constant velocity, 
+the {\em non-dimensional} load $W^a$
+is likely to vary in time because of its dependence on the 
+viscosity of the lubricant. 
+
+To explore this issue, additional charts of $V_f$ and
+$V_C$, analog to those of Fig. \ref{fig:maps}, were computed
+with twice the load, i.e., with $W^a=\,2\,W^a_0$. The results
+can be found in Fig. \ref{fig:maps-halfs}. Let us compare part
+(a) of the figure, corresponding to $V_f$ contours
+for $R=32$, with its reference-load counterpart
+of Fig. \ref{fig:maps}(a). One sees that doubling the load 
+makes the friction-reduction region in the $d-\lambda$ plane
+to shrink a little, but the global qualitative and quantitative
+trends are preserved. The abrupt transition discussed in the
+previous sections changes its location slightly, but otherwise
+the bearing performance is not severely affected by the change
+in load. Similar remarks can be made about the minimum clearance
+examining part (b) of Fig. \ref{fig:maps-halfs}.
+
+The weak sensitivity of $V_f(d,\lambda)$ to $W^a$ is also
+evident from the chart corresponding to $R=256$, which
+is found in Fig. \ref{fig:maps-halfs}(c). The chart of $V_C$,
+in turn (Fig. \ref{fig:maps-halfs}(d)), in turn, exhibits
+some more sensitivity to the load. The maximum relative gain in
+$V_C$, which is more than 40\% for the reference load, reduces
+to about 25\% for $W^a=\,2\,W^a_0$. The beneficial effect of
+the texture of Cases 1 and 4 is nevertheless maintained at
+this larger load.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+\begin{figure}[h]
+     \begin{center}
+	\subfigure[][]{\scalebox{0.65}{\input{figs/map_R32_f_2c_new.pdf_t}} \label{fig:R32f2c}}
+	\subfigure[][]{\scalebox{0.65}{\input{figs/map_R32_C_2c_new.pdf_t}} \label{fig:R32C2c}} \\
+	\subfigure[][]{\scalebox{0.65}{\input{figs/map_R256_f_2c_new.pdf_t}} \label{fig:R256f2c}}
+	\subfigure[][]{\scalebox{0.65}{\input{figs/map_R256_C_2c_new.pdf_t}} \label{fig:R256C2c}}	
+    \end{center}
+\caption{Same organization of results as in Fig. \ref{fig:maps}, but changing the
+applied load to $W^a = 2\,W^a_0$.
+ }  
+\label{fig:maps-halfs}
+\end{figure}
+
+
+
+
+
+\section{DISCUSSION OF RESULTS}
+
+
+For low-conformity bearings ($R/L \leq 16$) the results above confirm
+that no beneficial effects in either friction or wear are predicted
+by the model, which is consistent with previous 
+findings \cite{gad2012,checo13,etsion2013}.
+
+For moderate- ($R/L = 32$) and high-conformity ($R/L = 256$) bearings,
+on the other hand,
+the two-dimensional contour plots
+of friction and clearance
+together with the specific simulations (cases 1-4) selected
+for detailed scrutiny, revealed some {\em general} trends and underlying physical
+mechanisms:
+\begin{enumerate}
+\item Friction coefficients of high-conformity bearings are greater
+than those of moderate-conformity ones. In both cases, textures of
+period comparable to the pad's length and sufficiently deep 
+seem to be optimal in terms of friction for the
+ranges considered. The mathematical model predicts a
+relative reduction of friction
+of up to 40\% for moderate-conformity bearings and up to 75\% for
+high-conformity ones.
+\item The optimal period (in terms of friction and wear)
+for each depth $d$ is predicted to be comparable to the 
+pad's length ($\lambda \simeq 1$) and a slowly
+increasing function of $d$.
+\item Though textures can indeed reduce the friction of moderate-conformity
+bearings, all textured runners produce pad-to-runner clearances
+that are smaller than that of the untextured runner.
+\item Suitable textures significantly
+improve the clearance of high-conformity bearings (by 20\% or more), 
+thus predicting reductions in wear.
+\item  The basic mechanism of friction reduction 
+is a local pressurization of the convergent
+microwedges at each texture cell, accompanied by local cavitation
+at the divergent microwedges. The cavitation bubble that forms
+at each texture cell prevents the appearance of
+local negative pressure peaks that would cancel out the positive
+lift force generated at the convergent microwedges. The extra lift
+generated in this way increases the clearance and reduces friction.
+\item This explains why longer texture periods (wavelengths of order $L$) 
+are predicted to be more efficient than shorter ones, since the capacity of
+a wedge to generate lift increases with length. 
+\item Best performance is achieved when the depth is of the order of
+twice the pad's fly height $Z$, so that the convergent microwedge (which
+has film thickness $Z+d$ at the trough and $Z$ at the crest, approximately) 
+has taper ratio $(Z+d)/Z$ in the range $2.5 - 3.5$. Taper ratios in this range
+are known to be effective not only for generating load capacity (the
+Rayleigh step, which is optimal, has a slightly smaller taper ratio of 1.866) but also
+for minimizing friction\cite{rahmani09}. 
+\begin{figure}[h]
+     \begin{center}
+     {\scalebox{1.0}{\input{figs/d_lambda_new.pdf_t}}}
+    \end{center}
+\caption{Texture depth corresponding to minimal friction $d_f(\lambda)$
+as a function of the period $\lambda$. Shown are numerical data 
+corresponding to $R=32$ and $R=256$, in each case considering
+loads $W^a=W^a_0$, $W^a=2\,W^a_0$ and $W^a=3\,W^a_0$.}  
+\label{fig:dflambda}
+\end{figure}
+\begin{figure}[h]
+     \begin{center}
+     {\scalebox{1.0}{\input{figs/tf_lambda_new.pdf_t}}}
+    \end{center}
+\caption{Taper ratio corresponding to minimal friction $t_f(\lambda)$
+as a function of the period $\lambda$. Shown are numerical data 
+corresponding to $R=32$ and $R=256$, in each case considering
+loads $W^a=W^a_0$, $W^a=2\,W^a_0$ and $W^a=3\,W^a_0$.}  
+\label{fig:tflambda}
+\end{figure}
+\item To prove the previous assertion, let us present
+the results in Figs. \ref{fig:maps} and \ref{fig:maps-halfs} in
+another way. For each period $\lambda$ there is a depth $d_f(\lambda)$
+that minimizes friction, which is shown in Fig. \ref{fig:dflambda}.
+For $R=256$, the minimal-friction depth $d_f(\lambda)$ is zero,
+corresponding to the untextured runner, only for periods smaller
+than $0.15$. For $\lambda > 0.15$ one observes $d_f(\lambda)$
+increasing steadily with $\lambda$. A similar trend is observed
+for $R=32$, though in this case the untextured runner is
+optimal until $\lambda$ is about 0.5 (depending on the charge).
+There is also a corresponding minimal clearance,
+$C_{\min}(d_f(\lambda),\lambda)$, with can be taken as a representative
+value for the pad's fly height. One can thus plot the taper ratios
+corresponding to minimal friction for each $\lambda$, which
+is given by
+\begin{equation}
+t_f(\lambda)=\frac{C_{\min}(d_f(\lambda),\lambda)+d_f(\lambda)}{C_{\min}(d_f(\lambda),\lambda)}
+\label{eq:tflambda}
+\end{equation}
+This is done in Fig. \ref{fig:tflambda} for $R=32$ and $R=256$ and
+for loads $W^a=W^a_0$, $W^a=2\,W^a_0$ and 
+$W^a=3\,W^a_0$. Consider first the curve corresponding to $R=256$
+and $W^a=W^a_0$. The taper ratio that yields minimal friction is
+remarkably constant from $\lambda=0.2$ up to $\lambda=1.4$,
+taking values in the range 2.5--3.5. As the load is increased,
+and although $d_f(\lambda)$ decreases accordingly (see Fig. \ref{fig:dflambda}),
+the optimal taper ratio remains in the same range (2.5--3.5) but
+up to a smaller value of $\lambda$ (up to $\lambda=1.2$ for
+$W^a=2\,W^a_0$ and up to $\lambda=1$ for $W^a=3\,W^a_0$). One
+thus concludes that for highly-conformal bearings the Elrod-Adams
+model suggests selecting the texture depth so that the taper ratio
+is between 2.5--3.5, which corresponds to $d$ in the range
+between $1.5\,C_{\min}$ and $2.5\,C_{\min}$.
+\item For the case $R=32$ one observes that the untextured runner
+is optimal up to $\lambda\simeq 0.5$ (in fact, 0.45 for 
+$W^a=W^a_0$ and 0.55 for $W^a=3\,W^a_0$). At $\lambda \simeq 0.5$ 
+the optimal taper ratio $t_f(\lambda)$
+undergoes a jump to a value of about 2.5 and from there increases
+steadily with $\lambda$, remaining below 3.5 up to $\lambda=1$.
+The model thus again suggests to take $d$ in the range
+$1.5\,C_{\min}-2.5\,C_{\min}$, though only for texture periods larger
+than half the pad's length this time.
+\item Since $d/C_{\min}$ must be $\simeq 1.5 - 2.5$ to be effective, larger loads 
+require shallower textures. This puts forward the challenge in 
+designing textures for variable loads.
+\item An interesting behavior is predicted for textures
+with short wavelength ($\lambda < 0.25$). As the depth $d$
+is increased, cavitation bubbles begin to form at the left
+edge of the pad over each divergent microwedge. Each of these bubbles
+travels with the wedge that generated it, but it collapses under
+the pressurization effect of the converging part of the pad.
+When the wedge gets to the divergent part of the pad, a new bubble
+forms on it and travels with it until reaching the right edge of
+the pad. This leaves a central portion of the pad pressurized.
+\item For moderate-conformity bearings, the previous behavior
+persists until the depth reaches a limit value of about $d=8$.
+If $d$ is further increased, the bubbles no longer collapse
+under the pad and the central pressurized portion of the pad
+no longer exists. As a consequence, the clearance is severely
+reduced (by up to 50\%!). This sudden transition should be
+further investigated by experimental techniques, since our
+results are model dependent.
+\item For high-conformity bearings a similar transition occurs,
+but at a much lower value of $d$.
+\end{enumerate}
+
+
+\section{Conclusions}
+
+An extensive study has been reported on the effect of transverse
+sinusoidal textures on the tribological performance of an
+infinitely-wide thrust bearing with the texture on the runner. 
+Contacts with different conformity were considered by varying
+the ratio $R/L$, with $R$ the curvature radius of the pad and
+$L$ its length. The analysis method consists of time- and mesh-resolved
+simulations (with up to 4096 cells in the longitudinal direction
+and 40000 time steps) with a finite volume approximation of the
+Elrod-Adams model. 
+
+Upon non-dimensionalization, the problem depends
+on the mass of the pad $m$ and the load applied on it, $W^a$. For these
+variables values representative of piston ring/liner contacts were
+assumed. The remaining two free parameters are those defining the
+texture: its depth $d$ and its period $\lambda$. More than ten thousand
+simulations were run to construct two-parameter frictional and
+clearance charts for the ranges $0\leq d\leq 10$ and $0.1\leq \lambda\leq 2$,
+and some selected cases were subject to detailed scrutiny.
+
+The analysis of these simulations confirmed that textures are predicted to be
+beneficial only for contacts with moderate or high conformity ($R/L \geq 32$).
+The mechanism involved in friction reduction was identified
+as the local pressurization of the convergent wedge present in each
+texture cell, in agreement with the mechanism proposed earlier 
+for {\em stationary} textures \cite{ets05,dobrica2010} (corresponding 
+to a textured pad in our setting). The bearing's response to the texture, 
+at least as predicted by Elrod-Adams model, indicates that best
+performance is obtained with
+texture lengths comparable to the pad's length, and with depths
+of approximately twice the pad-to-runner clearance. Though these conclusions
+were drawn considering just one value of the pad's mass ($m=m_0$), it was
+confirmed that they remain valid for twice and half this value ($m=2m_0$ and $m=m_0/2$),
+though this complementary study was not included here for the sake of brevity.
+Other general observations were collected and discussed in Section 5. 
+
+Further numerical investigations extending the ranges of the
+study reported here can of course unveil new phenomena, which of course
+would depend on the physical validity of the adopted model. In fact, our
+numerical assessment suggests as possible validation 
+the investigation of
+a sudden transition in clearance that is predicted as the texture depth
+is increased under specific operating conditions.
+
+
+
+
+\section{Acknowledgments}
+
+This work was supported by Coordena\c{c}\~ao de Aperfei\c{c}oamento
+de Pessoal de N{\'\i}vel Superior [grant number DS-8434433/M] (Brazil),
+by Funda\c{c}\~ao de Amparo \`a Pesquisa do Estado de S\~ao Paulo
+[grants numbers 2012/14481-8, 2011/24147-5] (Brazil),
+by Conselho Nacional de Desenvolvimento Cient{\'\i}fico e Tecnol\'ogico
+[grant number 308728/2013-0] (Brazil) and by Renault (France).
+
+\bibliographystyle{vancouver}
+
+\begin{thebibliography}{10}
+
+\bibitem{dobrica2010}
+Dobrica MB, Fillon M, Pascovici MD, Cicone T.
+\newblock {Optimizing surface texture for hydrodynamic lubricated contacs using
+  a mass-conserving numerical approach}.
+\newblock Proc IMechE. 2010;224:737--750.
+
+\bibitem{gad2012}
+Gadeschi GB, Backhaus K, Knoll G.
+\newblock {Numerical analysis of laser-textured piston-rings in the
+  hydrodynamic lubrication regime}.
+\newblock ASME Journal of Tribology. 2012; 134:041702--1--041702--8.
+
+\bibitem{etsion2013}
+Etsion I.
+\newblock {Modeling of surface texturing in hydrodynamic lubrication.}
+\newblock Friction. 2013; 3:195--209.
+
+\bibitem{checo13}
+Checo H, Ausas R, Jai M, Cadalen JP, Choukroun F, Buscaglia G.
+\newblock {Moving textures: Simulation of a ring sliding on a textured liner}.
+\newblock Tribology International. 2014; 72:131--142.
+
+\bibitem{buscaglia05c}
+Buscaglia GC, Ciuperca I, Jai M.
+\newblock {The effect of periodic textures on the static characteristics of
+  thrust bearings}.
+\newblock ASME Journal of Tribology. 2005; 127:899--902.
+
+\bibitem{buscaglia07}
+Buscaglia G, Ciuperca I, Jai M.
+\newblock {On the optimization of surface textures for lubricated contacts}.
+\newblock Journal of Mathematical Analysis and Applications.
+  2007; 335:1309--1327.
+
+\bibitem{costa2007}
+Costa HL, Hutchings IM.
+\newblock {Hydrodynamic lubrication of textured steel surfaces under
+  reciprocating sliding conditions}.
+\newblock Tribology International. 2007; 40:1227--1238.
+
+\bibitem{koval2011}
+Kovalchenko A, Ajayi O, Erdemir A, Fenske G.
+\newblock {Friction and wear behavior of laser textured surface under
+  lubricated initial point contact}.
+\newblock Wear. 2011; 271:1719--1725.
+
+\bibitem{yin2012}
+Bifeng Y, Li X, Fu Y, Yun W.
+\newblock {Effect of laser textured dimples on the lubrication performance of
+  cylinder liner in diesel engine}.
+\newblock Lubrication Science. 2012; 24:293--312.
+
+\bibitem{tomanik2013}
+Tomanik E.
+\newblock {Modelling the hydrodynamic support of cylinder bore and piston rings
+  with laser textured surfaces}.
+\newblock Tribology International. 2013; 59:90--96.
+
+\bibitem{scaraggi2013}
+Scaraggi M, Mezzapesa FP, Carbone G, Ancona A, Tricarico L.
+\newblock {Friction properties of lubricated laser-microtextured-surfaces: an
+  experimental study from boundary to hydrodynamic lubrication.}
+\newblock Tribology Letters. 2013; 49:117--125.
+
+\bibitem{qiu11}
+Qiu Y, Khonsari M.
+\newblock {Experimental investigation of tribological performance of laser
+  textured stainless steel rings}.
+\newblock Tribology International. 2011; 44:635--644.
+
+\bibitem{grabon2013}
+Grabon W, Koszela W, Pawlus P, Ochwat S.
+\newblock {Improving tribological behavior of piston ring-cylinder liner
+  frictional pair by liner surface texturing.}
+\newblock Tribology International. 2013; 61:102--108.
+
+\bibitem{cross2013}
+Cross AT, Sadeghi F, Rateick RG, Rowan S.
+\newblock {Hydrodynamic pressure generation in a pocketed thrust bearing.}
+\newblock Tribology Transactions. 2013; 56:652--662.
+
+\bibitem{zhang2012}
+Zhang J, Meng Y.
+\newblock {Direct observation of cavitation phenomenon and hydrodynamic
+  lubrication analysis of textured surfaces}.
+\newblock Tribology Letters. 2012; 46:147--158.
+
+\bibitem{ausas2013}
+Ausas RF, Jai M, Ciuperca IS, Buscaglia GC.
+\newblock {Conservative one-dimensional finite volume discretization of a new
+  cavitation model for piston-ring lubrication}.
+\newblock Tribology International. 2013; 57:54--66.
+
+\bibitem{buscaglia2013}
+Buscaglia GC, Ciuperca I, Dalissier E, Mohammed J.
+\newblock {A new cavitation model in lubrication:the case of two-zone
+  cavitation.}
+\newblock Journal of Engineering Mathematics. 2013; 83:57--79.
+
+\bibitem{ausas07}
+Ausas R, Ragot P, Leiva J, Jai G M~Bayada, Buscaglia G.
+\newblock {The impact of the Cavitation model in the Analysis of Micro-Textured
+  Lubricated Journal bearings.}
+\newblock {ASME Journal of Tribology}. 2009; 129:868--875.
+
+\bibitem{ausas09}
+Ausas R, Jai M, Buscaglia G.
+\newblock {A Mass-Conserving Algorithm for Dynamical Lubrication Problems With
+  Cavitation}.
+\newblock {ASME Journal of Tribology}. 2009; 131:031702-1--031702-7.
+
+\bibitem{fowell07}
+Fowell M, Olver A, Gosman A, Spikes H, Pegg I.
+\newblock {Entrainment and Inlet Suction: Two Mechanisms of Hydrodynamic
+  Lubrication in Textured Bearings}.
+\newblock ASME Journal of Tribology. 2007; 129:336--347.
+
+\bibitem{elrod1}
+Elrod HG, Adams M.
+\newblock {A computer program for cavitation. {T}echnical report 190.}
+\newblock {1st LEEDS LYON Symposium on Cavitation and Related Phenomena in
+  Lubrication, IME}. 1974; 103:354.
+
+\bibitem{fulton1986}
+Fulton SR, Ciesielsky PE, Schubert WH.
+\newblock {Multigrid methods for elliptic problems: a review.}
+\newblock Monthly Weather Review. 1986; 114:943--959.
+
+\bibitem{venner2000}
+Venner CH, Lubrecht AA.
+\newblock {Multilevel methods in lubrication}.
+\newblock Elsevier; 2000.
+
+\bibitem{scar2013b}
+Scaraggi M, Mezzapesa F, Carbone G, Ancona A, Sorgente D, Lugarà P.
+\newblock {Minimize friction of lubricated laser-microtextured-surfaces by
+  tuning microholes depth}.
+\newblock Tribology International. 2014; 75:123--127.
+
+\bibitem{rahmani09}
+Rahmani R, Shirvani A, Shirvani H.
+\newblock {Analytical analysis and optimization of the Rayleigh step slider
+  bearing}.
+\newblock Tribology International. 2009; 42:666--674.
+
+\bibitem{ets05}
+Etsion I.
+\newblock {State of the art in laser surface texturing}.
+\newblock ASME Journal of Tribology. 2005;127:248--253.
+
+\end{thebibliography}
+
+\include{fcaption}
+
+\end{document}
+% $Id: amcapaper.tex,v 1.23 2006/08/14 16:58:45 mstorti Exp $
+
+

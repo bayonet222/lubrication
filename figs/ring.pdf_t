@@ -1,0 +1,23 @@
+\begin{picture}(0,0)%
+\includegraphics{figs/ring.pdf}%
+\end{picture}%
+\setlength{\unitlength}{3947sp}%
+%
+\begingroup\makeatletter\ifx\SetFigFont\undefined%
+\gdef\SetFigFont#1#2#3#4#5{%
+  \reset@font\fontsize{#1}{#2pt}%
+  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+  \selectfont}%
+\fi\endgroup%
+\begin{picture}(6015,3563)(1136,-4017)
+\put(2701,-961){\makebox(0,0)[lb]{\smash{{\SetFigFont{10}{12.0}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$R$=0.2}%
+}}}}
+\put(1876,-2161){\makebox(0,0)[lb]{\smash{{\SetFigFont{10}{12.0}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$R$=0.8}%
+}}}}
+\put(1837,-2836){\makebox(0,0)[lb]{\smash{{\SetFigFont{10}{12.0}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$R$=1.6}%
+}}}}
+\put(2188,-1469){\makebox(0,0)[lb]{\smash{{\SetFigFont{10}{12.0}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$R$=0.4}%
+}}}}
+\put(4356,-3935){\makebox(0,0)[b]{\smash{{\SetFigFont{14}{16.8}{\rmdefault}{\mddefault}{\updefault}$x_1$ ($\mu$m)}}}}
+\put(1331,-2037){\rotatebox{90.0}{\makebox(0,0)[b]{\smash{{\SetFigFont{14}{16.8}{\rmdefault}{\mddefault}{\updefault}$h_U$ ($\mu$m)}}}}}
+\end{picture}%

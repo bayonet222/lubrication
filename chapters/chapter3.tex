@@ -1,0 +1,319 @@
+\chapter{Mathematics of Reynolds equation}
+\label{chap:maths_reynolds_equation} % For referencing the chapter elsewhere, use \ref{Chapter1} 
+\lhead{Chapter 3. \emph{Mathematics of Reynolds equation}} % This is for the header on each page - perhaps a shortened title
+
+We have shown in \Chapref{equations_lubrication} that Reynolds equation models the tribological variables of two surfaces being lubricated. In this  chapter a mathematical analysis is developed in order to study the \emph{well-posedness} of Reynolds equation. Using powerful tools of Functional Analysis, like the Hilbert Spaces structure, \emph{existence}, \emph{uniqueness} and \emph{stability} of solutions of Reynolds equation will be addressed. Furthermore, we will seek for \emph{regularity} of the solutions, i.e., how much smooth the solutions are. As the reader may guess, the last question will be related to the quality of the input: how \emph{regular} is the gap between the surfaces?; how \emph{regular} is the boundary of the domain?.
+
+For this we will consider a measurable domain $\Omega\subset\mathbb{R}^2$, with Lebesgue measure \break $\mu(\Omega)<+\infty$, and a measurable subdomain $\omega\subset  \Omega$ where Reynolds equation holds. In this chapter, $\omega$ is a data of the problem and it is supposed to be locally Lipschitz (see definition \ref{def:local_lipschitz}). The general problem, where $\omega$ is also an unknown, will be studied in \Chapref{cavitation_models} where $\Omega \setminus \omega$ will be determined by the cavitation phenomenon.
+
+\section{From Stokes equations to Reynolds equation}
+Along \Secref{lub_hyp_in_nvs,reynolds_equation} we have made asymptotic expansions for obtaining Reynolds equation from Navier-Stokes equations. \citeauthor{chambat1986} (\citeyear{chambat1986}) \cite{chambat1986} proved mathematically that Reynolds equation is an approximation of Stokes equations. In the following, we summarize their results in order to give a mathematical comprehension of the relation between both sets of equations. 
+
+Consider two surfaces in proximity and in relative motion (see \Figref{bayadachambat_scheme}). The first surface (lower one), denoted by $\omega$, is a planar bounded domain of $\mathbb{R}^2$ placed in the plane $z=0$ and its boundary $\partial \omega$ is locally Lipschitz. The second surface (upper one) is characterized by $z=H(x,y)$, $(x,y)\in \omega$. The thin distance between both surfaces is taken into account by introducing a small parameter $\epsilon$, which will tend to $0$, and a fixed function $h:\omega\rightarrow \mathbb{R}^+$ such that $$H(x,y)=\epsilon \,h(x,y),$$
+with $h\in C^1(\overline{\omega})$ and $h\geq \alpha >0$. 
+%\begin{equation}
+%\frac{\partial }{\partial x}\left(H^3\frac{\partial p}{\partial x}\right)+\frac{\partial }{\partial y}\left(H^3\frac{\partial p}{\partial y}\right)=6\,S\frac{\partial H}{\partial x}.\label{eq:reynolds_equation_stokescomparison}
+%\end{equation}
+ \begin{figure}[h]
+ \centering 
+ \def\svgwidth{\textwidth}	
+\input{figs/bayadachambat_scheme.pdf_tex}
+\caption[Domain dependent on $\epsilon$ for studying the convergence of Stokes system solutions.]{$\Omega_\epsilon$ scheme. Based on Fig. 1 in \cite{chambat1986}.}\label{fig:bayadachambat_scheme}
+\end{figure}
+
+Let us write the domain $$\Omega_\epsilon=\{(x,y,z)\in \mathbb{R}^3,\,(x,y)\in \omega, \,0 < z<H(x,y)\},$$and $\Gamma_\epsilon=\partial \Omega_\epsilon=\overline{\omega}\,\cup\,\overline{\Gamma}_1^\epsilon\,\cup\,\overline{\Gamma}_L^\epsilon$ its boundary (see \Figref{bayadachambat_scheme}). On $\Omega_\epsilon$, the Stokes system\footnote{Assuming no source term on the right hand side of \Eqref{stokes_system} as generally occurs in Lubrication Theory.} and the continuity equation for a Newtonian fluid can be written resp. as
+\begin{align}
+-\mu\nabla ^2\, \mathbf{U}^\epsilon+\nabla p^\epsilon&= 0 \label{eq:stokes_system}\\
+\nabla \cdot \mathbf{U}^\epsilon &=0,\label{eq:stokes_continuity}
+\end{align}
+where $\mu$ is the dynamic viscosity, $\mathbf{U}^\epsilon$ is the velocity field of the fluid and $p^\epsilon$ is its hydrodynamic pressure. Dirichlet boundary conditions for the velocities $\mathbf{U}^\epsilon=(g^\epsilon,0,0)$ on $\Gamma^\epsilon$ are imposed, where
+\begin{align}
+g^\epsilon=0,\qquad \text{on }\Gamma_1^\epsilon\label{eq:cond_rey_b1}\\
+g^\epsilon=S>0,\qquad \text{on }\omega.\label{eq:cond_rey_b2}
+\end{align}
+Also, in order to make sure that the Stokes equations have a solution, the authors \cite{chambat1986} impose the condition
+\begin{equation}
+g^\epsilon \in H^{1/2}(\Gamma^\epsilon)\qquad \text{and}\qquad \int_{\Gamma^\epsilon_L} g^\epsilon \cos(\bds{\hat{n}},\bds{\hat{e}}_1)\, d\sigma =0,\label{eq:cond_rey_b3}
+\end{equation}
+where $\mathbf{\hat{n}}$ is the normal unit vector pointing outward $\Omega_\epsilon$ and $\bds{\hat{e}}_1$ is the unit vector pointing positively along the $x$-axis. The first condition is a regularity requirement and the second condition is for mass-conservation.
+\subsection*{Existence and uniqueness for Stokes system}
+First, let us define the space $L_0^2(\Omega_\epsilon)=\{f\in L^2(\Omega_\epsilon):\int_{\Omega_\epsilon} f\,dV=0\}$, $dV=dx\,dy\,dz$, which is the class of functions with zero average. This set is considered since the pressure is uniquely determined up to an additive constant.
+
+The next theorem establishes the existence and uniqueness of the Stokes problem defined by equations \eqref*{stokes_system}-\eqref*{cond_rey_b2}. It is a well known result and it can be found, for instance, in \cite{girault1981}:
+ \begin{theorem}\label{theo:t1}
+Under assumptions \eqref*{cond_rey_b1,cond_rey_b2,cond_rey_b3}, there exists a unique pair of functions $(\mathbf{U}^\epsilon,p^\epsilon)$ in $(H^1(\Omega_\epsilon))^3\times L_0^2(\Omega_\epsilon)$ such that \begin{align*}
+-\mu\nabla ^2\, \mathbf{U}^\epsilon+\nabla p^\epsilon&= 0 \\
+\nabla \cdot \mathbf{U}^\epsilon &=0\\
+\mathbf{U}^\epsilon&=(g^\epsilon,0,0),\qquad\text{on }\Gamma^\epsilon.
+\end{align*}
+\end{theorem}
+Moreover, let us define the bilinear form $a$ by $a(\mathbf{U},\mathbf{V})=\sum_{i=1}^3\int_{\Omega_\epsilon}\nabla  u_i \cdot\nabla v_i\, dV$. Then, $(\mathbf{U}^\epsilon,p^\epsilon)$ satisfies the weak formulation:
+\begin{align*}
+\mu \,a(\mathbf{U}^\epsilon,\Phi) &= \int_{\Omega_\epsilon}p^\epsilon\, \nabla\cdot \Phi\,dV&\forall \Phi \in (H^1_0(\Omega_\epsilon))^3\\
+0&=\int_{\Omega_\epsilon} q\, \nabla\cdot \mathbf{U}^\epsilon\,dV,&\forall q\in L_0^2(\Omega_\epsilon),
+\end{align*}
+and there exists a function $\mathbf{G}^\epsilon \in H^1(\Omega_\epsilon)^3$ such that
+\begin{equation}
+\nabla \cdot \mathbf{G}^\epsilon =0,\qquad \mathbf{G}^\epsilon-\mathbf{U}^\epsilon\in (H^1_0(\Omega_\epsilon))^3.
+\end{equation}
+%With this, substituting the next asymptotic expansion (see Section ``Homogenization'' in \cite{evans1997})
+%\begin{align*}
+%p^\epsilon(x,x_3)&=\frac{1}{\epsilon^2}p^{-2}(x,x_3)+\frac{1}{\epsilon}p^{-1}(x,x_3)+p^0(x,x_3)+\ldots\\
+%u_i^{\epsilon}(x,x_3)&=u_i^0(x,x_3)+\epsilon\, u_i^1(x,x_3)+\epsilon^2u_i^2(x,x_3)+\ldots\qquad i=1,2,3
+%\end{align*}
+%into the Stokes equations, it is obtained the Reynolds equation
+%\begin{equation}
+%\nabla\cdot(h^3\nabla p^{-2})=6S\frac{\partial h}{\partial x_1}.\label{eq:reynolds_from_stokes}
+%\end{equation}
+Now, set the domain $\Omega=\{(x,y,Z)\in \mathbb{R}^3,\,(x,y)\in \omega,\, 0 < Z<h(x,y)\}$, and for any function $v(x,y,z)$ defined on $\Omega_\epsilon$ associate the function $\hat{v}(x,y,Z)=v(x,y,\epsilon\,Z)$ defined on $\Omega$. 
+
+Along this definitions and using Functional Analysis (e.g.\footnote{The reader can found a summary of the main results in Appendix \ref{chap:appendix_maths}.}, Chapter ``Banach and Hilbert Spaces'' in \cite{trudinger1983}, Chapters III and V in \cite{adams1975}) the authors \cite{chambat1986} obtained the next results regarding convergence of the functions $\mathbf{\hat{U}}^\epsilon$ and $\hat{p}^\epsilon$.
+\subsection*{Convergence of the solutions}
+\begin{theorem}\label{theo:t2}
+Suppose there exists a constant $K$, not depending on $\epsilon$, such that $G^\epsilon$ in Theorem \ref{theo:t1} satisfies
+\begin{equation}
+\|\nabla \hat{G}_i^\epsilon\|_{\left(L^2(\Omega)\right)^3}\leq K,\qquad i=1,2,3,\label{eq:rest_G}
+\end{equation}
+then, there exists $\mathbf{U}^*$ in $(L^2( \Omega))^3$ such that
+\begin{align*}
+\mathbf{\hat{U}}^\epsilon \rightarrow \mathbf{U}^*,\qquad \frac{\partial \mathbf{\hat{U}}^\epsilon}{\partial Z} \rightarrow \frac{\partial \mathbf{U}^*}{\partial Z},\qquad \epsilon \frac{\partial \mathbf{\hat{U}^\epsilon}}{\partial x} \rightarrow 0,\qquad \epsilon \frac{\partial \mathbf{\hat{U}^\epsilon}}{\partial y} \rightarrow 0
+\end{align*}
+weakly in $(L^2( \Omega))^3$.
+\end{theorem}
+The proof of Theorem \ref{theo:t2} is based on the following estimates that are proved by the authors \cite{chambat1986} (under the hypothesis of Theorem \ref{theo:t2})
+$$\|\mathbf{\hat{U}^\epsilon}\|_{\left(\lpOm{2}\right)^3}\leq K,\qquad \left\lVert\parder{\hat{u}_i^\epsilon}{\xi}\right\rVert_\lpOm{2}\leq \frac{K}{\epsilon},\qquad \left\lVert\parder{\hat{u}^\epsilon_i}{Z}\right\rVert_\lpOm{2}\leq K,\qquad i=1,2,3,\,\xi\in\{x,y\}.$$
+Also a result on the convergence of $p_\epsilon$ is given, which is based on the next estimates
+$$\left\lVert \parder{\hat{p}_\epsilon}{x}\right\rVert_{H^{-1}(\Omega)} \leq \frac{K}{\epsilon^2},\,\qquad \left\lVert \parder{\hat{p}_\epsilon}{y}\right\rVert_{H^{-1}(\Omega)} \leq \frac{K}{\epsilon^2},\qquad  \left\lVert \parder{\hat{p}_\epsilon}{Z}\right\rVert_{H^{-1}(\Omega)} \leq \frac{K}{\epsilon}.$$
+\begin{theorem}
+There exists $p^*$ in $L_0^2(\Omega)$ such that $\epsilon^2\hat{p}_\epsilon$ converges weakly to $p^*$; moreover $\parder{p^*}{Z}=0$.
+\end{theorem}
+\subsection*{Functional relations of the limit solutions}
+Once the existence of limit solutions was established, the authors found that these limits accomplishes analogous equations as those found in \Secref{lub_hyp_in_nvs,reynolds_equation}.
+%After this, it is found that these limit functions of $p^\epsilon$ and $\mathbf{\hat{U}}^\epsilon$  accomplishes equations analogous to those found in \Chapref{chapter2}, i.e. \eqref{pres_prof_x,pres_prof_y}.
+\begin{theorem}
+Under the same hypothesis of Theorem \ref{theo:t2}, the components of the limit field $\mathbf{U}^*$ satisfies the equations:
+\begin{align*}
+\frac{\partial p^*}{\partial x}&=\mu \frac{\partial^2 u_1^*}{\partial Z^2},&\text{in }&H^{-1}(\Omega)\\
+\frac{\partial p^*}{\partial y}&=\mu\frac{\partial^2 u_2^*}{\partial Z^2},&\text{in }&H^{-1}(\Omega)\\
+ u_3^*&=0,&\text{in }&\Omega.
+\end{align*}
+\end{theorem}
+Now, for any function $v(x,y,z)$ in $H^1(\Omega_\epsilon)$, or the corresponding $\hat{v}(x,y,Z)$ in $H^1(\Omega)$, define the average $$\overline{v}(x,y)=\frac{1}{h}\int_0^h \hat{v}(x,y,Z)\,dZ=\frac{1}{\epsilon\,h}\int _0^{\epsilon\,h}v(x,y,z)\,dz$$
+so $\overline{v}$ lies in $H^1(\omega)$.
+
+\begin{theorem}
+Under the same hypothesis of Theorem \ref{theo:t2}, the average velocity field $\bar{u}^*$ satisfies
+\begin{align*}
+\bar{u}_1^*=\frac{S}{2}-\frac{h^2}{12\mu}\frac{\partial p^*}{\partial x},\,\bar{u}_2^* ={}& -\frac{h^2}{12\mu}\frac{\partial p^*}{\partial y} && \text{both in }H^{-1}(\omega),\\
+\bar{u}_3^* ={}& 0 & &\text{in }\omega.
+\end{align*}
+Moreover, the average velocity field $\overline{\mathbf{U}}^\epsilon$ satisfies the ``mass flow conservation'' equation:
+\begin{equation*}
+\frac{\partial}{\partial x}\left(h\,\overline{u}_1^\epsilon\right)+\frac{\partial}{\partial y}\left(h\,\overline{u}_2^\epsilon\right)=0\qquad \text{in }\mathcal{D}'(\omega),
+\end{equation*}
+and the limit average velocity field satisfies the ``mass-conservation'' equation
+\begin{equation*}
+\frac{\partial}{\partial x}\left(h\,\overline{u}_1^*\right)+\frac{\partial}{\partial y}\left(h\,\overline{u}_2^*\right)=0\qquad \text{in }\mathcal{D}'(\omega).
+\end{equation*}
+\end{theorem}
+
+Furthermore, regarding strong convergence the authors \cite{chambat1986} found the next result:
+\begin{theorem}
+Under the hypothesis of Theorem \ref{theo:t2}, suppose there exists a function $\hat{g}\in H^{1/2}(\Gamma)$ that does not depends on $\epsilon$, such that
+\begin{equation}
+g^\epsilon(x,y,z)=\hat{g}(x,y,z/\epsilon)\label{eq:reynolds_limit_cond5.1}
+\end{equation}
+then, it holds
+\begin{itemize}
+\item $\epsilon^2p^\epsilon$, $\epsilon^2\frac{\partial p^\epsilon}{\partial x}$, $\epsilon^2\frac{\partial p^\epsilon}{\partial y}$ and $\epsilon \frac{\partial p^\epsilon}{\partial Z}$ converge strongly in $L^2(\omega)$ to $p^*$, $\frac{\partial p^
+*}{\partial x}$, $\frac{\partial p^
+*}{\partial y}$ and $0$ resp.
+\item $p^*$ is unique and lies in $H^1(\omega)$, also it satisfies
+$$\nabla\cdot \left(\frac{h^3}{12\mu}\nabla p^*\right)=\frac{S}{2}\,\frac{\partial h}{\partial x},$$
+which corresponds to Reynolds equation \eqref*{reynoldseq} in the steady case with $U_L=S$, $U_H=V_H=V_L=0$.
+%\item If, in addition the boundary $\partial \omega$ is of class $C^2$ then $\mathbf{U}^*$ in $(L^2( \Omega))^3$ is such that
+%\begin{align*}
+%\mathbf{\hat{U}}^\epsilon \rightarrow \mathbf{U}^*,\qquad \frac{\partial \mathbf{\hat{U}}^\epsilon}{\partial Z} \rightarrow \frac{\partial \mathbf{U}^*}{\partial Z},\qquad \epsilon \frac{\partial \mathbf{\hat{U}^\epsilon}}{\partial x} \rightarrow 0, \qquad \epsilon \frac{\partial \mathbf{\hat{U}^\epsilon}}{\partial y} \rightarrow 0,
+%\end{align*}
+%strongly in $(L^2( \Omega))^3$.
+\end{itemize}
+\end{theorem}
+
+\subsection*{Conclusions}
+\begin{itemize}
+\item Reynolds Equation is an approximation of the Stokes system when $\epsilon$ is small.
+\item The authors have shown that the solution of Stokes equations converges to the solution of Reynolds equation when $\epsilon$ goes to 0.
+\item $h\in C^1(\overline{\omega})$ is a strong hypothesis. It would be interesting to extend this work under more \emph{realistic}  hypothesis like $h\in \lpom{\infty}$. This kind of functions can be found when considering discontinuous textures \cite{ausas07,tomanik2013,gherca2014}.
+\end{itemize}
+
+\section{Weak formulation for Reynolds equation}\label{sec:weak_form_reynolds}
+Here we consider the non-dimensional velocity $S$ as $S=1$. From a classical point of view, solving Reynolds equation consists in seek for a pressure field $p\in C^2(\overline{\omega})$ satisfying the non-dimensional Reynolds equation
+\begin{align}
+\frac{\partial}{\partial x}\left({h^3}\frac{\partial p}{\partial x}\right)+\frac{\partial}{\partial y}\left({h^3}\frac{\partial p}{\partial y}\right)&=\frac{\partial h}{\partial x}+2\,\parder{h}{t}&&\text{ in }\omega\label{eq:reynolds_math}\\
+p&=0&&\text{ in }\partial \omega,\label{eq:reynolds_math_bound}
+\end{align}
+where $\omega$ is a domain in $\mathbb{R}^2$ of class $C^1$ and $h$ is continuously differentiable both in space and time.
+
+Please notice that in \eqref{reynolds_math} time is only a parameter. In the analysis we will show it will remain being a parameter.
+
+Frequently, these hypotheses about the smoothness of $p$, $h$ and $\partial \omega$ are too strong. For instance, there are several works (both numerical and experimental) where textured surfaces are described by $h$ being discontinuous \cite{zhang2012,yin2012,shen2013,checo2014a}. For handling this, we need to look beyond the classical definition of derivative: here is where the tools of Functional Analysis appear. First, we rewrite the problem below for accomplishing weaker hypothesis. For this, first we multiply Reynolds equation \eqref*{reynolds_math} by some \emph{test function} $\phi\in\hzerooneom$ and make use of Green's formula (see \eqref{greens_formula}) to obtain
+\begin{align}
+\int_\omega h^3\,\nabla p \nabla \phi \,dA&=- \int_\omega \phi \frac{\partial h }{\partial x} -2 \int_\omega \phi\frac{\partial h }{\partial t}\,dA \nonumber\\
+&=\int_\omega h\, \parder{\phi}{x}\,dA-2 \int_\omega\phi \frac{\partial h }{\partial t}\,dA \qquad \forall \phi\in \hzerooneom,\label{eq:reynolds_integral0}
+\end{align}
+with $dA=dx\,dy$. Observe the boundary term is null since $\phi=0$ a.e. in $\partial\omega$. 
+
+Now, take a gap function $h:\omega\times[0,+\infty)\rightarrow \mathbb{R}^+$ such that
+\begin{equation}
+h(\cdot,t)\in \lpom{\infty}\,\forall t\in [0,+\infty)
+\text{ and }\parder{h(\cdot,t)}{t}\in H^{-1}(\omega)\,\forall t\in [0,+\infty),\label{eq:reynolds_h_reg}
+\end{equation}
+so, as $\omega$ has finite measure, we have $h(\cdot,t)\in \lpom{p}$ for any $p \in [1,\infty]$ (see Lemma \ref{lemma:lp1}).
+
+With this, given $\omega$ locally Lipschitz with measure $\mu(\omega)<\infty$ and $h$ accomplishing \eqref*{reynolds_h_reg}, we can rewrite our original problem as: find a function $p(\cdot,t)\in \hzerooneom$ such that
+\begin{align}
+\int_\omega h^3\,\nabla p \nabla \phi \,dA=\int_\omega h\, \parder{\phi}{x}\,dA-2 \int_\omega \phi\frac{\partial h }{\partial t}\,dA \qquad \forall t\in [0,\infty) \,\forall \phi\in \hzerooneom.\label{eq:reynolds_integral}
+\end{align}
+Now on, we use the norm on $\hzerooneom$ given by $$\|\phi\|_\hzerooneom=\|\nabla \phi\|_\lpom{2},$$
+and let us assume $h$ is such that:
+\begin{equation}
+\text{there exist }a,b\in \mathbb{R}^+\text{ such that }0<a\leq h(x,y,t)\leq b\text{ a.e. on }\omega\,\forall t\in [0,+\infty).\label{eq:hyp_h_reynolds}
+\end{equation}
+Also, define the bilinear form $B(h):\hzerooneom\times\hzerooneom\rightarrow \mathbb{R}$ as 
+\begin{equation}
+B(h;u,v)=\int_\omega h^3\nabla u\nabla v\,dA.\label{eq:def_B}
+\end{equation}
+Since $h(\cdot,t)\in \lpom{2}$ and $\parder{h(\cdot,t)}{t}\in H^{-1}(\omega)$, the functional $\ell(h):\hzerooneom \rightarrow\mathbb{R}$ defined by 
+\begin{equation}
+\ell (h;\phi)=\int_\omega h\,\parder{\phi}{x}\,dA-2 \int_\omega \frac{\partial h }{\partial t}\phi\,dA
+\label{eq:def_ell}
+\end{equation}
+is a linear functional on $\hzerooneom$.
+\begin{proposition}Suppose $h$ satisfying \eqref*{reynolds_h_reg,hyp_h_reynolds}, then
+$B$, defined in \eqref*{def_B}, is a continuous coercive bilinear form on $\hzerooneom$ and $\ell$, defined in \eqref*{def_ell}, is a continuous linear functional on $\hzerooneom$.
+\begin{proof}
+Bilinearity of $B$ and linearity of $\ell$ are trivial from the linearity of the operators involved. To prove continuity of $B(h)$, using Cauchy-Schwarz inequality we have
+\begin{align}
+B(h;u,v)=\int_\omega h^3\nabla u \nabla v\,dx&\leq b^3\,\|\nabla u\|_\lpom{2} \|\nabla v\|_\lpom{2}=b^3\,\|  u\|_\hzerooneom \|v\|_\hzerooneom.\nonumber
+\end{align}
+For proving coercivity, we write
+\begin{align}
+B(h;v,v)=\int_\omega h^3| \nabla v|^2\,dx&\geq a^3\, \|\nabla v\|^2_\lpom{2}=a^3\, \|v\|^2_\hzerooneom.\label{eq:coer_c3}
+\end{align}
+
+Now, for $\ell$, from Cauchy-Schwarz inequality we have
+\begin{align}
+|\ell(h;\phi)|&=\left|\int_\omega h\,\partial_x\phi\,dA-2 \int_\omega \partial_t h\,\phi\,dA\right|\\&\leq\|h(\cdot,t)\|_\lpom{2} \left\|\partial_x\phi\right\|_\lpom{2}+2\,\left\|\partial_t h(\cdot,t)\right\|_{H^{-1}(\omega)}\|\phi\|_{H^1(\omega)}\label{eq:est_l0}\\&\leq C(h(\cdot,t),\omega) \|\phi\|_\hzerooneom,\label{eq:est_l}
+\end{align}
+being $C(h(\cdot,t),\omega)=\|h(\cdot,t)\|_\lpom{2} +C_1(\omega)\left\|\partial_t h(\cdot,t)\right\|_{H^{-1}(\omega)}$, and $C_1$ is a Poincaré constant. Therefore, $\ell(h;\cdot)$ is continuous on $\hzerooneom$.
+\end{proof}
+\end{proposition}
+With all this, \eqref{reynolds_integral} can be written as, for each time $t$
+\begin{equation}
+B(h;p,\phi)=\ell(h;\phi),\qquad\forall \phi \in \hzerooneom,\label{eq:reynolds_weak_formulation}
+\end{equation}
+and by definition, we say a function $p\in C^1\left(0,+\infty,C^2(\overline{\omega})\right)$ accomplishing \eqref{reynolds_math,reynolds_math_bound} is a \emph{classical solution} of \eqref*{reynolds_math}-\eqref*{reynolds_math_bound}. While a function $p(\cdot,t)\in\hzerooneom$ is a \emph{weak solution} of  \eqref*{reynolds_math}-\eqref*{reynolds_math_bound} if it satisfies \eqref{reynolds_weak_formulation}.
+
+Thus, as both $B(h)$ and $\ell(h)$ satisfy the hypothesis of Lax-Milgram Theorem (see Appendix \ref{chap:appendix_maths}) we have the next result:
+\begin{theorem}
+The problem ``to find $p(\cdot,t)\in\hzerooneom$ accomplishing \eqref{reynolds_weak_formulation} for an arbitrary time $t\in [0,+\infty)$'' has a unique solution. 
+\end{theorem}
+
+\subsection{Stability Analysis}
+Does the unique solution of \eqref{reynolds_weak_formulation} depends continuously on $h$?. A first idea is to take $\phi=p(\cdot,t)$ in \eqref{reynolds_weak_formulation} and so, using \eqref{est_l,coer_c3}, we have
+\begin{equation}
+\|p(\cdot,t)\|_\hzerooneom\leq \frac{1}{a^3}\left\{\|h(\cdot,t)\|_\lpom{2}+C_1(\omega)\|\partial_t h(\cdot,t)\|_{H^{-1}(\omega)}\right\}.\label{eq:bound0}
+\end{equation}
+Suppose $h$ appears only in R.H.S. of \eqref{reynolds_math} and so the functional $\ell$ depends on $h$, while $B$ does not. This would be a typical case where, due to the linearity of the equation, \eqref*{bound0} is enough to assure stability of $p$ with respect to \emph{small changes} on $h$. However, as $h$ appears on the L.H.S. of \eqref{reynolds_math}, and so the bilinear form $B$ also depends on $h$ (thus, we had written $B(h)$), stability of the solution with respect to $h$ requires some major development.
+
+The next result is based in a similar analysis that can be found in \cite{bonito2013}.
+
+To relax notation, for $f:\omega\times [0,+\infty)$ such that $f(\cdot,t)$ is in some normed space $X$, we denote
+$$\left|f\right|_X=\|f(\cdot,\,t)\|_X.$$
+\begin{theorem}
+Suppose $p_1(\cdot,t),\,p_2(\cdot,t)\in\hzerooneom$ accomplish the weak formulations of Reynolds equation for an arbitrary time $t\geq 0$:
+\begin{align}
+\int_\omega h_1^3\nabla p_1 \nabla \phi\,dA&=\int_\omega h_1\,\parder{\phi}{x}\,dA-2 \int_\omega \frac{\partial h_1 }{\partial t}\phi\,dA\qquad \forall \phi\in \hzerooneom,\label{eq:var_u1}\\
+\int_\omega h_2^3\nabla p_2 \nabla \phi\,dA&=\int_\omega h_2\,\parder{\phi}{x}\,dA-2 \int_\omega \frac{\partial h_2 }{\partial t}\phi\,dA\qquad \forall \phi\in \hzerooneom.\label{eq:var_u2}
+\end{align}
+Suppose also that both $h_1$ and $h_2$, satisfying \eqref*{reynolds_h_reg}, are such that $0<a_1\leq h_1(\cdot,t) \leq b_1$, $0<a_2\leq h_2(\cdot,t) \leq b_2$ a.e. on $\omega$ with 
+$$\left|h_1-h_2\right|_\lpom{\infty}<\epsilon,$$
+and $\partial_t h_1$, $\partial_t h_2\in {H^{-1}(\omega)}$ are such that $$\left|\partial_t h_1-\partial_t h_2\right|_{H^{-1}(\omega)}<\epsilon'.$$ Then, the next estimate holds
+\begin{align}
+\|p_1(\cdot,\,t)-p_2(\cdot,\,t)\|_\hzerooneom \leq\frac{1}{a_2^3} \left\{\epsilon\, \left[\frac{C(b_1+b_2,\,\omega)}{a_1^3}\left(b_1+\left|\partial_t h_1\right|_\lpom{2}\right)+C(\omega)\right]+\epsilon'\,C(\omega)\right\},\label{eq:bound4}
+\end{align}
+where $C(\cdot)$ are constants not depending on $h_1(\cdot,\,t)-h_2(\cdot,\,t)$ nor $\partial_t h_1(\cdot,\,t)-\partial_t h_2(\cdot,\,t)$.
+\begin{proof}
+Subtracting \eqref{var_u2} from \eqref{var_u1}, rearranging terms and recalling the definition of $\ell(h)$ (with $h=h_1-h_2$), for any $\phi\in \hzerooneom$ we have
+$$\int_\omega h_2^3\,\nabla (p_1-p_2)\nabla \phi\,dA=-\int_\omega (h_1^3-h_2^3)\nabla p_1\nabla \phi\,dA+\ell(h_1-h_2;\phi),$$
+taking $\phi=p_1-p_2$ this can be written as 
+\begin{align*}
+\int_\omega h_2^3\,\nabla (p_1-p_2)^2\,dA=-\int_\omega (h_1^3-h_2^3)\nabla p_1\nabla(p_1-p_2)\,dA+\ell(h;p_1-p_2),
+\end{align*}
+taking absolute value
+\begin{align}
+a_2^3\,|p_1-p_2|_\hzerooneom ^2&\leq |h_1^3-h_2^3|_\lpom{\infty}\,\left|\int_\omega \nabla p_1\nabla(p_1-p_2)\, dA\right| + |\ell(h;p_1-p_2)|\nonumber\\
+&\leq |h_1^3-h_2^3|_\lpom{\infty} |p_1|_\hzerooneom|p_1-p_2|_\hzerooneom + |\ell(h;p_1-p_2)|.\label{eq:bound1}
+\end{align}
+By \eqref{est_l0} we have that
+\begin{align*}
+|\ell(h;p_1-p_2)|\leq \left(|h_1-h_2|_\lpom{2}+C_1(\omega)\,|\partial_t(h_1-h_2)|_{H^{-1}(\omega)}\right)|p_1-p_2|_\hzerooneom,
+\end{align*}
+replacing this in \eqref{bound1} we obtain
+\begin{align}
+a_2^3\,|p_1-p_2|_\hzerooneom\leq|h_1^3-h_2^3|_\lpom{\infty}|p_1|_\hzerooneom +|h_1-h_2|_\lpom{2}+C_1(\omega)|\partial_t(h_1-h_2)|_{H^{-1}(\omega)}.\label{eq:bound2}
+\end{align}
+The estimate
+$$|h_1-h_2|_\lpom{2}\leq \mu(\omega)^\frac{1}{2}|h_1-h_2|_\lpom{\infty},$$ and 
+\begin{align*}
+|h_1^3-h_2^3|_\lpom{\infty}&\leq |h_1^2+h_1h_2+h_2^2|_\lpom{\infty}|h_1-h_2|_\lpom{\infty}\\&\leq C(b_1+b_2,\,\omega)\,|h_1-h_2|_\lpom{\infty},
+\end{align*}
+allow us to rewrite \eqref*{bound2} as
+\begin{align}
+a_2^3\,|p_1-p_2|_\hzerooneom \leq \epsilon\, \left(C(b_1+b_2,\,\omega)|p_1|_\hzerooneom +C(\omega)\right)+\epsilon'\,C_1(\omega).\label{eq:bound3}
+\end{align}
+Now, we use the estimate \eqref*{bound0} for $p_1$, so we get
+$$|p_1|_\hzerooneom \leq \frac{C(\omega)}{a_1^3}\left(b_1+|\partial_t h_1|_\lpom{2}\right).$$Finally, putting the last inequality in \eqref{bound3} we obtain the result.
+\end{proof}
+\end{theorem}
+
+\subsection{Spatial regularity}
+From Sobolev Imbeddings (see  \Secref{sobolev_imbeddings}, and Lemma \ref{lemma:lp1}) we have that, for the two dimensional case ($n=2$), the solution $p$ is such that $p(\cdot,t)\in L^q(\omega)$ $\forall q\in [2,\infty)$. For the case $n=1$, we have an analogous weak formulation with analogous results, but this time $p(\cdot,t)\in C_B^0(\omega)$. Moreover, by Theorem \ref{theo:reg_equa} we have that if $h(\cdot,t)\in \lpOm{\infty}$, $\partial_t h(\cdot,t)\in 
+\lpOm{p}$ and considering the hypothesis of $\Omega$ having finite measure and with Lipschitz boundary, if $u\in \hzerooneOm$ is a weak solution of \eqref{reynolds_math,reynolds_math_bound} then $p\in C^{0,\alpha}(\bar\Omega)$, and 
+$$
+\|p\|_{ C^{0,\alpha}(\bar\Omega)}\leq C\left(|\partial_t h|_{L^{p}(\Omega)}+|h|_{L^{2p}(\Omega)}\right).
+$$
+where the constant $C$ depends only on $n,p,\alpha,\Omega$ and $h$.
+\begin{remark}
+\it The hypothesis made for $h$ in \eqref*{hyp_h_reynolds} give us a huge freedom for treating much more complex surfaces than those considered on the classical formulation.
+\end{remark}
+\begin{remark}
+\it Galerkin's Methods is a robust family of methods for solving  variational problems as the one presented in this section. Those methods use the rich structure of $\hzerooneom$ as a Hilbert space whose elements can be approximated by smooth functions. We recommend \cite{brenner2002} for an approach to that theory.
+\end{remark}
+
+\section{Maximum Principle for Reynolds equation} The Maximum Principle is an important feature of elliptic PDEs that distinguishes them from equations of higher order and systems of equations. In order to establish it, we define first a notion of inequality at the boundary for functions in the Sobolev Space $\honeom$. Let us say that $u\in \honeom$ satisfies $u\leq 0$ on the boundary $\partial \omega$ if its positive part $u^+=\max\{u,0\}\in \hzerooneom$, which is equivalent to $\left.u^+\right|_{\partial\omega}=0$ (see the properties of the trace operator in Appendix \ref{chap:appendix_maths}). If $u$ is continuous in a neighborhood of $\partial \omega$, then $u$ satisfies $u\leq 0$ on $\partial \omega$ if the inequality holds in the classical pointwise sense. We say that $u\geq 0$ on $\partial \omega$ if $-u\leq 0$ on $\partial \omega$, and $u\leq v$ (both in $\honeom$) on $\partial \omega$ if $u-v\leq 0$ on $\partial \omega$.
+\begin{theorem}\label{theo:max_princ_reynolds}
+Let $p\in \honeom$ satisfy $$\nabla\cdot \left(h^3\,\nabla p\right)\leq 0\left(\geq 0\right),\qquad \text{in }\omega,$$
+in the weak sense, where $h$ satisfies \eqref*{hyp_h_reynolds}. Then
+$$\inf_{\omega} p \geq \inf_{\partial \omega} p^-,\qquad \left(\sup_{\omega} p \leq \sup_{\partial \omega} p^+\right).$$
+\end{theorem}
+The proof of this theorem can be found in Chapter 8 of \cite{trudinger1983} and it is based on the boundedness of $h$ and the ellipticity of the equation. 
+
+As an example, stationary Reynolds equation can be written as $$\nabla \cdot \left( h^3\nabla p \right) = \partial_x h,$$
+including the condition $p=0$ in $\partial \omega$ and supposing  the geometry is convergent (divergent) everywhere, i.e., $\partial_x h\leq 0$ ($\geq 0$) on $\omega$, the maximum Principle establishes that $p$ must be non-negative (non-positive) over all $\omega$.
+
+\Figref{ex_conv_div_geo} shows two instances of 1D lubrication on the domain $\omega=[0,1]$ with boundary conditions $p(0)=p(1)=0$. The first geometry have bounds between $y=0$ and the linear represented by the continuous red line. Thus, as the velocity is assumed to be positive ($S=1$), the first geometry corresponds to a convergent geometry. Its corresponding pressure profile is represented by the dashed red line. The pressure profile is non-negative as the Maximum Principle establishes. On the other hand, a divergent geometry and its non-positive pressure profile are represented by the blue line and the dashed blue line resp.
+ \begin{figure}[h!]
+ \centering 
+ \def\svgwidth{\textwidth}	\footnotesize{
+\input{figs/ex_conv_div_geo.pdf_tex}}
+\caption[Disc pad scheme and pressure profile.]{Disc pad scheme and pressure profile. $p_c$ ($p_d$) is the pressure corresponding to the convergent (divergent) gap.}\label{fig:ex_conv_div_geo}
+\end{figure}
+
+Moreover, there is a stronger result 
+\begin{theorem}\label{theo:strong_max_princ_reynolds}
+Let $p\in C^2(\omega)\cap C^0(\overline{\omega})$, $h\in C^1(\overline{\omega})$ and
+$$\nabla\cdot \left(h^3\,\nabla p\right)\leq 0\left(\geq 0\right),\qquad \text{in }\omega,$$
+in the classical sense on $\omega$, which is of class $C^1$. Then if $u$ achieves its minimum (maximum) at the interior of $\omega$, $u$ is constant.
+\end{theorem}
+The proof of this theorem can be found in Section 3.2 of \cite{trudinger1983}.

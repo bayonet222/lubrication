@@ -1,0 +1,91 @@
+%% Creator: Inkscape inkscape 0.48.5, www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'conv_sigma_re.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{631.2bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.49176172)%
+    \put(0,0){\includegraphics[width=\unitlength]{conv_sigma_re.pdf}}%
+    \put(0.1848828,0.00382089){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{time}}}%
+    \put(0.66409955,0.23779847){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lb]{\smash{$\Sigma(t)$}}}}%
+    \put(0.0430602,0.23779847){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lb]{\smash{$\Sigma(t)$}}}}%
+    \put(0.80845693,0.00382089){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{time}}}%
+    \put(0.42366711,0.1140192){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{analytic solution }}}%
+    \put(0.42366711,0.08867069){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{num. solution, N=100}}}%
+    \put(0.42366711,0.06585702){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{num. solution, N=450}}}%
+    \put(0.70885306,0.02178107){\makebox(0,0)[lb]{\smash{0.25}}}%
+    \put(0.76087016,0.02178107){\makebox(0,0)[lb]{\smash{0.3}}}%
+    \put(0.80417374,0.02178107){\makebox(0,0)[lb]{\smash{0.35}}}%
+    \put(0.85632336,0.02178107){\makebox(0,0)[lb]{\smash{0.4}}}%
+    \put(0.8996266,0.02178107){\makebox(0,0)[lb]{\smash{0.45}}}%
+    \put(0.95164496,0.02178107){\makebox(0,0)[lb]{\smash{0.5}}}%
+    \put(0.66150894,0.03511568){\makebox(0,0)[lb]{\smash{0.5}}}%
+    \put(0.66150894,0.12198703){\makebox(0,0)[lb]{\smash{0.6}}}%
+    \put(0.66150894,0.20872627){\makebox(0,0)[lb]{\smash{0.7}}}%
+    \put(0.66150894,0.29559889){\makebox(0,0)[lb]{\smash{0.8}}}%
+    \put(0.66150894,0.38233843){\makebox(0,0)[lb]{\smash{0.9}}}%
+    \put(0.67471171,0.46907798){\makebox(0,0)[lb]{\smash{1}}}%
+    \put(0.09683679,0.02174767){\makebox(0,0)[lb]{\smash{0.25}}}%
+    \put(0.14977785,0.02174767){\makebox(0,0)[lb]{\smash{0.3}}}%
+    \put(0.19400599,0.02174767){\makebox(0,0)[lb]{\smash{0.35}}}%
+    \put(0.2470795,0.02174767){\makebox(0,0)[lb]{\smash{0.4}}}%
+    \put(0.29130796,0.02174767){\makebox(0,0)[lb]{\smash{0.45}}}%
+    \put(0.34424839,0.02174767){\makebox(0,0)[lb]{\smash{0.5}}}%
+    \put(0.04883299,0.03508227){\makebox(0,0)[lb]{\smash{0.5}}}%
+    \put(0.04883299,0.12195362){\makebox(0,0)[lb]{\smash{0.6}}}%
+    \put(0.04883299,0.20869285){\makebox(0,0)[lb]{\smash{0.7}}}%
+    \put(0.04883299,0.29556548){\makebox(0,0)[lb]{\smash{0.8}}}%
+    \put(0.04883299,0.38230502){\makebox(0,0)[lb]{\smash{0.9}}}%
+    \put(0.06203514,0.46904456){\makebox(0,0)[lb]{\smash{1}}}%
+    \put(0.39963239,0.17234467){\makebox(0,0)[lb]{\smash{0.25}}}%
+    \put(0.48557984,0.17234467){\makebox(0,0)[lb]{\smash{0.35}}}%
+    \put(0.57179147,0.17234467){\makebox(0,0)[lb]{\smash{0.45}}}%
+    \put(0.36942577,0.18581108){\makebox(0,0)[lb]{\smash{0.94}}}%
+    \put(0.36942577,0.26608106){\makebox(0,0)[lb]{\smash{0.96}}}%
+    \put(0.36942577,0.34635167){\makebox(0,0)[lb]{\smash{0.98}}}%
+  \end{picture}%
+\endgroup%

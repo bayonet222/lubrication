@@ -1,0 +1,72 @@
+%% Creator: Inkscape inkscape 0.48.5, www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'disc_sol_ex1_nocav.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{547.875bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.57785763)%
+    \put(0,0){\includegraphics[width=\unitlength]{disc_sol_ex1_nocav.pdf}}%
+    \put(0.16573123,0.03356149){\makebox(0,0)[lb]{\smash{-0.5}}}%
+    \put(0.29057722,0.03356149){\makebox(0,0)[lb]{\smash{-0.3}}}%
+    \put(0.41608032,0.03356149){\makebox(0,0)[lb]{\smash{-0.1}}}%
+    \put(0.55209673,0.03356149){\makebox(0,0)[lb]{\smash{0.1}}}%
+    \put(0.6775998,0.03356149){\makebox(0,0)[lb]{\smash{0.3}}}%
+    \put(0.8031029,0.03356149){\makebox(0,0)[lb]{\smash{0.5}}}%
+    \put(0.12871531,0.05159426){\color[rgb]{0,0,1}\makebox(0,0)[lb]{\smash{-0.04}}}%
+    \put(0.12871531,0.17578354){\color[rgb]{0,0,1}\makebox(0,0)[lb]{\smash{-0.02}}}%
+    \put(0.16485495,0.29997263){\color[rgb]{0,0,1}\makebox(0,0)[lb]{\smash{0}}}%
+    \put(0.13922902,0.42416153){\color[rgb]{0,0,1}\makebox(0,0)[lb]{\smash{0.02}}}%
+    \put(0.13922902,0.54769337){\color[rgb]{0,0,1}\makebox(0,0)[lb]{\smash{0.04}}}%
+    \put(0.42199406,0.01122021){\makebox(0,0)[lb]{\smash{movement direction}}}%
+    \put(0.12433475,0.21126626){\color[rgb]{0,0,1}\rotatebox{90}{\makebox(0,0)[lb]{\smash{hydrodynamic pressure}}}}%
+    \put(0.82084417,0.24543464){\color[rgb]{0,0.50196078,0}\makebox(0,0)[lb]{\smash{1}}}%
+    \put(0.82084417,0.34202601){\color[rgb]{0,0.50196078,0}\makebox(0,0)[lb]{\smash{1.5}}}%
+    \put(0.82084417,0.43927447){\color[rgb]{0,0.50196078,0}\makebox(0,0)[lb]{\smash{2}}}%
+    \put(0.82084417,0.53586584){\color[rgb]{0,0.50196078,0}\makebox(0,0)[lb]{\smash{2.5}}}%
+    \put(0.87268086,0.26317591){\color[rgb]{0,0.50196078,0}\rotatebox{90}{\makebox(0,0)[lb]{\smash{disc profile}}}}%
+  \end{picture}%
+\endgroup%

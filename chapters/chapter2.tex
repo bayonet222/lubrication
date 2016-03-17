@@ -1,0 +1,574 @@
+% Chapter 2
+\chapter{The equations of lubrication}
+\label{chap:equations_lubrication} % For referencing the chapter elsewhere, use \ref{Chapter1} 
+
+\lhead{Chapter 2. \emph{The equations of lubrication}} % This is for the header on each page - perhaps a shortened title
+
+%----------------------------------------------------------------------------------------
+ \begin{figure}[ht!]
+ \centering 
+ \def\svgwidth{\textwidth}\small{
+\input{figs/lubscheme_3d.pdf_tex}}\caption[Two parallel lubricated surfaces scheme]{Proximity scheme of two lubricated surfaces.}\label{fig:lubscheme}
+\end{figure}
+
+\emph{Fluid film bearings} are mechanisms that support loads on a thin layer of liquid or gas. Journal Bearings (\Figref{bearing_scheme}) and Piston Rings (\Figref{cilindro_piston_1}) are examples of fluid film bearings with rotating or reciprocating motion. The space between the surfaces (see \Figref{lubscheme}) is filled by fluid or gas, in order to avoid contact. The bearing dynamics is essential to predict the machine behavior under different operating conditions, such as different rotating speeds, applied loads or surface texturing. Therefore, the research for an accurate mathematical model of the motion equations is very important, and it has been part of several publications since Reynolds' pioneering work \cite{reynolds1866}.
+
+\section{Lubrication Hypothesis in Navier-Stokes equation}\label{sec:lub_hyp_in_nvs}
+As a particular case of lubrication, the case where the material between both surfaces is a lubricant oil is studied here. Moreover, the oil is assumed to be an incompressible Newtonian fluid, so it has associated some dynamic viscosity $\mu$ and a density $\rho$.
+
+As the surfaces are very near each other, we suppose $L$, the characteristic length of the \emph{longitudinal movement} ($x$ direction) of the surfaces, as being much greater than $H$, which is the characteristic length of the \emph{transverse movement} ($z$ direction), i.e., $\epsilon=H/L\ll 1$ (typically $\epsilon \approx 10^{-3}$). 
+
+Denoting by $\veca{u}=(u,\, v,\, w)^T$ the lubricant velocity and $p$ its pressure, Navier-Stokes Equations for Newtonian fluids are valid, which can be written as
+\begin{equation}
+\rho \left( \frac{\partial \veca{u}}{\partial t} + \left( \veca{u}\cdot \nabla\right) \veca{u}\right) = -\nabla\,p+\mu \nabla^2 \veca{u} +\veca{f}.\label{eq:nvs}
+\end{equation}
+Also, we consider the boundary conditions $u(z=h_U)=U_H$, $u(z=h_L)=U_L$,\break $v(z=h_U)=V_H$ and $v(z=h_L)=V_L$, 
+\begin{align*}
+w(z=h_U)&=W_H=\frac{\partial h_U}{\partial t}+U_H\frac{\partial h_U}{\partial x}+V_H\frac{\partial h_U}{\partial y},\\ w(z=h_L)&=W_L=\frac{\partial h_L}{\partial t}+U_L\frac{\partial h_L}{\partial x}+V_L\frac{\partial h_L}{\partial y},
+\end{align*}
+where we used that $W_U$ can be written as the sum of a squeeze part $\partial h_U/\partial t$ and a 
+shape part $U_H\cdot \partial h_U /\partial x$ (analogously for $W_L$).
+
+Neglecting external forces $\veca{f}$, the hypothesis of surfaces proximity is introduced by making the next non-dimensionalization
+\begin{align}
+\hat{x}&=\frac{x}{L},\,\hat{y}=\frac{y}{L},\,\hat{z}=\frac{z}{H},\,\hat{u}=\frac{u}{U},\,\label{eq:adim1}\\
+\hat{v}&=\frac{v}{U},\,\hat{w}=\frac{w}{U\frac{H}{L}},\,\hat{t}=\frac{t\,U}{L},\,\hat{p}=p\frac{H^2}{\mu L\,U}.\label{eq:adim2}
+\end{align}
+This way, we obtain
+\begin{align}
+\rho\frac{U^2}{L}\left( \frac{\partial \hat{u}}{\partial \hat{t}}+ \hat{u}\, \frac{\partial \hat{u}}{\partial \hat{x}} + \hat{v}\, \frac{\partial \hat{u}}{\partial \hat{y}} +\hat{w}\, \frac{\partial \hat{u}}{\partial \hat{z}}\right)=&{}-\frac{1}{L}\frac{\mu LU}{H^2}  \frac{\partial \hat{p}}{\partial \hat{x}}\\&+
+\mu\left( \frac{U}{L^2}\frac{\partial^2 \hat{u}}{\partial \hat{x}^2} + \frac{U}{L^2}\frac{\partial^2 \hat{u}}{\partial \hat{y}^2}+\frac{U}{H^2}\frac{\partial^2 \hat{u}}{\partial \hat{z}^2}\right),\nonumber\\
+%%
+\rho\frac{U^2}{L} \left(\frac{\partial \hat{v}}{\partial \hat{t}}+\hat{u}\, \frac{\partial \hat{v}}{\partial \hat{x}} +\hat{v}\, \frac{\partial \hat{v}}{\partial \hat{y}} +\hat{w}\, \frac{\partial \hat{v}}{\partial \hat{z}}\right)={}&-\frac{1}{L}\frac{\mu LU}{H^2}  \frac{\partial \hat{p}}{\partial \hat{y}}\\&+
+\mu\left( \frac{U}{L^2}\frac{\partial^2 \hat{v}}{\partial \hat{x}^2} + \frac{U}{L^2}\frac{\partial^2 \hat{v}}{\partial \hat{y}^2}+\frac{U}{H^2}\frac{\partial^2 \hat{v}}{\partial \hat{z}^2}\right)\nonumber\\
+%%
+\rho\frac{U^2\,H}{L^2}\left( \frac{\partial \hat{w}}{\partial \hat{t}}+ \hat{u}\, \frac{\partial \hat{w}}{\partial \hat{x}} + \hat{v}\, \frac{\partial \hat{w}}{\partial \hat{y}}\right.\left.+\hat{w}\, \frac{\partial \hat{w}}{\partial \hat{z}}\right)={}&-\frac{\mu\,L\,U}{H^3}   \frac{\partial \hat{p}}{\partial \hat{z}}\\&+\mu\frac{U}{L}\left( \frac{H}{L^2}\frac{\partial^2 \hat{w}}{\partial \hat{x}^2} + \frac{H}{L^2}\frac{\partial^2 \hat{w}}{\partial \hat{y}^2}+\frac{1}{H}\frac{\partial^2 \hat{w}}{\partial \hat{z}^2}\right).\nonumber
+\end{align}
+Introducing the Reynolds Number Re$\,=\frac{\text{inertia}}{\text{viscous}}=\rho\,UH/\mu$ these equations can be written as
+\begin{align*}
+\frac{\partial \hat{p}}{\partial \hat{x}}={}&\frac{\partial^2 \hat{u}}{\partial \hat{z}^2}-\epsilon\, \text{Re}\left( \frac{\partial \hat{u}}{\partial \hat{t}} +\hat{u}\frac{\partial\hat{u}}{\partial \hat{x}}+\hat{v}\frac{\partial\hat{u}}{\partial\hat{y}}+\hat{w}\frac{\partial\hat{u}}{\partial\hat{z}} \right)+O\left(\epsilon^2\right)\\
+\frac{\partial \hat{p}}{\partial \hat{y}}={}&\frac{\partial^2 \hat{v}}{\partial \hat{z}^2}-\epsilon\, \text{Re}\left( \frac{\partial \hat{v}}{\partial \hat{t}} +\hat{u}\frac{\partial\hat{v}}{\partial \hat{x}}+\hat{v}\frac{\partial\hat{v}}{\partial\hat{y}}+\hat{w}\frac{\partial\hat{v}}{\partial\hat{z}} \right)+O\left(\epsilon^2\right)\\
+\frac{\partial \hat{p}}{\partial \hat{z}}={}&-\epsilon^3\, \text{Re}\left( \frac{\partial \hat{w}}{\partial\hat{t}}+\hat{u}\frac{\partial\hat{w}}{\partial \hat{x}}+\hat{v}\frac{\partial\hat{w}}{\partial\hat{y}}+\hat{w}\frac{\partial\hat{w}}{\partial\hat{z}}  \right)+\,\epsilon^4\left( \frac{\partial^2 \hat{w}}{\partial\hat{x}^2}+\frac{\partial^2 \hat{w}}{\partial\hat{y}^2}\right)+\epsilon^2\frac{\partial^2\hat{w}}{\partial\hat{z}^2}=O\left(\epsilon^2\right).
+\end{align*}
+Now, neglecting terms of order $\epsilon$ and higher (including inertial terms!) and returning to the original variables we obtain
+\begin{align}
+\frac{\partial p}{\partial x}={}&\mu\,\frac{\partial^2 u}{\partial z^2}\label{eq:pres_prof_x}\\ 
+\frac{\partial p}{\partial y}={}&\mu\,\frac{\partial^2 v}{\partial z^2},\label{eq:pres_prof_y}\\ 
+\frac{\partial p}{\partial z}={}&0.\label{eq:pres_prof_z}
+\end{align}
+From \eqref{pres_prof_z} we deduce that the pressure $p$ only depends upon $x$ and $y$. Integrating two times on $z$ between $z=h_L$ and $z=h_U$, we have:
+\begin{align}
+u(z)&=\frac{1}{2\mu}\frac{\partial p}{\partial x} (z-h_L)(z-h_U)+\frac{z-h_L}{h_U-h_L}U_H+\frac{h_U-z}{h_U-h_L}U_L,\label{eq:u_profile}\\
+v(z)&=\frac{1}{2\mu}\frac{\partial p}{\partial y} (z-h_L)(z-h_U)+\frac{z-h_L}{h_U-h_L}V_H+\frac{h_U-z}{h_U-h_L}V_L.\label{eq:v_profile}
+\end{align}
+Integrating the last equations for $z\in[h_L,\,h_U]$ the flux functions are obtained:
+\begin{align}
+Q_x=\int_{h_L}^{h_U}u\,dz&=-\frac{h^3}{12\,\mu}\frac{\partial p}{\partial x}+\frac{U_L+U_H}{2}h,\label{eq:reynolds_flux_x}\\
+Q_y=\int_{h_L}^{h_U}v\,dz&=-\frac{h^3}{12\,\mu}\frac{\partial p}{\partial y}+\frac{V_L+V_H}{2},\label{eq:reynolds_flux_y}
+\end{align}
+where $h=h_U-h_L$. \Figref{vel_prof_poi_cou} shows a scheme of the linear and quadratic terms written on \eqref{u_profile}. The linear one corresponds to a Couette flow, which is due to relative motion between the surfaces, while the second represents a Poiseuille flow, which is due to the presence of a pressure gradient.
+\begin{figure}[ht!]
+ \centering 
+ \def\svgwidth{\textwidth}	
+\input{figs/poiseuille_couette.pdf_tex}\caption[Channel Problem scheme]{Couette and Poisseuille profile flows in a Channel.}\label{fig:vel_prof_poi_cou}
+\end{figure}
+
+\section{Reynolds Equation}\label{sec:reynolds_equation}
+To obtain Reynolds Equation, we introduce the \emph{continuity equation}, which in the incompressible case reads:
+\begin{equation}
+\nabla \cdot \veca{u}=0,\label{eq:continuity}
+\end{equation}
+integrating along $z$ we obtain:
+\begin{equation}
+\int_{h_L(x,y,t)}^{h_U(x,y,t)}\left(\frac{\partial u}{\partial x}+\frac{\partial v}{\partial y}+\frac{\partial w}{\partial z}\right)\,dz=0.\label{eq:continuity2}
+\end{equation}
+The first two integrals above can be calculated by using Leibniz's rule for time-dependent domains. By using \eqref{u_profile,v_profile}, this is written as
+\begin{align}
+&\int_{h_L(x,y,t)}^{h_U(x,y,t)}\frac{\partial u}{\partial x}\,dz=\frac{\partial}{\partial x}Q_x-U_H\frac{\partial h_U} {\partial x}+U_L\frac{\partial h_L} {\partial x},\label{eq:u_term}\\
+&\int_{h_L(x,y,t)}^{h_U(x,y,t)}\frac{\partial v}{\partial y}\,dz=\frac{\partial}{\partial y}Q_y-V_H\frac{\partial h_U} {\partial y}+V_L\frac{\partial h_L} {\partial y}.\label{eq:v_term}
+\end{align}
+Now, for the third integral we have:
+\begin{align}
+\int_{h_L(x,y,t)}^{h_U(x,y,t)}\frac{\partial w}{\partial z}\,dz&=W_U-W_L\nonumber\\
+&=\frac{\partial h_U}{\partial t}+U_H\frac{\partial h_U}{\partial x}+V_H\frac{\partial h_U}{\partial y}-\left(\frac{\partial h_L}{\partial t}+U_L\frac{\partial h_L}{\partial x}+V_L\frac{\partial h_L}{\partial y}\right)\nonumber\\
+&=\frac{\partial h}{\partial t}+U_H\frac{\partial h_U}{\partial x}-U_L\frac{\partial h_L}{\partial x}+V_H\frac{\partial h_U}{\partial y}-V_L\frac{\partial h_L}{\partial y},\label{eq:w_term}
+\end{align}
+where $h=h_U-h_L$. Thus, summing \eqref{u_term,v_term,w_term}, \eqref{continuity2} can be written as
+\begin{equation*}
+\frac{\partial}{\partial x}Q_x+\frac{\partial}{\partial y}Q_y+\frac{\partial h}{\partial t}=\nabla\cdot Q+\frac{\partial h}{\partial t}=0.
+\end{equation*}
+Finally, we replace the flux function $Q=[Q_x,\,Q_y]^T$ for the Newtonian case from \eqref{reynolds_flux_x,reynolds_flux_y} to obtain:
+\begin{equation}
+\frac{\partial}{\partial x}\left(\frac{h^3}{12\,\mu}\frac{\partial p}{\partial x}-\frac{U_L+U_H}{2}h\right)+\frac{\partial}{\partial y}\left(\frac{h^3}{12\,\mu}\frac{\partial p}{\partial y}-\frac{V_L+V_H}{2}h\right)=\frac{\partial h}{\partial t},\label{eq:reynoldseq}
+\end{equation}
+which is known as Reynolds Equation in Lubrication Theory.
+
+To simplify notation we assume $U_L=U$, $U_H=V_L=V_H=0$, so Reynolds equation can be written in the conservative form
+\begin{equation*}
+\parder{h}{t}+\nabla\cdot \veca{J}=0,
+\label{eq:reynoldseq_J}
+\end{equation*}
+with 
+\begin{equation}
+\veca{J}=-\frac{h^3}{12\mu}\nabla p+\frac{U}{2} h\bds{\hat{e}}_1,\label{eq:chap2_fluxJ}
+\end{equation}
+where $\bds{\hat{e}}_1$ is the unitary vector pointing positively in the $x$-axis. We say that $\veca{J}$ corresponds to the \emph{mass-flux} function.
+\section{Friction forces}\label{sec:friction_forces}
+Friction forces are some of the most important quantities to be analyzed in our study. The dependence of such forces on the design variables of tribological devices has been analyzed in several works during the last years \cite{ryk2006,tomanik2013,checo2014a,medina2015}. In this section, the formula that gives the total friction force over some surface, due to hydrodynamic pressure and viscosity effects, is calculated starting from the particular expression of the stress tensor under our working hypotheses.
+
+For Newtonian incompressible fluids, the stress tensor $\bds{\tau}$, which gives the forces per unit area acting on a material surface, is given by the constitutive relation:
+\begin{equation}
+\tau_{ij}=-p\,\delta_{ij}+\mu\left(\frac{\partial u_i}{\partial x_j}+\frac{\partial u_j}{\partial x_i}\right),\label{eq:constitutive}
+\end{equation}
+where $i$ and $j$ are indices corresponding to the three Cartesian dimensions, and  $\delta$ is the Kronecker delta. Since $\mathbf{\hat{n}}$ is a normal unit vector pointing outward from some surface, the force $f$ exerted by the fluid over it in the direction $\mathbf{\hat{e}}$ is given by the projection of the total force $\veca{f}$ on $\mathbf{\hat{e}}$:
+\begin{equation}
+f=\veca{f}\cdot \mathbf{\hat{e}}=(\bds{\tau}\cdot \mathbf{\hat{n}})\cdot \mathbf{\hat{e}}=\sum_{ij}\tau_{ij}\hat{n}_j\hat{e}_i=\sum_{ij}\tau_{ij}\hat{e}_j\hat{n}_i,
+\end{equation}
+where the symmetry of $\bds{\tau}$ was used in the last equality. The \emph{friction force} is a force opposing the motion when an object is moved or two objects are relatively moving \cite{encytribology}. To calculate the friction force, suppose the movement direction of a surface is given by the unit vector $\bds{\hat{\imath}}$ as in \Figref{dimpleshear}. There, the lower surface is moving to the right so we put $\mathbf{\hat{e}}=\bds{\hat{\imath}}$ and we get
+$$\bds{\tau} \cdot \bds{\hat{\imath}}=\bds{\tau} \cdot 
+\left(\begin{array}{c}
+1\\
+0\\
+0
+\end{array}\right)=
+\left(\begin{array}{c}
+\tau_{xx}\\
+\tau_{xy}\\
+\tau_{xz}
+\end{array}\right)
+=\left(\begin{array}{c}
+-p+2\mu\,\parder{u}{x}\\
+\mu \left(\frac{\partial u}{\partial y}+\frac{\partial v}{\partial x}\right)\\
+\mu \left(\frac{\partial u}{\partial z}+\frac{\partial w}{\partial x}\right)
+\end{array}\right).$$
+Using the proximity hypothesis, i.e., $\epsilon=H/L$ is very small, and the non-dimensionalizations \eqref{adim1,adim2} we get
+$$\tau_{xx}=\mu\frac{U}{H}\left(-\frac{1}{\epsilon}\hat{p}+2\epsilon\parder{\hat{u}}{\hat{x}}\right),\,\,\,\,\tau_{xy}=\mu \frac{U}{H}\left(\epsilon\frac{\partial \hat{u}}{\partial \hat{y}}+\epsilon\frac{\partial \hat{v}}{\partial \hat{x}}\right),\,\,\,\,\tau_{xz}=\mu \frac{U}{H}\left(\frac{\partial \hat{u}}{\partial \hat{z}}+\epsilon\frac{\partial \hat{w}}{\partial \hat{x}}\right).$$
+Now, the non-dimensional vector $d\bds{S}$ normal to the surface $z=h_L(x,y)$ with length equal to the surface differential area element is given by
+\begin{equation}
+d\bds{S}=\mathbf{\hat{n}}\,dS=\left(-\epsilon\frac{\partial \hat{h}_L}{\partial \hat{x}}\,\bds{\hat{\imath}}-\epsilon\frac{\partial \hat{h}_L}{\partial \hat{y}}\,\bds{\hat{\jmath}}+\bds{\hat{k}}\right)
+L^2\,d\hat{x}\,d\hat{y}.\label{eq:dS_friction}
+\end{equation}
+The non-dimensional element $d\hat{f}$ of the total friction force is given by
+\begin{align*}
+d\hat{f}&=\bds{\tau}\cdot \bds{\hat{\imath}}\cdot d\bds{S}\\
+&=\mu \frac{U}{H} \left[ \hat{p}\parder{\hat{h}_L}{\hat{x}}-2\epsilon^2\parder{\hat{u}}{\hat{x}}\parder{\hat{h}_L}{\hat{x}}-\epsilon^2\left(\parder{\hat{u}}{\hat{y}}+\parder{\hat{v}}{\hat{x}}\right)\parder{\hat{h}_L}{\hat{y}}+\parder{\hat{u}}{\hat{z}}+\epsilon\parder{\hat{w}}{\hat{x}}\right]L^2d\hat{x}d\hat{y},
+\end{align*}
+dropping the terms of order $\epsilon$ and $\epsilon^2$ and returning to the original variables we obtain for the dimensional force element
+\begin{equation}
+df\approx \left(p \parder{h_L}{x}+\mu \parder{u}{z}\right)dx\,dy.\label{eq:df}
+\end{equation}
+Now, using \eqref{u_profile} we calculate
+\begin{equation}
+\left.\mu\parder{u}{z}\right|_{z=h_L}=\left.\frac{1}{2}\frac{\partial p}{\partial x} (2z-h_U-h_L)\right|_{z=h_L}-\mu\frac{(U_L-U_H)}{h}=-\frac{h}{2}\frac{\partial p}{\partial x}-\mu\frac{(U_L-U_H)}{h}.\label{eq:tau_xz}
+\end{equation}
+Thus, the local friction force on the lower surface by unit area reads
+\begin{equation}
+df_L= \left(p\frac{\partial h_L}{\partial x}-\frac{h}{2}\frac{\partial p}{\partial x}-\mu\frac{(U_L-U_H)}{h}\right)\,dx\,dy.\label{eq:dfriction_hL}
+\end{equation}
+where $\Omega$ is the domain of interest. Analogously, for the upper surface we obtain
+\begin{equation}
+df_U=\left(- p\frac{\partial h_U}{\partial x}-\frac{h}{2}\frac{\partial p}{\partial x}+\mu\frac{(U_L-U_H)}{h}\right)\,dx\,dy.\label{eq:dfriction_hU}
+\end{equation}
+
+ Next, we analyze each term of \eqref{dfriction_hL}. For this, please refer to \Figref{dimpleshear} where a curved portion of a surface $h_L$ is shown. In the figure, the surface is moving on direction of vector $\mathbf{\hat{e}}=\bds{\hat{\imath}}$ with speed $U_L$.
+
+ \begin{figure}[ht]
+ \centering 
+ \def\svgwidth{\textwidth}	
+\input{figs/dimple.pdf_tex}\caption[2D surface normal orientations scheme]{2D surface normal orientations scheme.}\label{fig:dimpleshear}	
+\end{figure}
+
+\hspace*{1.1cm}
+\begin{minipage}[H]{0.92 \textwidth}
+\begin{itemize}
+\item[$p\frac{\partial h_L}{\partial x}$ :] projection of the force due to the pressure acting on the surface. At point A, the normal vector $\mathbf{\hat{n}}_a$ is oriented positively with respect to $\mathbf{\hat{e}}$ ($\mathbf{\hat{n}}\cdot \mathbf{\hat{e}}>0$), so pressure must generate a negative force, and this is what happens as $\partial h_L / \partial x$ is negative there. The opposite situation occurs at C, where a positive pressure force is expected  and it happens since $\partial h_L / \partial x>0$. On the other hand, at points B and D the movement direction is perpendicular to the surface orientation, $\mathbf{\hat{e}}\cdot \mathbf{\hat{n}}_b=\mathbf{\hat{e}}\cdot\mathbf{\hat{n}}_d=0$, so a projection of any normal force is null. This is reflected by $\partial h_L/\partial x=0$.
+
+\item[$-\frac{h}{2}\frac{\partial p}{\partial x}$ :] viscous shear due to a Poiseuille flow. A positive pressure gradient on the $x$-axis generates a parabolic profile negatively oriented which reduces $\partial u / \partial z$.
+
+\item[$-\mu\frac{(U_L-U_H)}{h}$ :] viscous shear due to a Couette flow. Notice the direction of the relative motion between the surfaces being reflected on the sign of this term.
+\end{itemize}
+\end{minipage}
+
+\bigskip
+It can be noticed from \eqref{dfriction_hL,dfriction_hU} that the local friction force might not be the same on both surfaces. On the other hand, take for simplicity $\Omega=[0,1]\times [0,1]\subset \mathbb{R}^2$ 
+and write the periodic conditions $p(0,y)=p(1,y)$, $p(x,0)=p(0,1)$ for $x,y\in[0,1]$, and $h(0,y)=h(1,y)$, $h(x,0)=h(0,1)$ for $x,y\in[0,1]$. Now, let us integrate both friction formula in $\Omega$ so we obtain
+$$f_L+f_U=-\int_\Omega  p\parder{h}{x}\,dx\,dy-\int_\Omega h\parder{p}{x}\,dx\,dy.$$
+Integrating by parts the first term (see \eqref{greens_formula}), and using the periodicity conditions we get $$\int_\Omega p \parder{h}{x} \,dx\,dy= -\int_\Omega h \parder{p}{x} \,dx\,dy,$$
+this way we obtain
+$$f_L=-f_U,$$
+which means that the total friction force on $h_L$ is equal in magnitude to the total friction force on $h_U$ but in the opposite direction.
+\section{Comparison with Navier-Stokes equations}\label{sec:comparison_nvs_reynolds}
+\subsection{Reynolds and Stokes roughness}
+\citeauthor{chambat1986} \cite{bayada1988}, Elrod \cite{elrod1979} and Phan-Tien \cite{phan1981} found that the validity of Reynolds equation can be claimed when the wavelength of the roughness ($\lambda$ in \Figref{textured_surface_problem}) is large, and the roughness height is small ($d$ in \Figref{textured_surface_problem}) when compared to the  mean film thickness ($h_m+d/2$ in \Figref{textured_surface_problem}). In general, when the roughness of some surface is such that Reynolds equation is a good approximation to the Stokes system, the name \emph{Reynolds roughness} is used; on the other hand, when the roughness is such that Reynolds equation is not a good approximation, and thus the Stokes system must be used, the name \emph{Stokes roughness} is used \cite{bayada1988}. A deep discussion of this topic is beyond the scope of this work. Thus, here we only compare the Navier Stokes and Reynolds equations varying the depth $d$ of the roughness. A more complete study also would vary the wavelength $\lambda$.
+\subsection{Numerical comparison addressing a sinusoidal texture case}
+At 100$^\circ$C, the dynamic viscosity and density of a lubricant oil SAE40 are around\\ $\mu=1.3\times 10^{-2}$[Pa$\cdot$s] and $\rho=850$[Kg/m$^3$] resp. The space between the piston ring and the liner of a combustion engine, for the hydrodynamic regime, is around $H=10$[$\mu$m], and the speed of the piston is of order $U=10$[m/s]. These data give a Reynolds number Re$\,=\rho\, U H/\mu=6.54$. Thus, in the next set of tests the Reynolds number is around 10. A similar study can be found in \cite{song2003}.
+
+The simulation scheme is showed in \Figref{textured_surface_problem}, which consists of two infinite parallel surfaces. The conditions imposed are as follows:
+\begin{itemize}
+\item The lower surface has a sinusoidal shape of period $\lambda$ and wave amplitude $d/2$, while the upper one is flat. The minimal space between them is $h_\text{m}$.
+\item A Newtonian incompressible lubricant is placed between the surfaces, its density is $\rho$ and its dynamic viscosity is $\mu$.
+\item The lower surface is not moving ($U_L=0$), while the upper one is moving with speed $U_H>0$.
+\item No pressure gradient is imposed, instead we set $p(x_0)=p_0$ at some point $x_0$ of the domain $\Omega$ (to be determined).
+\item Setting $H=h_\text{m}+\frac{d}{2}$ (the mean surface height), the Reynolds number Re=$\nobreak\rho\, U_H H/\mu$ is supposed to be low enough for assuring (along with other conditions) the system reaching a steady state.
+\end{itemize}
+ \begin{figure}[ht]
+ \centering 
+ \def\svgwidth{\textwidth}	
+\input{figs/texture.pdf_tex}\caption{An infinite 1D bearing with a sinusoidal texture.}\label{fig:textured_surface_problem}
+\end{figure}
+With all these assumptions, both Navier-Stokes and Reynolds equations can be solved for this infinite system on just a representative \emph{block}, as \Figref{textured_surface_problem} shown. Now, defining the domain $\Omega=\Omega_d$ as
+$$\Omega_d = \left\{(x,y)\in \mathbb{R}^2\,|\,0< x< \lambda,\,h_L(x)< y< h_m+d\right\},$$
+with $h_L(x)=\frac{d}{2}\left(1-\cos(2\pi\,x/\lambda)\right)$, the first mathematical problem reads:\newpage
+\hspace*{0cm}
+\framebox{
+\begin{minipage}[ht]{0.98\textwidth}
+Find the velocity field $\veca{u}=\left(u(x,z),w(x,z)\right):\nobreak\Omega_d\rightarrow \mathbb{R}^2$ and the pressure field \\$p:\Omega_d \rightarrow \mathbb{R}$, both periodic in $x$, satisfying Navier-Stokes equations in $\Omega_d$:
+\begin{align}
+\rho\left(\frac{\partial u}{\partial t}+u\frac{\partial u}{ \partial x}+w\frac{\partial u}{\partial z}\right)={}& -\frac{\partial p}{\partial x} +\mu\left( \frac{\partial^2 u}{\partial x^2}+\frac{\partial^2 u}{\partial z^2}\right)\label{eq:nvs_2d_u}\\
+\rho\left(\frac{\partial w}{\partial t}+u\frac{\partial w}{ \partial x}+w\frac{\partial w}{\partial z}\right)={}& -\frac{\partial p}{\partial z} +\mu\left( \frac{\partial^2 w}{\partial x^2}+\frac{\partial^2 w}{\partial z^2}\right),\label{eq:nvs_2d_v}
+\end{align}
+along with the continuity equation for incompressible fluids
+\begin{equation}
+\nabla \cdot \veca{u} = \frac{\partial u}{\partial x} + \frac{\partial w}{ \partial z}=0,\qquad \text{in } \Omega_d.\label{eq:continuity_2d}
+\end{equation}
+And the conditions
+\begin{equation}
+\begin{cases}
+p(x_0)=p_0, \\
+u(x,y=h_m+d)={}U_H,&  u(x,y=h_L(x))={}0.\\
+w(x,y=h_m+d)={}0, &w(x,y=h_L(x))={}0.
+\end{cases}\label{eq:nvs_2d_cond} 
+\end{equation}
+for some $x_0\in\Omega_d$.
+\end{minipage}}\\
+
+The numerical method used for this problem is described in Appendix \chapref*{appendix_MAC}.
+%The numerical method used for this problem is described in Chapter 2 of \cite{prosperetti2009}.
+
+\begin{table}[hb]
+\centering
+\begin{tabular}{lll}
+\toprule
+Quantity & Scale & Description\\
+\midrule
+$x,\,\lambda$ & $H$ & Horizontal coordinate \\
+$S$ & $U_H$ & Sliding velocity \\
+$h,\,h_m,\,d$ & $H$ & Fluid thickness \\
+$p$ & $\frac{6\mu U_H}{H^2}$ & Hydrodynamic pressure\\
+$f$ & $\mu U_H$ & Friction force\\
+\bottomrule
+\end{tabular}
+\caption{Non-dimensional variables for the stationary Reynolds equation \eqref*{adim_stationary_reynolds}.}\label{tab:table_non_dim_reynolds}
+\end{table}
+
+For the second mathematical problem, we used the non-dimensional variables showed in Table \ref{tab:table_non_dim_reynolds}. Upon these non-dimensionalization, omitting all carets for simplicity, the mathematical problem for the stationary non-dimensional Reynolds equation is written:\\
+
+\framebox{
+\begin{minipage}[ht]{0.98\textwidth}
+Find the pressure field $p:(0,\,\lambda) \rightarrow \mathbb{R}$ satisfying the stationary Reynolds equation in $(0,\,\lambda)$:
+\begin{align}
+\frac{\partial}{\partial x}\left(h^3 \frac{\partial p}{ \partial x}-S\,h\right)=0,\label{eq:adim_stationary_reynolds}
+\end{align}
+with $h(x)=h_m+d/2\left(1+\cos(2\pi\,x/\lambda)\right)$
+and the conditions
+\begin{equation}
+p(0)=p(\lambda)=0.\label{eq:adim_stationary_reynolds_cond}
+\end{equation}
+\end{minipage}}\\
+
+Since the problem is one-dimensional there is no need to impose conditions on the pressure gradient. Please notice the great contrast in complexity between both problems. The second one can be solved by a simple integration, yielding
+$$p(x) = \int_0^x \frac{\zeta+S\,h}{h^3}dx,\qquad\text{for } x\in[0,\lambda]\text{ with}\qquad\zeta = \frac{-S\int_0^\lambda \frac{1}{h^2}\,dx}{\int_0^\lambda\frac{1}{h^3}\,dx}.$$
+
+\subsection*{Simulation parameters}
+We set $U_H=10$[m/s], $H=10$[$\mu$m], $\lambda=10$ and $h_m=1-d/2$. This setup, along with the non-dimensionalizations, makes the problem dependent only on $d$ and Re. The sets of values chosen for these quantities are
+\begin{align*}
+d&\in\{0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8\}\\
+\text{Re}&\in\{0.1,1.0,5.0,10.0,20.0,50.0,100.0\}.
+\end{align*}
+In both problems (for Reynolds and Navier-Stokes equations) $600$ uniform cells were used in the $x$-axis which correspond to  $dx=\nobreak 0.01667$. For the 2D problem, $dy=dx$ and $dt=0.45\min\left\{{\frac{1}{4}dx^2\text{Re},\,\frac{2}{10\cdot\text{Re}}}\right\}$ were set (see \cite{prosperetti2009} Chapter 2 for the stability policy on $dt$). These numerical parameters were chosen to assure both time and space convergence along with numerical stability.
+\subsection*{Results and discussion}
+%This must begin by answering a basic question: What are we interested in calculate?
+As we are interested in the load that a certain system can support and the friction losses involved in the process, the next two basic quantities are compared: 1) the hydrodynamic pressure generated between the surfaces; 2) the friction force opposing the relative motion of the surfaces (see \Secref{friction_forces}).
+
+For the comparison, we denote as $p_r$ the pressure found by solving (Reynolds equation) \eqref{adim_stationary_reynolds,adim_stationary_reynolds_cond} and as $p_n$ the averaged (in $y$) pressure obtained from \eqref{nvs_2d_u,nvs_2d_v,continuity_2d} along the conditions \eqref*{nvs_2d_cond}. 
+\begin{figure}[ht]
+ \centering 
+ \def\svgwidth{0.9\textwidth}\small{
+\input{figs/pres_nvs_rey_2.pdf_tex}}
+\caption[Dimensionless pressure from Navier-Stokes equations and from Reynolds equation for different Reynolds number.]{Dimensionless pressure for Reynolds equation and for Navier-Stokes with Re=1, 10, 50, $d=0.4$.}\label{fig:pres_nvs_rey_ex1}	
+\end{figure}
+
+\Figref{pres_nvs_rey_ex1} shows the resulting non-dimensional pressure for both sets of equations for the case Re=1, $d=0.4$. The Reynolds solution is symmetric while the Navier-Stokes solution develops a slightly asymmetrical shape. In fact, for this case $$|\max{p_r(x)}|=|\min{p_r(x)}|=0.327,\,\text{but }|\max{p_n(x)}|=0.332\neq|\min{p_n(x)}|=0.344.$$
+This asymmetry can only appear due to the inertial terms of the Navier-Stokes equations which are neglected in the Reynolds approximation. The relative difference of these solutions is 6\% (in $\|\cdot\|_\infty$).
+
+\Figref{varying_d_Re_5} shows the pressure resulting from Reynolds equation and Navier-Stokes equations for Re${}=5$ and $d=0.4,0.8,1.2,1.6$. The bigger the depth $d$ is the smaller the minimal distance between the surfaces $h_m$ is. Because of this, the peak pressure rises when $d$ is augmented. We observe a good agreement for all the depths chosen, in fact, from  \Figref{pres_nvs_rey_diff} we obtain that the relative differences are around 15 to 20\% (in $\|\cdot\|_\infty$).
+
+\begin{figure}[ht]
+ \centering 
+ \def\svgwidth{\textwidth}\small{
+\input{figs/varying_d_Re_5.pdf_tex}}
+\caption[Dimensionless pressure from Navier-Stokes equations and Reynolds equation for different depths.]{Dimensionless pressure from Navier-Stokes equations and Reynolds equation for different depth $d$ and Re${}=5$. The continuous lines show the results from Reynolds equation, while the dashed lines show the results for Navier-Stokes equations.}\label{fig:varying_d_Re_5}	
+\end{figure}
+As the Reynolds number grows, we expect the difference between the solutions (for pressure and friction) of the Navier Stokes and Reynolds equations to grow. On the other hand, for the validity of Reynolds the value $\lambda/d=10$ is a well known lower bound for the \emph{aspect ratio} $\lambda/d$ \cite{dobrica08}. Therefore, as we fix $\lambda=10$, we also expect the difference between the solutions of the Navier Stokes and Reynolds equations to grow for $d>1$.
+
+In \Figref{pres_nvs_rey_diff} we show the differences for pressure for both sets of equations; at the left side the absolute difference ($\log(\|p_n-p_r\|_\infty)$) is showed; at the right side the relative difference (100$\times\|p_n-p_r\|_\infty/\|p_n\|_\infty$) is showed.
+\begin{figure}
+\centering
+\def\svgwidth{\textwidth}
+\footnotesize{
+\input{figs/pressure_dif_nvs_rey.pdf_tex}}
+\caption[Dimensionless pressure differences (absolute and relative) between Reynolds and Navier Stokes Equations with different Reynolds number]{Dimensionless pressure difference (left) and relative difference (right) for different Reynolds number.}\label{fig:pres_nvs_rey_diff} 
+\end{figure}
+\begin{figure}
+\centering
+\def\svgwidth{\textwidth}	
+\footnotesize{
+\input{figs/friction_dif_nvs_rey.pdf_tex}}
+\caption[Relative differences in friction between Reynolds and Navier Stokes Equations with several Reynolds number for the correct and wrong formulas]{Left: relative difference in friction difference for Navier Stokes Reynolds equation (using formula \eqref*{dfriction_hL}) and  for several Reynolds number. Right: analogous calculation without the projection term $\frac{h_L}{2}\frac{\partial p}{\partial x}$.}\label{fig:friction_nvs_rey_diff} 
+\end{figure}
+
+Since the friction force is derived from the pressure and the velocity of the fluid, we expect a similar behavior between the differences in pressure and the differences in friction. \Figref{friction_nvs_rey_diff}(a) shows the relative difference in friction ($|f_n-f_r|/|f_n|$), for $d<1$ friction results are very similar; for $d>1$ the difference remains low (less than 7\% of difference) but it begins to grow. \Figref{friction_nvs_rey_diff}(b) shows the relative difference when calculated without including the projection term $p\, \partial h_L/\partial x$ in formula \eqref*{dfriction_hL}. It can be observed that for the cases considered the projection term cannot be neglected as done in some published works \cite{mezghani2012,tomanik2013,organisciak2007phd}.
+
+The above results give us some insight about the accuracy of the calculations made in this work. Clearly we are simplifying the problem, as we do not consider cavitation or squeezing effects (temporal terms).
+
+\begin{remark}
+\it A better comparison has been done with a more sophisticated in-house code developed by this research group, already tested in \cite{buscaglia_varform,aus_simeoni_busc}. This has been done since the computation of the friction formula \eqref*{dfriction_hL} requires a better treatment of the derivatives at the boundaries. Therefore, the rectangular mesh used in this section is not suitable. The results indicate clearly the validity of the formula \eqref*{dfriction_hL}.
+\end{remark}
+
+\section{Some representative analytic solutions}
+\label{sec:repre_analityc_sol}
+Two types of finite wedges are going to be analyzed in this section, more details of these computations can be found in \cite{cameron1971}. Optimal geometric parameters for these wedges will be computed analytically. The selection of these optimal parameters depends on what are we interested in maximize/minimize.  In particular, the geometric configuration that minimizes friction is not the configuration that maximizes the load-carrying capacity (defined as the integral of the hydrodynamic pressure).
+\subsection{Step wedge and Rayleigh step}
+\label{sec:step_rayleigh}
+ \begin{figure}[ht]
+ \centering 
+ \def\svgwidth{\textwidth}	
+\input{figs/pad_finit_step.pdf_tex}\caption{Step wedge pad scheme.}\label{fig:step_wedge}	
+\end{figure}
+\begin{table}[ht]
+\centering
+\begin{tabular}{lll}
+\toprule
+Quantity & Scale & Description\\
+\midrule
+$x,\,l$ & $L$ & Horizontal coordinate \\
+$S$ & $U$ & Fluid velocity \\
+$h,\,h_0$ & $H$ & Fluid thickness \\
+$p$ & $6\mu\, U L/H^2$ & Hydrodynamic pressure\\
+$f$ & $\mu U L/H$ & Friction forces\\
+$W$ & $6\mu\, U L^2/H^2$ & Load-carrying capacity\\
+\bottomrule
+\end{tabular}
+\caption{Non-dimensional variables for the step wedge problem.}\label{tab:table_non_dim_step}
+\end{table}
+\Figref{step_wedge} shows the scheme of the step wedge problem. In this case, the pad of finite length $L$ is still while a flat surface is moving to the right with constant speed $U$. To find the hydrodynamic behavior of the lubricant oil between the surfaces, taking the non-dimensionalizations written in \Tabref{table_non_dim_step}, the mathematical problem reads
+
+\framebox{
+\begin{minipage}[ht]{\textwidth}
+Find the pressure scalar field $p:[0,\,1] \rightarrow \mathbb{R}$, satisfying the stationary Reynolds equation in $[0,\,1]$:
+\begin{align}
+\frac{\partial}{\partial x}\left(h^3 \frac{\partial p}{ \partial x}-S\,h\right)=0\label{eq:reynolds_step}
+\end{align}
+with $h(x)=h_1$ for  $0\leq x<1-l$, and $h(x)=1$ for $1-l\leq x \leq 1$. Along with the boundary condition
+\begin{equation}
+p(0)=p(1)=0.\label{eq:cond_reynolds_step}
+\end{equation}
+\end{minipage}}\\
+
+From \eqref{reynolds_step} we see that the flux function
+\begin{equation}
+J(x)=-\frac{h^3}{2}\frac{\partial p}{\partial x}+\frac{S}{2}h\label{eq:flux_step}
+\end{equation}
+is constant along the domain $]0,1[$.
+
+From \eqref{reynolds_step} and the definition of $h$ we see that
+\begin{equation*}
+\frac{\partial^2 p}{\partial x^2}=0\text{ in }]0,1-l[\,\cup\,]1-l,1[,
+\end{equation*}
+and so, using the boundary conditions given by \eqref*{cond_reynolds_step}, and assuming the continuity of $p$, the pressure can be written as
+\begin{equation}
+p(x)=\left\{\begin{array}{ll}
+x\left(\frac{\partial p}{\partial x}\right)_\text{left}&,\,0\leq x<1-l\\
+p_{\text{max}}+(x-1+l)\left(\frac{\partial p}{\partial x}\right)_\text{right} &,\, 1-l\leq x \leq 1
+\end{array}\right.\label{eq:pressure_step_wedge}
+\end{equation}
+where $\left(\frac{\partial p}{\partial x}\right)_\text{left}=\frac{p_\text{max}}{1-l}$ is the left pressure gradient, $ \left(\frac{\partial p}{\partial x}\right)_\text{right}=-\frac{p_\text{max}}{l}$
+is the right pressure gradient, and $p_\text{max}$ is the peak pressure. To determine the peak pressure $p_\text{max}$ we impose mass-conservation on the flux function at $x=1-l$:
+\begin{equation*}
+\lim_{x\rightarrow(1-l)^-}J(x)=\lim_{x\rightarrow(1-l)^+}J(x),
+\end{equation*}
+so
+\begin{equation*}
+-\frac{h_1^3}{2}\left(\frac{\partial p}{\partial x}\right)_\text{left}+\frac{S}{2}h_1=-\frac{1}{2}\left(\frac{\partial p}{\partial x}\right)_\text{right}+\frac{S}{2}.
+\end{equation*}
+Replacing the expressions of the gradients for both left and right sides we obtain
+\begin{equation}
+p_\text{max}=S\,\frac{l(h_1-1)(1-l)}{1+l(h_1^3-1)}.\label{eq:pmax_step_wedge}
+\end{equation}
+We have solved the problem of looking for the pressure of the step wedge. Now, we can ask for some tribological characteristics of the system. First, we look for the load-carrying capacity and its optimal configuration. Next, we look for the friction force and its optimal configuration too.
+\subsubsection*{Load-carrying capacity of the step wedge} The load-carrying capacity $W$ is just the integral of the pressure distribution. Thus, using \eqref*{pressure_step_wedge,pmax_step_wedge} we have
+\begin{equation}W=\int_0^1 p(x)\,dx=\frac{1}{2}p_\text{max}.\label{eq:load_step_wedge}
+\end{equation}
+
+Now, for finding the optimal configuration, i.e., the 2-tuple $(h_1,\,l)$ for which the maximum $W$ is reached, we seek for the configurations that nullifies the gradient of $W$ and, between those configurations, the ones having a negative definite Hessian matrix. Doing so, we obtain the optimal configuration:
+\begin{equation*}
+h_1=\frac{\sqrt{3}+2}{2}\approx 1.866,\,\qquad l=\frac{4}{\sqrt{27}+9}\approx 0.282,\qquad\frac{1-l}{l}=\frac{\sqrt{27}+5}{4}\approx 2.549,
+\end{equation*}
+which corresponds to a load-carrying capacity$$W=S\,\frac{2}{9}\left(\frac{4\sqrt{3}+7}{26\sqrt{3}+45}\right)\approx 0.034\,S.$$
+This configuration is known in the literature as the \emph{Rayleigh Step}. Lord Rayleigh, in 1918 \cite{rayleigh1918}, found it by using calculus of variations to find the shape of the step wedge  that maximizes the load-carrying capacity.
+\subsubsection*{Friction force of the step wedge}
+\label{sec:friction_step_wedge}
+Friction force $F$ can be calculated for the step wedge from \eqref{dfriction_hL} and the pressure profiles found above. The computation reads
+\begin{align}
+F&=\int_0^1 \left(3h\frac{\partial p}{\partial x} +\frac{S}{h}\right)\,dx\nonumber\\
+&=\int_0^{1-l} \left(3h\frac{\partial p}{\partial x} +\frac{S}{h}\right)\,dx+\int_{1-l}^1 \left(3h\frac{\partial p}{\partial x} +\frac{S}{h}\right)\,dx\nonumber\\
+&=\left[3h_1\left(\frac{p_\text{max}}{1-l}\right)+\frac{S}{h_1}\right](1-l)+\left[3\left(\frac{-p_\text{max}}{l}\right)+S\right] l\nonumber\\
+&=S\left(3\,\frac{l(1-l)(h_1-1)^2}{1+l(h_1^3-1)}+\frac{1-l}{h_1}+l\right),\label{eq:friction_step_wedge}
+\end{align}
+taking derivatives it is found that
+$$\parder{F}{l}=S\left(\frac{3h_1^3(h_1-1)}{(h_1^2+h_1+1)[(h_1^3-1)l+1]^2}+\frac{(h_1-1)^3}{h_1^3+h_1^2+h_1}\right)$$ and
+$$\parder{F}{h_1}=-S\frac{(1-l)\left[(2h_1^3-3h_1+1)l-1\right]^2}{h_1^2\left[(h_1^3-1)l+1\right]^2}.$$
+So we have
+ $$\frac{\partial F}{\partial l}>0\text{ and }\frac{\partial F}{\partial h_1}<0\,\text{, whenever } h_1>1\text{ and }l\in (0,\,1)\text{ resp}.$$
+Therefore, the configuration that minimizes friction depends on the design restrictions under the policy: ``take $l$ as small as possible, and $h_1$ as large as possible''. However, from \eqref{pmax_step_wedge,load_step_wedge} it can be observed that using this policy the load-carrying capacity $W$ goes to zero. In consequence, another quantity is needed to characterize the friction relatively to the load-carrying capacity. In the literature, the \emph{friction coefficient} is defined as the quotient between the total friction force and the applied load. Thus, considering the non-dimensionalizations presented before (see \Tabref{table_non_dim_step}), the friction coefficient reads 
+\begin{equation}
+C_f=\frac{H}{6L}\frac{F}{W}.\label{eq:friction_coefficient}
+\end{equation}
+This quantity was also studied by Lord Rayleigh in its classic work \cite{rayleigh1918}. Making similar calculations we made before for the maximum load-carrying capacity, the configuration that minimizes $C_f$ is found to be
+\begin{equation*}
+h_1=2,\qquad l=\frac{1}{5}, \qquad \frac{1-l}{l}=4,
+\end{equation*}
+for which $$C_f=4\frac{H}{L},$$
+while for the Rayleigh Step we have $C_f=4.098\frac{H}{L}$.
+
+This results can be found also in a recent work by \citeauthor{rahmani2009} \cite{rahmani2009}, where they made an analysis of the Rayleigh Step analytically. They based their work on the Reynolds equation considering non-homogeneous boundary conditions for pressure. Analytic relations for parameters as load capacity and friction force were also developed and studied seeking for optimal configurations.
+\begin{figure}[ht]
+ \centering 
+ \def\svgwidth{\textwidth}	
+\input{figs/pad_finit_step_comp.pdf_tex}
+\caption[Scheme of the ``naive step wedge'' versus the Rayleigh Step wedge]{Scheme of the ``naive step wedge'' (solid black line) versus the Rayleigh Step wedge (dashed blue line), and the wedged that minimizes $C_f$ (dotted red line).}\label{fig:step_wedge_comp}	
+\end{figure}
+\subsubsection*{Comparison of Rayleigh Step with a naive step wedge}
+By \emph{naive step wedge} we meant a 2-tuple $(h_1,l)$ chosen, arguably, as simple as possible. The idea is to have a non trivial reference design to compare with the optimal designs found above.
+
+The design we choose for this comparison is shown in \Figref{step_wedge_comp}. In that figure, the blue dashed lines represent the real proportions of the Rayleigh Step wedge, while the black line represents our simple step of length $L$ with proportions $(L-1)/l=1$ and $h_1/H=2$ (see \Figref{step_wedge}).
+
+We use \eqref{load_step_wedge,friction_step_wedge} to calculate the load carrying-capacity of both the Rayleigh Step wedge and our naive step wedge, denoted by $W_R$ and $W_0$ resp.. We also calculate the friction force for both the Rayleigh Step and the naive step wedge, denoted as $F_R$ and $F_0$, respectively. Doing the computations, we found
+$$\frac{W_0}{W_R}=0.81\qquad\text{and}\qquad\frac{F_0}{F_R}=1.08.$$
+We observe that the Rayleigh Step augments 19\% the load-carrying capacity and diminishes 8\% the friction force when compared to the naive step wedge.
+
+\subsection{Disc wedge}\label{sec:disc_wedge}
+ \begin{figure}[ht!]
+ \centering 
+ \def\svgwidth{\textwidth}	
+\input{figs/pad_disc_step_nocav.pdf_tex}\caption{Disc pad scheme.}\label{fig:pad_disc_nocav}
+\end{figure}
+In this case, the pad has a circular shape, symmetric along $x$-axis, centered at $x=0$ (see \Figref{pad_disc_nocav}) with radius of curvature $R$. Non-dimensionalizations are the same as in previous section, including this time the variable $R$ with scale $L$ (see \Tabref{table_non_dim_disc}).
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lll}
+\toprule
+Quantity & Scale & Description\\
+\midrule
+$x,\,R$ & $L$ & Horizontal coordinate \\
+$S$ & $U$ & Fluid velocity \\
+$h,\,h_0$ & $H$ & Fluid thickness \\
+$p$ & $\frac{6\mu U L}{H^2}$ & Hydrodynamic pressure\\
+\bottomrule
+\end{tabular}
+\caption{Non-dimensional variables for the disc wedge problem.}\label{tab:table_non_dim_disc}
+\end{table}
+
+This problem has a major difference with the step wedge problem (previous section), as in this geometry a divergent zone is present for $0<x<L/2$. Thus, negative pressures are expected to appear at that divergent zone. The mathematical problem is written (non-dimensionalization are shown in \Tabref{table_non_dim_disc}):
+
+\framebox{
+\begin{minipage}[ht]{\textwidth}
+Find the pressure scalar field $p:[-0.5,\,0.5] \rightarrow \mathbb{R}$, satisfying the stationary Reynolds equation:
+\begin{align}
+\frac{\partial}{\partial x}\left(h^3 \frac{\partial p}{ \partial x}-S\,h\right)=0,\qquad \text{in }(-0.5,\,0.5)\label{eq:reynolds_disc_nocav}
+\end{align}
+where the film thickness function is given by
+$$h(x)=h_0+\frac{L}{H}\left(R-\sqrt{R^2-x^2}\right),\qquad x\in [-0.5,\,0.5],$$ along with the boundary conditions for pressure
+\begin{equation}
+p(-0.5)=p(0.5)=0.\label{eq:cond_reynolds_disc_nocav}
+\end{equation}
+\end{minipage}}\\
+
+To simplify calculations we approximate the thickness function (up to an error of order $10^{-7}\times L/H$) by 
+$$h(x) =h_0+\frac{L}{H}\frac{x^2}{2R},\qquad x\in [-0.5,\,0.5].$$
+
+From Reynolds equation \eqref*{reynolds_disc_nocav} we have that the flux function $$J=-\frac{h^3}{2}\frac{\partial p}{\partial x}+S\frac{h}{2}$$ is constant along the domain. This way, Reynolds equation can be rewritten as
+\begin{equation}
+\frac{\partial p}{\partial x}=S\frac{(h-\bar{h})}{h^3},\label{eq:reynolds_disc2_nocav}
+\end{equation}
+where $\bar{h}$ is some constant to determine. Now, we make the change of variables
+\begin{equation*}
+\tan{\gamma}=\frac{x}{\sqrt{2\,h_0\,R\,H/L}}.
+\end{equation*}
+And so, the double integration of \eqref{reynolds_disc2_nocav} gives ($\bar{h}=h_0\sec^2(\bar{\gamma})$)
+\begin{equation}
+p(\gamma)=S\sqrt{2RL/H}\left(\frac{\gamma}{2}+\frac{\sin{2\gamma}}{4}-\frac{1}{\cos^2\bar{\gamma}}\left[\frac{3}{8}\gamma+\frac{\sin 2\gamma}{4}+\frac{\sin 4\gamma}{32}\right]\right)+C,
+\end{equation}
+where $\bar{\gamma}$ and $C$ are determined from boundary conditions \eqref*{cond_reynolds_disc_nocav}.
+
+\Figref{pad_disc_pressure_prof} shows the pressure profile for the case $R=80$, $S=1$, $h_0=1$, $L=1\times 10^{-3}$[m] and $H=1\times 10^{-6}$[m]. The anti-symmetric pressure profile is such that it is positive at the convergent zone (where $\partial_x  h <0$) and negative at the divergent zone (where $\partial_x  h >0$). These negative pressures will be subject of study in \Chapref{cavitation_models}.
+
+ \begin{figure}[ht!]
+ \centering 
+ \def\svgwidth{\textwidth}	
+\input{figs/disc_sol_ex1_nocav.pdf_tex}\caption{Disc pad scheme and pressure profile.}\label{fig:pad_disc_pressure_prof}
+\end{figure}
+
+%\begin{figure}[hb]
+% \centering 
+% \def\svgwidth{\textwidth}		
+%{ \footnotesize
+%\input{figs/ring_profiles.pdf_tex}}\caption{Scheme of the ``naive step wedge'' (solid black line) versus the Rayleigh Step wedge (dashed blue line).}\label{fig:disc_wedge_profiles}	
+%\end{figure}
+
+%\section{Mathematical analysis of Reynolds equation}
+%\subsection{Weak formulation}
+%\subsection{Existence and uniqueness}
+%% IRA ESTA PARTE??
+
+
+%--------------------------------
+%Extend to compressible case ($\rho(p)$). 
+
+%General. Incompressible case.
+%
+%\item Forces and torques in lubricated devices
+%
+%Here we take a small piece of the two plates and consider them with
+%some shear stress $\tau_w$ and some pressure $p$, BUT the surfaces
+%are not parallel anymore. There is $h'_U$ and $h'_L$.  
+%
+%\item Some representative analytical solutions: Steady step. Wedge.
+%Squeezing. 
+%
+%Look up articles with general analytical solutions for the step (sort
+%of optimal-friction steps), extract something from that. Discuss also
+%optimal wedges.
+%
+%\item Mathematical analysis of Reynolds equation
+%
+%Weak formulation. Existence and uniqueness. Compressible and incompressible.
+%
+%\item (Optional) Equilibrium of lubricated devices
+%
+%Discuss our Hafidi results without cavity.
+%
+%\item (Optional) Reynolds from Navier-Stokes
+%
+%\item Dynamics of lubricated devices
+%
+%Equations of motion. Damping and stifness. Critical mass.
+%
+%\item (Optional) Basic elastohydrodynamics
+%
+%\item (Optional) Thermal effects, non-Newtonian effects, inertial effects, turbulence effects.
+%
+%\item (Optional) Roughness effects
+%
+%\end{enumerate}

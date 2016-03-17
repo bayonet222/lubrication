@@ -1,0 +1,62 @@
+%% Creator: Inkscape inkscape 0.48.5, www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'tubo_example2.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{407.35bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.50625997)%
+    \put(0,0){\includegraphics[width=\unitlength]{tubo_example2.pdf}}%
+    \put(-0.00232292,0.0765387){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$p=0$}}}%
+    \put(0.56398456,0.02769655){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{reformation}}}%
+    \put(0.47425205,0.20168663){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\Omega\setminus\omega$}}}%
+    \put(0.82670433,0.20168665){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\Omega\setminus\omega$}}}%
+    \put(0.32189356,0.02773539){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{rupture}}}%
+    \put(0.72215952,0.02773539){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{rupture}}}%
+    \put(0.65928961,0.14361969){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\omega$}}}%
+    \put(0.19862636,0.14151547){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\omega$}}}%
+  \end{picture}%
+\endgroup%

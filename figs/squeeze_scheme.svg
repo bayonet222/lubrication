@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="607.10168"
+   height="201.02036"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="squeeze_scheme.pdf">
+  <defs
+     id="defs4">
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend"
+       style="overflow:visible">
+      <path
+         id="path3764"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lstart"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lstart"
+       style="overflow:visible">
+      <path
+         id="path3761"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(0.8,0,0,0.8,10,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <filter
+       id="filter4426"
+       x="-0.25"
+       width="1.5"
+       y="-0.5"
+       height="2"
+       inkscape:menu-tooltip="Colorizable filling with flow inside like transparency"
+       inkscape:menu="Textures"
+       inkscape:label="Shaken liquid"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur4428"
+         result="result8"
+         stdDeviation="4" />
+      <feTurbulence
+         id="feTurbulence4430"
+         baseFrequency="0.05"
+         numOctaves="2"
+         type="fractalNoise"
+         result="result7"
+         seed="0" />
+      <feColorMatrix
+         id="feColorMatrix4432"
+         values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 2 -0.75 "
+         result="result5" />
+      <feComposite
+         id="feComposite4434"
+         in2="result7"
+         in="result8"
+         operator="out"
+         result="result6" />
+      <feDisplacementMap
+         id="feDisplacementMap4436"
+         in2="result6"
+         result="result4"
+         scale="120"
+         yChannelSelector="A"
+         xChannelSelector="A"
+         in="result5" />
+      <feComposite
+         id="feComposite4438"
+         in2="result4"
+         in="result8"
+         operator="arithmetic"
+         result="result2"
+         k1="1"
+         k3="0.5"
+         k2="0"
+         k4="0" />
+      <feComposite
+         id="feComposite4440"
+         in2="result2"
+         operator="in"
+         in="SourceGraphic"
+         result="fbSourceGraphic" />
+    </filter>
+    <filter
+       id="filter4950"
+       x="-0.25"
+       width="1.5"
+       y="-0.5"
+       height="2"
+       inkscape:menu-tooltip="Colorizable filling with flow inside like transparency"
+       inkscape:menu="Textures"
+       inkscape:label="Shaken liquid"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur4952"
+         result="result8"
+         stdDeviation="4" />
+      <feTurbulence
+         id="feTurbulence4954"
+         baseFrequency="0.05"
+         numOctaves="2"
+         type="fractalNoise"
+         result="result7"
+         seed="0" />
+      <feColorMatrix
+         id="feColorMatrix4956"
+         values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 2 -0.75 "
+         result="result5" />
+      <feComposite
+         id="feComposite4958"
+         in2="result7"
+         in="result8"
+         operator="out"
+         result="result6" />
+      <feDisplacementMap
+         id="feDisplacementMap4960"
+         in2="result6"
+         result="result4"
+         scale="120"
+         yChannelSelector="A"
+         xChannelSelector="A"
+         in="result5" />
+      <feComposite
+         id="feComposite4962"
+         in2="result4"
+         in="result8"
+         operator="arithmetic"
+         result="result2"
+         k1="1"
+         k3="0.5"
+         k2="0"
+         k4="0" />
+      <feComposite
+         id="feComposite4964"
+         in2="result2"
+         operator="in"
+         in="SourceGraphic"
+         result="fbSourceGraphic" />
+    </filter>
+    <filter
+       id="filter5204"
+       x="-0.25"
+       width="1.5"
+       y="-0.5"
+       height="2"
+       inkscape:menu-tooltip="Colorizable filling with flow inside like transparency"
+       inkscape:menu="Textures"
+       inkscape:label="Shaken liquid"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur5206"
+         result="result8"
+         stdDeviation="4" />
+      <feTurbulence
+         id="feTurbulence5208"
+         baseFrequency="0.05"
+         numOctaves="2"
+         type="fractalNoise"
+         result="result7"
+         seed="0" />
+      <feColorMatrix
+         id="feColorMatrix5210"
+         values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 2 -0.75 "
+         result="result5" />
+      <feComposite
+         id="feComposite5212"
+         in2="result7"
+         in="result8"
+         operator="out"
+         result="result6" />
+      <feDisplacementMap
+         id="feDisplacementMap5214"
+         in2="result6"
+         result="result4"
+         scale="120"
+         yChannelSelector="A"
+         xChannelSelector="A"
+         in="result5" />
+      <feComposite
+         id="feComposite5216"
+         in2="result4"
+         in="result8"
+         operator="arithmetic"
+         result="result2"
+         k1="1"
+         k3="0.5"
+         k2="0"
+         k4="0" />
+      <feComposite
+         id="feComposite5218"
+         in2="result2"
+         operator="in"
+         in="SourceGraphic"
+         result="fbSourceGraphic" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.979899"
+     inkscape:cx="351.45013"
+     inkscape:cy="72.351349"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1060"
+     inkscape:window-x="-2"
+     inkscape:window-y="-3"
+     inkscape:window-maximized="1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     showguides="true"
+     inkscape:guide-bbox="true" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-69.494924,-25.331669)">
+    <path
+       style="fill:#b3b3b3;stroke:none;filter:url(#filter5204);opacity:0.81404959"
+       d="m 96.137595,113.7796 c 0,19.89479 0,89.31336 0,89.31336 l 561.373905,0.31527 0,-88.14032 c 0,0 -41.29807,7.84029 -58.1971,3.72471 -19.37854,-4.71942 -58.19711,13.90329 -58.19711,13.90329 0,0 -276.18742,0.21636 -329.0948,0.21636 -19.58107,0 -50.67009,-14.58773 -72.62825,-9.66634 -25.94765,5.81554 -43.256645,-9.66633 -43.256645,-9.66633 z"
+       id="path4395"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="scccscsss" />
+    <rect
+       style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2.5;stroke-miterlimit:10;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect2985"
+       width="327.28943"
+       height="17.172594"
+       x="213.14099"
+       y="114.7586" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Arrow1Lstart);marker-end:url(#Arrow1Lend)"
+       d="m 376.78571,38.219324 0,70.714286"
+       id="path3755"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-size:17.94291878px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="380.25949"
+       y="78.603966"
+       id="text4387"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4389"
+         x="380.25949"
+         y="78.603966">$h(t)$</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 95.714286,203.50504 562.142854,0"
+       id="path4391"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:1, 4;stroke-dashoffset:0"
+       d="m 211.8795,133.24963 0,70.07934"
+       id="path4397"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:1, 4;stroke-dashoffset:0"
+       d="m 541.60714,132.89789 0,70.71429"
+       id="path4399"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-size:11.30356407px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="193.51128"
+       y="219.96843"
+       id="text4401"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4403"
+         x="193.51128"
+         y="219.96843">$x=0$</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:11.30356407px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="524.73383"
+       y="219.96843"
+       id="text4401-6"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4403-6"
+         x="524.73383"
+         y="219.96843">$x=1$</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:19.91172218px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="148.38176"
+       y="91.149742"
+       id="text4442"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4444"
+         x="148.38176"
+         y="91.149742">$p=p_0$</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:19.91172218px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="553.59991"
+       y="91.149742"
+       id="text4442-1"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4444-1"
+         x="553.59991"
+         y="91.149742">$p=p_0$</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:11.30356407px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="360.5145"
+       y="219.96843"
+       id="text4401-61"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4403-3"
+         x="360.5145"
+         y="219.96843">$x=0.5$</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 104.04571,97.302358 33.33504,28.284272"
+       id="path4551"
+       inkscape:connector-curvature="0"
+       transform="translate(70,3.7907529)" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="M 505.58135,95.282053 474.26662,124.57648"
+       id="path4737"
+       inkscape:connector-curvature="0"
+       transform="translate(70,3.7907529)" />
+    <text
+       xml:space="preserve"
+       style="font-size:8.02182102px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="94.917679"
+       y="219.49562"
+       id="text4923"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4925"
+         x="94.917679"
+         y="219.49562">Fixed surface</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:8.02182102px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="246.5336"
+       y="105.09383"
+       id="text4923-5"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4925-2"
+         x="246.5336"
+         y="105.09383">Moving surface</tspan></text>
+    <rect
+       style="opacity:0.86363639;color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect4948"
+       width="132.34755"
+       height="67.364227"
+       x="310.61194"
+       y="133.32607" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4528"
+       d="m 376.78571,133.25503 0,70.71429"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:1, 4;stroke-dashoffset:0;opacity:0.33471074" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:6, 6;stroke-dashoffset:0;marker-start:none"
+       d="m 442.92855,133.25503 0,70.71429"
+       id="path4984"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4986"
+       d="m 310.60714,133.25503 0,70.71429"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:6, 6;stroke-dashoffset:0" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text5172"
+       y="219.96843"
+       x="429.11606"
+       style="font-size:11.30356407px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       xml:space="preserve"><tspan
+         y="219.96843"
+         x="429.11606"
+         id="tspan5174"
+         sodipodi:role="line">$\Sigma(t)$</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:11.30356407px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="297.11606"
+       y="219.96843"
+       id="text5200"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5202"
+         x="297.11606"
+         y="219.96843">$1-\Sigma(t)$</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:8.02182102px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="224.15225"
+       y="166.48131"
+       id="text4923-5-3"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4925-2-9"
+         x="224.15225"
+         y="166.48131">full-film zone</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text5243"
+       y="166.48131"
+       x="348.15225"
+       style="font-size:8.02182102px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       xml:space="preserve"><tspan
+         y="166.48131"
+         x="348.15225"
+         id="tspan5245"
+         sodipodi:role="line">cavitated zone</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text5247"
+       y="166.48131"
+       x="454.15225"
+       style="font-size:8.02182102px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       xml:space="preserve"><tspan
+         y="166.48131"
+         x="454.15225"
+         id="tspan5249"
+         sodipodi:role="line">full-film zone</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:9.76560974px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="251.98242"
+       y="184.46353"
+       id="text4442-7"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4444-7"
+         x="251.98242"
+         y="184.46353">$\omega$</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text3209"
+       y="184.46353"
+       x="365.98242"
+       style="font-size:9.76560974px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       xml:space="preserve"><tspan
+         y="184.46353"
+         x="365.98242"
+         id="tspan3211"
+         sodipodi:role="line">$\Omega\setminus\omega$</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:9.76560974px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="481.98242"
+       y="184.46353"
+       id="text3213"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3215"
+         x="481.98242"
+         y="184.46353">$\omega$</tspan></text>
+  </g>
+</svg>

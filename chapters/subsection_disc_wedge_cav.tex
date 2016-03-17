@@ -1,0 +1,84 @@
+\subsection{Disc wedge}
+ \begin{figure}[h!]
+ \centering 
+ \def\svgwidth{\textwidth}	
+\input{figs/pad_disc_step.pdf_tex}\caption{Disc pad scheme.}\label{fig:pad_disc}
+\end{figure}
+In this case the pad is symmetric (along $x$-axis) and centered at $x=0$ (see \Figref{pad_disc}) with radius of curvature $R$. Non-dimensionalizations are the same as in previous section, including this time the variable $R$ with scale $L$ (see \Tabref{table_non_dim_disc}).
+
+This problem has a major difference with the Step wedge problem (previous section), as in this geometry a divergent zone is present for $0<x<L/2$. In that divergent zone a rupture in the film might occurs. Thus, a cavitation model needs to be considered. As we are looking for a stationary state, we choose the well known \emph{Reynolds cavitation model} which assures mass conservation in this case (see \Chapref{chapter3}). This model gives a condition for the unknown cavitation frontier point $0<\bar{x}<L/2$ and it supposes pressure been constant along the cavitation zone $\bar{x}<x<L/2$.
+
+Now, the mathematical problem is written (non-dimensionalization are shown in \Tabref{table_non_dim_disc}):
+
+\framebox{
+\begin{minipage}[h]{\textwidth}
+Find the cavitation boundary point $\bar{x}$ and the pressure scalar field $p:(-0.5,\,\bar{x}) \rightarrow \mathbb{R}$, satisfying the stationary Reynolds equation:
+\begin{align}
+\frac{\partial}{\partial x}\left(h^3 \frac{\partial p}{ \partial x}-S\,h\right)=0,\qquad \text{in }(-0.5,\,\bar{x})\label{eq:reynolds_disc}
+\end{align}
+where the film thickness function is given by
+$$h(x)=h_0+\frac{L}{H}\left(R-\sqrt{R^2-x^2}\right),\qquad x\in [-0.5,\,0.5],$$ along with the boundary conditions for pressure
+\begin{equation}
+p(-L/2)=p_0,\qquad p(\bar{x})=p_1,\label{eq:cond_reynolds_disc}
+\end{equation}
+along with Reynolds boundary condition
+\begin{equation}
+\left.\frac{\partial p}{ \partial x}\right|_{x=\bar{x}}=0.\label{eq:cond_cavitation_disc}
+\end{equation}
+\end{minipage}}\\
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lll}
+\toprule
+Quantity & Scale & Description\\
+\midrule
+$x,\,R$ & $L$ & horizontal coordinate \\
+$S$ & $U$ & fluid velocity \\
+$h,\,h_0$ & $H$ & fluid thickness \\
+$p,\,p_0,\,p_1$ & $\frac{6\mu U L}{H^2}$ & hydrodynamic pressure\\
+\bottomrule
+\end{tabular}
+\caption{Non-dimensional variables for the step wedge problem.}\label{tab:table_non_dim_disc}
+\end{table}
+
+For simplifying calculations we approximate the thickness function, up to an error of less than $2.4\times 10^{-4}$[$\mu $m], by 
+$$h(x) =h_0+\frac{L}{H}\frac{x^2}{2R},\qquad x\in [-0.5,\,0.5].$$
+
+Reynolds equation \Eqref*{reynolds_disc} indicates that the flux function $$J=-\frac{h^3}{2}\frac{\partial p}{\partial x}+S\frac{h}{2}$$ is constant along the domain (including the cavitated zone as there the pressure gradient is null and thus the flux is only of Couette type). So taking $\bar{h}=h(\bar{x})$ and using the condition \eqref*{cond_cavitation_disc}, Reynolds equation can be written
+\begin{equation}
+\frac{\partial p}{\partial x}=S\frac{(h-\bar{h})}{h^3}.\label{eq:reynolds_disc2}
+\end{equation}
+Making the change of variables $$\tan{\gamma}=\frac{x}{\sqrt{2RH/L}}$$ and identifying $\bar{\gamma}\leftrightarrow \bar{x}$, integration of \Eqref{reynolds_disc2} gives
+\begin{equation}
+p(\gamma)=S\sqrt{2RL/H}\left(\frac{\gamma}{2}+\frac{\sin{2\gamma}}{4}-\frac{1}{\cos^2\bar{\gamma}}\left[\frac{3}{8}\gamma+\frac{\sin 2\gamma}{4}+\frac{\sin 4\gamma}{32}\right]\right)+C
+\end{equation}
+where $\bar{\gamma}$ and $C$ are determined from boundary conditions \Eqref*{cond_reynolds_disc}.
+
+\Figref{sol_disc_ex1} shows an example of the pressure obtained for $R=64$, $p_0=0$ and both $p_1=0,\,0.01$(7.8[bar]), cavitation boundary points are placed for these cases at $\bar{x}=0.15$ and $\bar{x}=0.13$ resp.
+ \begin{figure}[h!]
+ \centering 
+ \def\svgwidth{\textwidth}	
+\input{figs/disc_sol_ex1.pdf_tex}\caption[Pressure profiles for the disc pad with different boundary pressure conditions]{Pressure profiles for the disc pad (continuos line) with $R=64$, $p_0=0$, $p_1=0$ (dotted line) and $p_1=0.01$ (dashed line).}\label{fig:sol_disc_ex1}
+\end{figure}
+
+%\begin{figure}[hb]
+% \centering 
+% \def\svgwidth{\textwidth}		
+%{ \footnotesize
+%\input{figs/ring_profiles.pdf_tex}}\caption{Scheme of the ``naive step wedge'' (solid black line) versus the Rayleigh step wedge (dashed blue line).}\label{fig:disc_wedge_profiles}	
+%\end{figure}
+\subsection{Varying right pressure condition}
+In the next discussion, we take pressure condition on the left side as $p_0=0$. The flux function for stationary Reynolds equation is written
+$$J=-\frac{h^3}{2}\frac{\partial p}{\partial x}+S\frac{h}{2}=Poiseuille+Couette.$$
+When $p_1=0$ the Couette flux due to viscous shear stress is always dominant. On the other hand, as we augment $p_1$ and it surpasses some threshold, Poiseuille flux will dominate, so $J<0$ and the fluid will not pass the pad region. This back flux phenomena is called ``blow-by''; such phenomena is of great interest as it occurs in systems like the piston-ring system of an internal combustion engine \cite{heywood1988}, affecting performance and gases emissions \cite{namazian1982,aghdam2010}.
+
+Selecting some minimal film thickness $h_0$ and some radius $R$, we can ask for the highest pressure $p_1$ such that $J>0$ (there is no blow-by). Similarly, given a range for the minimum thickness $h_0$ and a range for the right pressure $p_1$, we can ask for the ring curvature $R$ (or a range of it) that forbid ``blow-by'' on the largest set of parameters as possible. The distance between the ring of a piston-ring system and its cylinder vary typically in the range from 0 to 10[$\mu$m] \cite{irani1997,tamminen2006,dhar2009}; also, for the compression ring of an internal combustion engine the radius $R$ is around $R=50$ \cite{gadeshi2012}. For our tests we take values of $h_0$ and $R$ around these mentioned.\\
+ \begin{figure}[h!]
+ \def\svgwidth{1.1\textwidth}
+  \centering \hspace*{-0.5cm}
+{\scriptsize
+\input{figs/pmax_vs_R.pdf_tex}}\caption[Dependence between $R$ and the maximum pressure difference for the pad disc]{(a) $p_\text{max}$ behavior when $R$ and $h_0$ variates; (b) optimal radious for several $h_0$ values.}\label{fig:pmax_vs_R}
+\end{figure}
+
+Let us denote by $p_\text{max}$ the maximum pressure that some configuration $(R,h_0)$ can support. \Figref{pmax_vs_R}(a) shows the behavior of $p_\text{max}$ for different $h_0$ and several values of $R$. Notice that for $h_0$ fixed, there is some optimal value of $R$, i.e. given some $h_0$ there is a value of $R$ for which $p_\text{max}$ is maximum. This optimal value, denoted by $R_\text{opt}$, is showed in \Figref{pmax_vs_R}(b). In spite great sensibility of $R_\text{opt}$ with $h_0$ is observed, it can be noticed that a ring with curvature radius around $R=50$ gives a good support (10[bar] for $h_0=2.0$) for the entire range of $h_0$ considered, and this support is better for the minor range ($h_0$ between $0$ and $2$[$\mu$m]) which is more common \cite{dhar2009} than the higher range considered ($h_0$ between $5$ and $10$[$\mu$m]).

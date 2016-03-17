@@ -1,0 +1,94 @@
+\chapter{Motivation and scope of this manuscript}
+\label{chap:introduction} 
+\lhead{Chapter 1. \emph{Motivation and scope of this manuscript}} % This is for the header on each page - perhaps a shortened title
+
+%% technological interest of textured surfaces 
+%% socio-economic interest %% what is a lubrication problem? where does it appear? %% aspects that will be consider: well-posedness of the problems, mass conservation %% scope of the exposition %% a plan of what it will be presented
+For many mechanical systems, designers deal with the proximity of surfaces in relative motion in such a way that \emph{wear} and \emph{friction} appear. In general, to prevent such undesirable effects, some substance (e.g., oil, grease, gas) is suitably placed to carry part of the applied load. This way of addressing wear and friction is called \emph{lubrication} and the science that studies wear, friction and lubrication is called \emph{Tribology}.
+
+In the last ten years, novel fabrication techniques have opened the possibility of tailoring surfaces at micrometric scale \cite{etsion05}. Precision micromachining and high energy pulsed lasers can engrave surfaces with micrometric motifs of practically any shape. Envisioning large potential gains, industry has been promoting the scientific exploration of engineered surfaces, designed so as to improve the friction, wear, stiction and lubricant consumption characteristics of tribological systems. In fact, Holmberg \cite{holm2012} showed that between 5 and 10\% of a passenger car power is lost due to friction on the Piston-Ring System (see \Figref{cilindro_piston_1}) and thus the better understanding of how engineered surfaces work in those systems may have a great socio-economic impact.
+
+For helping designers and engineers in the elaboration of efficient tribological systems, computational simulations are need to provide insight on the dependence of those systems on their design variables. However, not only the analysis of simulation results would be required but also the improvement of the mathematical models of the physics involved and the numerical methods related to it. With this motivation, this work addresses the mathematical models and numerical methodologies involved in Lubrication Theory. 
+
+Apart from this mathematical study, simple tribological systems, such as the slider bearing, were simulated and the results are exposed and analyzed. For these simulations, an in-house computational program was used. Its source file can be found at \href{http://www.lcad.icmc.usp.br/~buscaglia/download.html}{\color{black}{www.lcad.icmc.usp.br/
+$\sim$buscaglia/download.html}}.
+
+Next, the structure of this document is summarized:
+\begin{description}
+\item[\Chapref{introduction}] The scope of the work is given along with the description of some basic tribological systems and some basic definitions of Lubrication Theory.
+\item[\Chapref{equations_lubrication}] The Reynolds equation and the friction formulas are deduced from a simple asymptotic analysis. Also, results of both Navier-Stokes equations and Reynolds equation are compared.
+\item[\Chapref{maths_reynolds_equation}] Mathematical properties of the Reynolds equation are studied, showing well-posedness (\emph{existence}, \emph{uniqueness} and \emph{stability}) under the hypothesis of no cavitation.
+\item[\Chapref{cavitation_models}] Cavitation is considered and different mathematical models of it are presented and analyzed along with some analytical solutions.
+\item[\Chapref{numerical_methods}] Numerical methods for Reynolds equation and cavitation models are studied and some numerical solutions are shown.
+\item[\Chapref{slider_bearing}] A set of simulations are performed for the slider bearing tribological system. Considering sinusoidal textures, the effects of several textures are measured and some effects are presented when considering the Elrod-Adams cavitation model (presented in \Chapref{cavitation_models}). 
+\item[\Chapref{conclusions_future_work}] Conclusions and future work are presented.
+\end{description}
+%Thus, apart from founding how the exposed problems could be managed numerically, the reader will found also an \emph{a priori} analysis involving properties such as \emph{well-posedness}, which means that a problem not only have a solution in some suitable space, but also that its solution is unique and depends continuously on the data that identifies the problem.
+
+\section{Representative Lubricated systems}
+\begin{description}
+\item[Journal Bearing] (see \Figref{bearing_scheme}) This system consists of a rotating cylindrical shaft 
+(journal) enclosed by a cylindrical bush. The journal adopts an eccentric position that creates a
+convergent-divergent profile for the fluid and in this way generates pressure. This pressure, when integrated in the axial and circumferential directions, yields the \emph{load-carrying capacity} of the journal.
+\begin{figure}[ht!]
+\centering \def\svgwidth{\textwidth}	
+\small{\input{figs/bearing_scheme.pdf_tex}}\caption[Journal Bearing scheme]{Journal Bearing scheme. Point A is the bush center (fixed). Point B is the center of the journal (dynamically varying). The journal is rotating with angular speed $\omega$.}\label{fig:bearing_scheme}
+\end{figure}
+\item[Piston-Ring] (see \Figref{cilindro_piston_1}) This system performs different important functions: the Top Ring provides a gas seal and the Second Ring below assists in the sealing and adjusts the action of the oil film. The rings also act carrying heat into the cooled cylinder wall (liner). This heat transfer function maintains acceptable temperatures and stability in the piston and piston rings, so that sealing ability is not impaired. Finally, the Oil Control Ring (OCL) acts in a scrapping manner, keeping excess oil out of the combustion chamber. In this way, oil consumption is held at an acceptable level and harmful emissions are reduced.
+\begin{figure}[ht!]
+\centering \def\svgwidth{\textwidth}
+\small{\input{figs/cilindro_piston_b1.pdf_tex}}\caption[Piston-Ring contact scheme]{Piston-Ring contact scheme. The piston has an oscillatory motion between the TDC (Top Dead Center) and BDC (Bottom Dead Center) points.}\label{fig:cilindro_piston_1}
+\end{figure}
+\end{description}
+\section{Lubrication regimes}This work is focused in fluid film lubrication phenomena, which take place when opposing surfaces are separated by a lubricant film. We characterize the roughness of the surfaces by a parameter $\sigma$ that is the \emph{composite standard deviations of asperity height distribution}, given by $\sigma=\sqrt{\sigma_1^2+\sigma_2^2}$ \cite{panayi08}. For characterizing the distance between the surfaces we denote as $\bar{h}$ the average distance between them. Both parameters $\sigma$ and $\bar{h}$ are schematized in \Figref{surfaces_roughness}.
+ \begin{figure}[ht!]
+ \centering 
+ \def\svgwidth{0.8\textwidth}\small{
+\input{figs/superficies_sigmas.pdf_tex}}\caption[Surface roughness scheme]{Surface roughness scheme. Adapted from \cite{panayi08}.}\label{fig:surfaces_roughness}
+\end{figure}
+ \begin{figure}[ht!]
+ \centering 
+ \def\svgwidth{0.9\textwidth}\small{
+\input{figs/conformity.pdf_tex}}
+\caption[Conformity of the circular-shaped slider bearing]{Conformity is a measure relating the curvatures of two surfaces in proximity. Adapted from \cite{checo2014a}.}\label{fig:conformity}
+\end{figure}
+
+Another important measure of surfaces in proximity is its degree of \emph{conformity}. Roughly speaking, we say that two surfaces are conformal if their curvatures are similar. On the contrary, the more dissimilar the curvatures are, the less conformal (see \Figref{conformity}). A more accurate use of this concept can be found in \Chapref{slider_bearing}.
+
+Depending on how effective the fluid film is for separating the surfaces, the next classification arises:
+\subsection{Hydrodynamic Lubrication}In this case the fluid film separates the surfaces completely. Moreover, the generated pressure is low enough to prevent the deformation of the surfaces. In this regime there is no direct contact between the surfaces. 
+\subsection[Elastohydrodynamic Lubrication]{Elastohydrodynamic Lubrication (EHL)} As in Hydrodynamic Lubrication, in EHL the surfaces are  completely separated ($\bar{h}\gg \sigma$). In contrast, the pressure field deforms the surfaces. Material hardness and dependence of viscosity on temperature play important roles.
+\subsection{Boundary Lubrication} This case ($\bar{h}\approx \sigma$) is associated with the highest levels of friction and wear due to direct contact between the surfaces. These (normal) contact forces are calculated with some model like the Greenwood-Williamson model \cite{greenwood1966,panayi08}. Some \emph{dry friction coefficient} $C_f$ is used to calculate the contact friction force as $F=C_fN$.
+
+\subsection{Mixed Lubrication}
+As the name would suggest, Mixed Lubrication occurs between boundary and hydrodynamic lubrication. The fluid film thickness ($\bar{h}$) is slightly greater than the surface roughness ($\sigma$), so that asperity contacts are not as important as in Boundary Lubrication, but the surfaces are still close enough as to affect each other (e.g., surface deformations would take place). %In a system under Mixed Lubrication regime, the surface asperities themselves can form miniature non-conformal contacts. As we saw previously, non-conformal contacts lead to EHD. But since we are dealing with asperities, not ball bearings, the effect is localized. This phenomenon is termed micro-elastohydrodynamic lubrication. 
+
+\subsection{Fully-flooded and starving conditions}
+\label{sec:fully-flooded} In this work, the oil inflow rate $Q$ is assumed to be high enough to assure Hydrodynamic Lubrication regime and, at the same time, allow the tribological properties to not depend on $Q$ (in the sense that if $Q$ is augmented, the tribological properties will not change). We name this condition as \emph{fully-flooded} condition.
+
+\Figref{ex_starved_cond} shows a numerical experiment that illustrates starved and fully-flooded conditions. 
+ \begin{figure}[ht!]
+ \centering 
+ \def\svgwidth{\textwidth}\small{
+\input{figs/ex_starved_cond.pdf_tex}}
+\caption{Starved and fully-flooded conditions example.}\label{fig:ex_starved_cond}
+\end{figure}
+Focusing on \Figref{ex_starved_cond} a), the first red line from below represents a barrel-shaped pad placed between $x=0$ and $x=1$ over which a vertical load of module $W=W_0$ is acting downwards. The pad, running to the left, is being separated from a second fixed surface placed along $z=0$ by an oil film entering from the left, which height is represented by the blue line with height-entry $h_d=2$. For this load and height-entry, the minimum distance $C_\text{min}$ from the pad to the lower surface is approximately $C_\text{min}=2$. When $h_d$ is incremented $C_\text{min}$ rises also. Notice that this rising is accompanied with an augment of the area of contact between the fluid and the pad. As it can be observed from \Figref{ex_starved_cond} b) to d), for each $h_d$, the bigger is $W$ the smaller is the minimal distance $C_\text{min}$. For each of the showed cases, the steady state behavior of the pad does not changes if we choose $h_d\geq 10$. Thus, setting $h_d=10$ we are assuring fully-flooded conditions for any load $W$ chosen for this example.
+
+\section{Lubrication Theory Hypothesis}\label{sec:lub_hyp}
+In \Chapref{equations_lubrication} we derive Reynolds equation for hydrodynamic lubricated systems. Before doing so, the assumptions needed on the system are presented (see \cite{cameron1971} Chapter 3):
+\begin{enumerate}
+\item Body forces, such as gravitational forces, are neglected, i.e., there are no extra fields of forces acting on the fluid. This is true except for magneto-hydrodynamics.
+\item The pressure is constant through the thickness of the film. %As the film is only one or two thousandths of an inch thick it is always true. With elastic fluids there may be exceptions.
+\item The curvature of the surfaces being lubricated is large compared to the film thickness.% Surfaces velocities need not to be considered as varying on direction.
+\item There is no slip at the boundaries. The velocity of the oil layer adjacent to the boundary is the same as that of the boundary. There has been much work on this and it is universally accepted \cite{cameron1971}. Nevertheless, some works criticizing this condition have been done recently by \citeauthor{salant2004} \cite{salant2004,fortier2005}.
+\end{enumerate}
+The next assumptions are put in for simplification. They are not necessarily true but without them the equations get more complex, sometimes impossibly so.
+\begin{enumerate}
+\setcounter{enumi}{4}
+\item Flow is laminar. %In big turbine bearings this is not true and the theory is being slowly developed.
+\item Fluid inertia is neglected. For the studied cases, the Reynolds number is of order 10 (see \Secref{comparison_nvs_reynolds}).% Several studies have shown that even of Reynolds number is 1000 the pressures are only modified by about 5\%.
+\item The lubricant is Newtonian.%, i.e., shear stress is proportional to shear rate.
+
+%\item The viscosity is constant through the film thickness.% This is certainly not true but leads to great complexity if it is not assumed.
+\end{enumerate}

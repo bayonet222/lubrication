@@ -1,0 +1,87 @@
+%% Creator: Inkscape inkscape 0.48.5, www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'conv_sigma_ea.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{631.2bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.49176172)%
+    \put(0,0){\includegraphics[width=\unitlength]{conv_sigma_ea.pdf}}%
+    \put(0.09463557,0.0235617){\makebox(0,0)[lb]{\smash{0.3}}}%
+    \put(0.15048158,0.0235617){\makebox(0,0)[lb]{\smash{0.4}}}%
+    \put(0.20619609,0.0235617){\makebox(0,0)[lb]{\smash{0.5}}}%
+    \put(0.2620421,0.0235617){\makebox(0,0)[lb]{\smash{0.6}}}%
+    \put(0.31775503,0.0235617){\makebox(0,0)[lb]{\smash{0.7}}}%
+    \put(0.02949489,0.03943115){\makebox(0,0)[lb]{\smash{0.5}}}%
+    \put(0.02949489,0.12590644){\makebox(0,0)[lb]{\smash{0.6}}}%
+    \put(0.02949489,0.21224991){\makebox(0,0)[lb]{\smash{0.7}}}%
+    \put(0.02949489,0.29859338){\makebox(0,0)[lb]{\smash{0.8}}}%
+    \put(0.02949489,0.38493686){\makebox(0,0)[lb]{\smash{0.9}}}%
+    \put(0.04269767,0.47128033){\makebox(0,0)[lb]{\smash{1}}}%
+    \put(0.72173777,0.0234516){\makebox(0,0)[lb]{\smash{0.3}}}%
+    \put(0.77758378,0.0234516){\makebox(0,0)[lb]{\smash{0.4}}}%
+    \put(0.83329829,0.0234516){\makebox(0,0)[lb]{\smash{0.5}}}%
+    \put(0.8891443,0.0234516){\makebox(0,0)[lb]{\smash{0.6}}}%
+    \put(0.94485723,0.0234516){\makebox(0,0)[lb]{\smash{0.7}}}%
+    \put(0.65659709,0.03932106){\makebox(0,0)[lb]{\smash{0.5}}}%
+    \put(0.65659709,0.12579635){\makebox(0,0)[lb]{\smash{0.6}}}%
+    \put(0.65659709,0.21213982){\makebox(0,0)[lb]{\smash{0.7}}}%
+    \put(0.65659709,0.29848329){\makebox(0,0)[lb]{\smash{0.8}}}%
+    \put(0.65659709,0.38482676){\makebox(0,0)[lb]{\smash{0.9}}}%
+    \put(0.66979988,0.47117024){\makebox(0,0)[lb]{\smash{1}}}%
+    \put(0.42962342,0.17327952){\makebox(0,0)[lb]{\smash{0.3}}}%
+    \put(0.6091231,0.17327952){\makebox(0,0)[lb]{\smash{0.6}}}%
+    \put(0.36949984,0.18674593){\makebox(0,0)[lb]{\smash{0.94}}}%
+    \put(0.36949984,0.34728649){\makebox(0,0)[lb]{\smash{0.98}}}%
+    \put(0.1848828,0.00382089){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{time}}}%
+    \put(0.66409955,0.23779847){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lb]{\smash{$\Sigma(t)$}}}}%
+    \put(0.03545564,0.23779847){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lb]{\smash{$\Sigma(t)$}}}}%
+    \put(0.81352666,0.00382089){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{time}}}%
+    \put(0.42366711,0.1140192){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{analytic solution }}}%
+    \put(0.42366711,0.08867069){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{num. solution, N=100}}}%
+    \put(0.42366711,0.06585702){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{num. solution, N=450}}}%
+  \end{picture}%
+\endgroup%

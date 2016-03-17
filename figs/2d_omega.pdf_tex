@@ -1,0 +1,63 @@
+%% Creator: Inkscape inkscape 0.48.5, www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file '2d_omega.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{592.7bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.38299308)%
+    \put(0,0){\includegraphics[width=\unitlength]{2d_omega.pdf}}%
+    \put(0.50952597,0.16081041){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$p=0$}}}%
+    \put(0.2013261,0.16032884){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$p>0$}}}%
+    \put(0.11313935,0.28898871){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\partial \omega$}}}%
+    \put(0.53904219,0.12292134){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\partial \omega$}}}%
+    \put(0.42251655,0.25695685){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\frac{\partial p}{\partial \hat{n}}=0$}}}%
+    \put(0.42457182,0.1681366){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\hat{n}$}}}%
+    \put(0.57328416,0.18916463){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\hat{n}$}}}%
+    \put(0.19307744,0.207963){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\omega$}}}%
+    \put(0.48361428,0.18372845){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\Omega\setminus\omega$}}}%
+  \end{picture}%
+\endgroup%

@@ -1,0 +1,23 @@
+pag 43:
+
+  done
+  
+------------------------------------------------------------------------------------------------
+pag 45:
+
+  done
+  
+------------------------------------------------------------------------------------------------
+pag 47:
+
+  done and added the temporal term
+  the stationary state is now assumed only for the implied boundary conditions
+  
+  added a remark about cavitation only at divergent zone
+  
+  added a remark about the "exact value" of the equation at the cavitated region
+------------------------------------------------------------------------------------------------
+pag52:
+
+  done
+  

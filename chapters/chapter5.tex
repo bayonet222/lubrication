@@ -1,0 +1,578 @@
+% Chapter 5
+\chapter{Numerical methods and illustrative examples}
+\label{chap:numerical_methods}
+\lhead{Chapter 5. \emph{Numerical methods and illustrative examples}} % This is for the header on each page - perhaps a shortened title
+In \Chapref{cavitation_models} we have presented the models involved in lubrication theory. In this chapter we present how this models calculations can be done in a computer. For this, we will use Finite Volume Methods that are known to give good numerical behavior for conservative laws. Due to the non-linear nature of the cavitation models, Gauss-Seidel like
+algorithms will be used. The details of the resulting resolution algorithms for each model are presented. Finally, we give a simple example of what can be done with this algorithms. This example consists in the resolution of the problem of the pocket presented in \Secref{ex_sol_stepped_shapes} but this time allowing for a dynamic behavior of the slider in the $z$-axis.
+\section{Finite volume discretization}
+Mass conservation is an important issue when considering cavitation modeling for \\Reynolds equation \cite{ausas07,qiu2009}. Because of this, when seeking for a discrete version of the models we are dealing with, \emph{Finite Volume Methods} are very helpful as they construct the discretization from the flux functions associated to the transported quantity. Also, these methods are useful when considering linear equations where the coefficients have discontinuous jumps, like in lubrication with discontinuous gap functions \cite{leveque2002}.
+
+\textit{Finite Difference Methods} are also classical methods to discretize an equation, however, these methods overview the nature of the model being discretized. Finite difference methods viewpoint is the approximation of the differential operators at each point of the discrete domain. On the other hand, Finite Volume Methods seek for a discrete version of the flux function related to the transported quantity. Next, we present Finite Volume Methods by developing an example.
+
+Take a domain $\Omega \subset \mathbb{R}^2$, a quantity $q:\Omega\times [0,+\infty[ \rightarrow \mathbb{R}^2$ and $\veca{J}:\Omega \rightarrow \mathbb{R}^2$, with all this, the next equation is called \emph{conservation law} for $q$
+\begin{equation}
+\frac{\partial q}{\partial t}=-\nabla \cdot \veca{J},\qquad\text{on } \Omega,\label{eq:finite_volume_eq1}
+\end{equation} 
+with \emph{flux function} $\veca{J}=\left(\begin{array}{c}
+J_x\\J_y
+\end{array}\right)$. Consider the simple domain $\Omega=[0,1]\times [0,1]$ and divide it into square volumes of uniform size with edges of length $\Delta \ell$. Also, let us discretize the time variable uniformly as $t_{k} =k\nobreak\Delta t\,$. This way, integrating \eqref{finite_volume_eq1} over a \emph{control volume} $V$  (see \Figref{finite_volume_scheme}) and over the time interval $[t_{n-1},\,t_{n}]$, and using the divergence theorem we obtain
+\begin{equation}
+\int_V q(\bds{x},t_{n})\,dv-\int_V q(\bds{x},t_{n-1})\,dv=-\int_{t_{n-1}}^{t_{n}}\int_{\partial V}\veca{J}\cdot \bds{\hat{\eta}}\,dl\,dt,\label{eq:int_control_volume}
+\end{equation}
+where $\bds{\hat{\eta}}$ is the unitary normal vector pointing outwards $V$ on its boundary $\partial V$. We divide $\partial V$ in the northern $\partial V_{\hat{n}}$, southern $\partial V_{\hat{s}}$, eastern $\partial V_{\hat{e}}$ and western $\partial V_{\hat{w}}$ borders as is shown in \Figref{finite_volume_scheme}. Let us define the next average quantities
+$$q^n_{ij}=\frac{1}{|V|}\int_V q(\bds{x},t_n)\,dv,\qquad J_\xi = \frac{1}{\Delta t}\int_{t_{n-1}}^{t_{n}}\left(\int_{\partial V_\xi} \veca{J}\cdot \bds{\hat{\eta}}\,dl\right)\,dt,$$
+where $\xi\in \{\hat{n},\hat{s},\hat{e},\hat{w}\}$ and  $|V|$ is the volume of $V$ and it is equal to $(\Delta \ell) ^2$. Then, \eqref{int_control_volume} can be written as
+\begin{equation}
+q^{n}_{ij}=q^{n-1}_{ij}-\frac{\Delta t}{(\Delta \ell)
+^2}\left(J_{\hat{n}}-J_{\hat{s}}+J_{\hat{e}}-J_{\hat{w}}\right).
+\label{eq:finite_volume_exact}
+\end{equation}
+\begin{figure}[ht!]
+\centering 
+\def\svgwidth{\textwidth}\small{
+\input{figs/finite_volumes_scheme.pdf_tex}}\caption[Finite volume control]{Staggered grid for Finite Volume Methods.}\label{fig:finite_volume_scheme}
+\end{figure}
+This equation is satisfied exactly by the solution of \eqref{finite_volume_eq1}. If one could calculate the fluxes $J_\xi$ in function of the unknowns $q^{n}_{ij}$, then the system would be closed along with suitable boundary conditions. However, in general, this is not the case and what we have are approximations of the real fluxes in function of the unknowns $q^{n}_{ij}$. 
+
+Let us denote some approximation of $J_\xi$ by $\tilde{J}_\xi$. We can write a discrete version of \eqref{finite_volume_exact} as
+\begin{equation}
+Q_{ij}^{n}=Q_{ij}^{n-1}-\frac{\Delta t}{(\Delta \ell )^2} \left(\tilde{J}_{\hat{n}}-\tilde{J}_{\hat{s}}+\tilde{J}_{\hat{e}}-\tilde{J}_{\hat{w}}\right).\label{eq:finite_volume_app}
+\end{equation}
+\Eqref{finite_volume_app} is a general form for Finite Volume Methods in the case presented above. Different methods arise when different formulas $\tilde{J}_{\xi}$ are chosen, which in general, will depend of the quantities $Q_{ij}^n$ (see Section 4.1 in \cite{leveque2002}).
+
+\section{Numerical implementation of Reynolds equation and cavitation models}
+\label{sec:num_impl_reyolds_cav_models}
+In this section we solve numerically Reynolds equation by using the classical Gauss-Seidel method. After this, we adequate this procedure for taking into account Reynolds cavitation model by a projection of the partial solution into the cone of positive functions on $\hzerooneOm$. Finally, we present a version of the algorithm for the Elrod-Adams model. Through all this section we suppose the behavior of the gap function $h$ to be known in space and time. In \Secref{num_numerical_sol_examples} we include a dynamic coupling between the upper surface motion and the generated hydrodynamic pressure by means of the Newton equation.
+\subsection{Reynolds equation without cavitation}
+A Finite Volume Method is going to be used for a one dimensional problem (the generalization to two dimensions does not represent major difficulties) on the domain $\Omega=[0,1]$. The discretization obtained this way is going to be base for the discretization when taking into account some cavitation model. 
+
+First, let us set the problem of finding some function $p$ that satisfies Reynolds equation
+\begin{equation}
+\parder{h}{t}=-\parder{}{x}\left(\frac{S}{2}h-\frac{h^3}{2}\parder{p}{x}\right),\label{eq:num_rey_without_cav}
+\end{equation}
+which is written in the conservative form of \eqref{finite_volume_eq1}. In this case, our conserved quantity is $h$ and the flux function corresponds to
+\begin{equation*}
+J_x=\frac{S}{2}h-\frac{h^3}{2}\parder{p}{x}.
+\end{equation*}
+Let us select the $N+1$ equally spaced points from $[0,1]$ $\{x_i\}_{i=0}^{N}$ given by $x_i=\Delta x\left(i+\frac{1}{2}\right)$, with $\Delta x=1/N$. Each $x_i$ is the center of the volume $V_i=[x_i-\Delta x/2,x_i+\Delta x/2]$. Time is discretized with a constant time step $\Delta t$, starting from $t_0=0$ and $t_n=n\Delta t$. This way, the Finite Volume \eqref{finite_volume_exact} fulfilled by $p$ at each volume $V_i$ can be written (see \Figref{volume_v_i_1d})
+\begin{equation}
+h_{i}^{n}=h_{i}^{n-1}-\frac{\Delta t}{\Delta x}\left(J_x\left(x_{i+\frac{1}{2}},t_n\right)-J_x\left(x_{i-\frac{1}{2}},t_n\right)\right),\label{eq:rey_fin_vol_1d_exact}
+\end{equation}
+where $x_{i+1/2}=x_i+\Delta x/2$, and the volume of each $V_i$ is $|V_i|=\Delta x$. 
+
+Now, for each $x_i$ and time $t_n$, we associate an unknown average pressure $P_i^n$ and a known gap value $h_i^n=h(x_i,t_n)$. 
+\begin{figure}[ht]
+\centering 
+\def\svgwidth{\textwidth}\small{
+\input{figs/v_i_1d.pdf_tex}}\caption{Scheme of flux functions 1D.
+}\label{fig:volume_v_i_1d}
+\end{figure}
+
+The flux function evaluated at the interface between the volumes $V_{i-1}$ at time $t_n$ is written
+\begin{equation*}
+J_x\left(x_{i-\frac{1}{2}},t_n\right) = \frac{1}{2}\left\{S\,h\left(x_{i-\frac{1}{2}},t_n\right)-h\left(x_{i-\frac{1}{2}},t_n\right)^3\partial_x p\left(x_{i-\frac{1}{2}},t_n\right)\right\}.
+\end{equation*}
+Now, let us approximate $h(x_{i-1/2},t_n)^3$ by $a_{i-1/2}=\frac{\left(h_{i-1}^n\right)^3+\left(h_i^n\right)^3}{2}$ and denote as $P_i^n$ our approximation of pressure for each unknown exact value $p_i^n$. Then, using an \emph{upwind Finite Difference scheme} for the first term (convective term) and a \emph{centralized Finite Difference scheme} for the second term (diffusive term) we obtain the next approximation for the fluxes $J_x\left(x_{i-1/2},t_n\right)$
+\begin{equation}
+\tilde{J}_x\left(x_{i-\frac{1}{2}},t_n\right)=\frac{1}{2}\left\{S\,h_{i-1}^n-a_{i-\frac{1}{2}}\frac{P^n_{i}-P^n_{i-1}}{\Delta x}\right\}.\label{eq:rey_app_Jx}
+\end{equation}
+The kind of Finite Difference schemes we have chosen are known to give time stability when considering these type of equations (see Chapter 4 in \cite{leveque2002}).
+
+Putting the approximations \eqref*{rey_app_Jx} in \eqref{rey_fin_vol_1d_exact} and rearranging terms we get the system of equations:
+\begin{align}
+-a_{i-\frac{1}{2}} P_{i-1}^n
++\left(a_{i-\frac{1}{2}}+a_{i+\frac{1}{2}}\right)P_i^n
+-a_{i+\frac{1}{2}} P_{i+1}^n={}&-\frac{2\Delta x ^2}{\Delta t}\left(h_{i}^{n}-h_{i}^{n-1}\right)-S\Delta x\left(h_i^n-h_{i-1}^n\right),\label{eq:rey_fin_vol_1d_app}
+\end{align}
+
+for $i=1\ldots N-1$. This system of equations is closed when including suitable boundary conditions. Here we take 
+\begin{equation}
+P^n_0=0\text{ and }P^n_{N}=0\,\qquad \forall n\geq 0.\label{eq:bound_gauss} 
+\end{equation}
+
+\subsubsection*{Convergence of the numerical scheme}
+Let us write the system of equations \eqref*{rey_fin_vol_1d_app} as
+\begin{align}
+\frac{-a_{i-\frac{1}{2}} P_{i-1}^n
++\left(a_{i-\frac{1}{2}}+a_{i+\frac{1}{2}}\right)P_i^n
+-a_{i+\frac{1}{2}}\, P_{i+1}^n}{\Delta x^2}=-2\frac{h_{i}^{n}-h_{i}^{n-1}}{\Delta t}-S\frac{h_i^n-h_{i-1}^n}{\Delta x}.\label{eq:rey_fin_vol_1d_app_conv}
+\end{align}
+This system corresponds to a Finite Differences scheme for \eqref{num_rey_without_cav}, its left-hand side is an approximation of the operator $\partial_x(h^3\, \partial_x )$ applied to $p$ and its right-hand side approximates $2\,\partial _t+S\partial_x$ applied to $h$. Here, we suppose the discrete values $h_i^n$ as being known. With all this, the questions are: once we have solved the system  \eqref*{rey_fin_vol_1d_app_conv}, how much good are the approximation $P_i^n$? What is its behavior when we augment the number of volumes?
+
+Given some fixed time $t_n$, we denote as $\bds{\hat{p}}_N$ the vector of components $\left(\bds{\hat{p}}_N\right)_i=P_i^n$ (omitting the dependency on time), where $N$ is the number of volumes we are taking into account. Also, denote as $\bds{p}_N$ the vector of components $\left(\bds{p}_N\right)_i=p(x_i,t_n)$, i.e., the values of the exact solution. With this, we write the system of equations \eqref*{rey_fin_vol_1d_app_conv} as
+\begin{equation}
+\bds{A}_N\,\bds{\hat{p}}_N=\bds{\hat{f}}_N.\label{eq:rey_fin_vol_1d_system}
+\end{equation}
+Where $\bds{A}_N$ is the next tridiagonal symmetric matrix
+\begin{equation}
+\bds{A}_N=N^2\left(\begin{array}{ccccc}
+d_1 & -a_{3/2} & {} & {} & {}\\
+-a_{3/2} & d_2 & -a_{5/2} & {} & {}\\
+{} & -a_{5/2} & \ddots & \ddots & {} \\
+{} & {} & \ddots & \ddots & -a_{N-3/2} \\
+{} & {} & {} & -a_{N-3/2} & d_{N-1} 
+\end{array}\right),\qquad\text{with }d_i=a_{i-\frac{1}{2}}+a_{i+\frac{1}{2}}.\label{eq:AN_reynolds}
+\end{equation}
+and $\bds{\hat{f}}_N=-\frac{2}{\Delta t}\bds{I}_N\,\left(\bds{h}^n_N-\bds{h}^{n-1}_{N}\right)-\frac{S}{\Delta x}\bds{C}_N \bds{h}_N^n$ corresponds to\footnote{If the boundary conditions are not null, they could be added in the first and last components of this vector.} the right-hand side of the system \eqref*{rey_fin_vol_1d_app_conv}, $\bds{I}_N$ is the identity matrix of order $N-1$, and $\bds{C}_N$ is the matrix such that
+\begin{equation*}
+\begin{cases}
+\left(\bds{C}_N\right)_{i,\,j}=1 & \text{if }j=i,\\ 
+\left(\bds{C}_N\right)_{i,\,j}=-1 & \text{if }j=i-1,\\
+0 & \text{otherwise.}
+\end{cases}
+\end{equation*} 
+Denoting as $\bds{f}_N$ the vector of components 
+\begin{equation}
+\left(\bds{f}_N\right)_i=-2\,\partial _t h(x_i,t_n)-S\,\partial_x h(x_i,t_n),\qquad i\in\{1\ldots N-1\},\label{eq:FN_reynolds}
+\end{equation}
+we have that $\bds{\hat{f}}_N$ is an approximation of $\bds{f}_N$. 
+
+We define the quantities 
+\begin{equation}
+\bds{\tau}^A_N=\bds{A}_N \bds{p}_N-\bds{f}_N,\,\qquad\text{and}\qquad \bds{\tau}_N^f=\bds{\hat{f}}_N-\bds{f}_N.
+\end{equation}
+$\bds{\tau}_N^A$ is the \emph{local truncation error} due to the fact that $\bds{A}_N$ is an approximation of the functional relation between $\bds{p}_N$ and $\bds{f}_N$. $\bds{\tau}_N^f$ is the local truncation error due to the fact that $\bds{\hat{f}}_N$ is an approximation of $\bds{f}_N$. We define also the \emph{global error} $\bds{E}_N=\bds{\hat{p}}_N-\bds{p}_N$, which represents the punctual differences between our approximation and the real values of $p$. Putting all these definitions in \eqref{rey_fin_vol_1d_system} we get
+\begin{equation*}
+\bds{A}_N\,\bds{E}_N=\bds{\tau}_N^f-\bds{\tau}_N^A.
+\end{equation*}
+And so, if $\bds{A}_N$ is non-singular we have
+\begin{equation*}
+\left\lVert \bds{E}_N\right\rVert\leq \left\lVert \bds{A}_N^{-1}\right\rVert
+\left(\left\lVert\bds{\tau}_N^f\right\rVert+
+\left\lVert\bds{\tau}_N^A\right\rVert\right).
+\end{equation*}
+Using terms found in literature \cite{leveque2007}, we say that the numerical approximation of the differential formulation \eqref*{num_rey_without_cav} given by the system \eqref*{rey_fin_vol_1d_system} is \emph{consistent} if both $$\left\lVert\bds{\tau}_N^A\right\rVert,\,\|\bds{\tau}_N^f\|\rightarrow 0 \qquad\text{as } N\rightarrow \infty.$$
+We say the same numerical scheme is \emph{stable} if $\left\lVert\bds{A}_N^{-1}\right\rVert$ remains bounded as $N\rightarrow \infty$, i.e., $\exists C\in \mathbb{R}$, $M\in\mathbb{N}$ such that $\left\lVert\bds{A}_N^{-1}\right\rVert\leq C$ $\forall N>M$. Therefore, if our numerical approximation is consistent and stable, then $\bds{\hat{p}}_N\rightarrow\bds{p}_N$ as $N\rightarrow \infty$.
+
+From now on, if $\bds{v}$ is a vector of values over a uniform grid of $m$ points with distance $\Delta x$ between those points, we use the \emph{grid norm} (see \cite{leveque2007}) given by\footnote{As this norm is just a constant times the euclidean norm, the corresponding induced norm on matrices also accomplishes the basic properties of Euclidean induced norms, e.g., $\|\bds{A}\,\bds{v}\|\leq \|\bds{A}\|\|\bds{v}\|$.}
+\begin{equation*}
+\left\Vert \bds{v}\right\Vert_2 =\left( \Delta x \sum_{i=1}^m |v_i|^2 \right)^\frac{1}{2}.
+\end{equation*}
+\begin{proposition}\label{prop:reynolds_scheme_consistency}
+System \eqref*{rey_fin_vol_1d_system} is consistent.
+\begin{proof}
+Using Taylor's Series, it is easy to find that 
+$\left(\bds{\tau}_N^f\right)_i = \mathcal{O}\left(\Delta x\right)\left( h''(x_i)\right)$. Thus, supposing the sum of the $h''(x_i)^2$ is bounded, we obtain that
+\begin{equation}
+\left\lVert \bds{\tau}^f_N \right\rVert_2 =\mathcal{O}(\Delta x) .\label{eq:tau_f_trunc_order}
+\end{equation}
+For proving $\left\lVert\bds{\tau}_N^A\right\rVert\rightarrow 0$ as $N\rightarrow \infty$, again by Taylor's series we have
+\begin{align}
+\frac{-a_{i-\frac{1}{2}} p_{i-1}^n
++\left(a_{i-\frac{1}{2}}+a_{i+\frac{1}{2}}\right)p_i^n
+-a_{i+\frac{1}{2}}\, p_{i+1}^n}{\Delta x^2}={}&-\frac{a_{i+\frac{1}{2}}p'_{i+\frac{1}{2}}-a_{i-\frac{1}{2}}p'_{i-\frac{1}{2}}}{\Delta x}+\mathcal{O}(\Delta x^2)\left(a_i\,p_i'''\right)'\nonumber\\
+={}&-\left(a_i\,p_i'\right)'+\mathcal{O}\left(\Delta x^2\right)\left(\left(a_i\,p_i'''\right)'+\left(a_ip_i'\right)'''\right)\label{eq:aux1}.
+\end{align}
+However, $a_{i}$ is not the exact value of $h^3$ at the point $x_{i}$ but an approximation. In fact, by Taylor's series
+\begin{equation*}
+a_{i}=\frac{\left(h_{i-\frac{1}{2}}^n\right)^3+\left(h_{i+\frac{1}{2}}^n\right)^3}{2}=h\left(x_{i},t_n\right)^3+\mathcal{O}\left(\Delta x^2\right)\partial_{xx}\left(h\left(x_{i},t_n\right)^3\right).
+\end{equation*}
+Putting this in the right side of \eqref{aux1} we get
+\begin{equation*}
+\frac{-a_{i-\frac{1}{2}} p_{i-1}^n
++\left(a_{i-\frac{1}{2}}+a_{i+\frac{1}{2}}\right)p_i^n
+-a_{i+\frac{1}{2}}\, p_{i+1}^n}{\Delta x^2}=-\partial_x\left(h\left(x_{i},t_n\right)^3\partial_x p\left(x_{i},t_n\right)\right)+\mathcal{O}(\Delta x^2)\,C_i,
+\end{equation*}
+where $C_i=\left(\left(h_i^3\right)'''p_i'\right)'+(a_i\,p_i''')'+\left(a_ip_i'\right)'''$.  This way, we have proved that
+\begin{equation}
+\left(\bds{\tau}_N^A\right)_i=\mathcal{O}\left(
+\Delta x^2\right)\left( \left((h_i^3)'''p_i'\right)'+(a_i\,p_i''')'
++\left(a_i\,p_i'\right)'''\right).\label{eq:tau_A_trunc_order}
+\end{equation}
+Therefore, supposing the sum of the $C_i^2$ is bounded, we have $\left\lVert\bds{\tau}_N^A\right\rVert\rightarrow 0$ as $N\rightarrow \infty$.
+\end{proof}
+\end{proposition}
+Stability is a property not easy to prove for the general definition of $\bds{A}_N$. The case corresponding to $h$ constant is studied in Chapter 2 of \cite{leveque2007}. In that case we can write $\bds{A}_N=-N^2\,h^3\bds{\tilde{A}}$, where $\bds{\tilde{A}}$ is the tridiagonal matrix with diagonal elements equal to $-2$ and the rest of non-null elements equal to $1$. In the referenced work, and for that particular case, it is proved that the Euclidean induced matrix norm (2-norm) can be used for proving stability. This because the eigenvalues of $\bds{\tilde{A}}$ are known. In fact, it is proved that $\left\Vert\bds{A}_N^{-1}\right\Vert_2=h^3\pi^2+\mathcal{O}(\Delta x ^2)$. Thus, the system is stable and the numerical scheme converges. Addressing the eigenvalues of the general matrix $\bds{A}_N$ we have the next result.
+
+\begin{proposition}\label{prop:An_definite_positive}
+The matrix $\bds{A}_N$ defined in \eqref{AN_reynolds} is positive definite.
+\begin{proof}
+Let $\bds{v}\in \mathbb{R}^N\setminus \{\veca{0}\}$ be a vector of components $\{v_i\}_{i=1}^N$ and, to simplify notation, let us take $v_0=v_{N+1}=0$, then we have
+\begin{align*}
+\bds{v}^\intercal\bds{A}\bds{v}={}&\sum_{i=1}^N\left(v_i\,a_{i-\frac{1}{2}} (v_i-v_{i-1})+v_i\,a_{i+\frac{1}{2}}(v_i-v_{i+1})\right)\\
+={}&\sum_{i=1}^N\left(a_{i-\frac{1}{2}}\,v_i^2-a_{i-\frac{1}{2}}\,v_i\,v_{i-1}+ a_{i+\frac{1}{2}}\,v_i^2 -a_{i+\frac{1}{2}}\,v_i\,v_{i+1}\right)\\
+={}&\sum_{i=1}^{N}\left(a_{i-\frac{1}{2}}\,v_i^2-2\,a_{i-\frac{1}{2}}\,v_i\,v_{i-1}+ a_{i+\frac{1}{2}}\,v_i^2 \right)\\
+={}&\sum_{i=1}^{N}\left(a_{i-\frac{1}{2}}\,\left(v_i-v_{i-1}\right)^2-\,a_{i-\frac{1}{2}}\,v_{i-1}^2+ a_{i+\frac{1}{2}}\,v_i^2\right)\\
+={}&a_{-\frac{1}{2}}\,v_1^2+a_{N+\frac{1}{2}}v_N^2+\sum_{i=1}^{N}a_{i-\frac{1}{2}}\,\left(v_i-v_{i-1}\right)^2>0
+\end{align*}
+\end{proof}
+\end{proposition}
+As far as we know, there is no general expression for the eigenvalues of $\bds{A}_N$, and there is not analytic estimate of $\left\Vert\bds{A}_N^{-1}\right\Vert$ for any other induced matrix norm.
+
+\subsubsection*{Numerical example}
+\begin{figure}[ht]
+\centering 
+\def\svgwidth{\textwidth}\small{
+\input{figs/discofinito_convergence.pdf_tex}}\caption{
+Convergence of the numerical solution for the Disc wedge presented in \Secref{disc_wedge}.
+}\label{fig:discofinito_convergence}
+\end{figure}
+
+Here we solve numerically the problem of the Disc wedge presented in \Secref{disc_wedge}. The numerical solution is compared with the analytic one and a convergence test is performed.
+
+\Figref{discofinito_convergence} shows the numerical and the analytic solution. This was made along the non-dimensionalization given in \Tabref{table_non_dim_disc}, with $R=80$, $S=1$, $h_0=1$, $L=1\times 10^{-3}$[m] and $H=1\times 10^{-6}$[m].
+\begin{table}[ht]
+\centering
+\begin{tabular}{cccccc}
+\toprule
+N & $\Delta x$ & $\left\Vert\bds{\tau}_N^A\right\Vert_2$ & $\left\Vert\bds{\tau}_N^f\right\Vert_2$ & $\left\Vert\bds{A}_N^{-1}\right\Vert_2$ & $\left\Vert E_N\right\Vert_2$\\
+\midrule
+{$2^6$} & {$1.56\times 10^{-2}$} & {$5.71\times 10^{-3}$} & {$9.69\times 10^{-2}$} & 
+{$5.15\times 10^{-6}$}  & {$1.92\times 10^{-3}$} \\
+
+{$2^7$} & {$7.81\times 10^{-3}$} & {$1.44\times 10^{-3}$} & {$4.86\times 10^{-2}$} & 
+{$1.13\times 10^{-6}$}  & {$9.61\times 10^{-4}$} \\
+
+{$2^8$} & {$3.91\times 10^{-3}$} & {$3.62\times 10^{-4}$} & {$2.44\times 10^{-2}$} & 
+{$2.60\times 10^{-7}$}  & {$4.81\times 10^{-4}$} \\
+
+{$2^9$} & {$1.95\times 10^{-3}$} & {$9.07\times 10^{-5}$} & {$1.22\times 10^{-2}$} & 
+{$6.18\times 10^{-8}$} & {$2.40\times 10^{-4}$}  \\
+\bottomrule
+\end{tabular}
+\caption{Convergence of the truncation errors and global error for the numerical example of the Disc wedge.}\label{tab:table_disc_wedge_convergence}
+\end{table}
+
+In \Tabref{table_disc_wedge_convergence} we resume the truncation error and global error for different number of volumes, $N=2^6,\,2^7,\,2^8,\,2^9$. Please notice that both quantities $\left\Vert\bds{\tau}_N^f\right\Vert_2$ and $\left\Vert E_N\right\Vert_2$ are in linear relation with $\Delta x$ ($\propto \Delta x$), while $\left\Vert\bds{\tau}_N^A\right\Vert_2$ is in quadratic relation with $\Delta x$ ($\propto \Delta x^2 $). These results agree with \eqref{tau_f_trunc_order,tau_A_trunc_order}.
+
+\subsubsection*{Gauss-Seidel iterations}
+We will present the Gauss-Seidel iterative method for the system of \eqref{rey_fin_vol_1d_app,bound_gauss}. Gauss-Seidel is a classical iterative method for solving linear and non-linear systems of equations \cite{golub1996,ausas07,profito2015}. First, we write
+\begin{equation}
+-a^n_{i-\frac{1}{2}}\,P^n_{i-1}+
+\left(a^n_{i-\frac{1}{2}}+a^n_{i+\frac{1}{2}}\right)P^n_i-a^n_{i+\frac{1}{2}}\,P^n_{i+1}=f^n_i,
+\end{equation}
+where $f^n_i=-\frac{2\Delta x ^2}{\Delta t}\left(h_{i}^{n}-h_{i}^{n-1}\right)-S\Delta x\left(h_i^n-h_{i-1}^n\right)$. We resume this procedure in Algorithm \ref{alg:gs_reynolds}.
+
+\begin{algorithm}[ht]\small
+\caption{Gauss-Seidel for Reynolds equation}
+\KwIn{$h^n$: gap function, $P^{n-1}$: initial guess, $tol$: for stop criterion}
+\KwOut{$P^{n}$ pressure at time $n$}
+\LinesNumbered
+\Begin{
+$k=0$\;
+$P^{n,k}=P^{n-1}$\;
+ \While{change $>$ tol}{
+$k=k+1$\;
+ 	\For{$i=1\ldots N$}{
+ 	 $P_i^{n,k}=\frac{1}{a^n_{i-\frac{1}{2}}+a^n_{i+\frac{1}{2}}}\left(f^n_i+a^n_{i-\frac{1}{2}}\,P_{i-1}^{n,k}+
+ 	 a^n_{i+\frac{1}{2}}\,P_{i+1}^{n,k-1}\right)$\;
+	 }
+$change=\|P^{n,k}-P^{n,k-1}\|_\infty$\;
+}
+return $P^{n,k}$\;
+}
+\label{alg:gs_reynolds}
+\end{algorithm}
+
+Please notice that Gauss-Seidel uses the already calculated value $P_{i-1}^{n,k}$ for calculating the new value $P_i^{n,k}$. If, instead of using $P_{i-1}^{n,k}$, we use the older value $P_{i-1}^{n,k-1}$ the iterative procedure is known as the \emph{Jacobi iterative method}, which is known to have a lower convergence speed when compared to Gauss-Seidel \cite{golub1996}.
+
+%\subsection{Half-Sommerfeld model} 
+%\begin{figure}[ht!]
+%\centering 
+%\def\svgwidth{\textwidth}\small{
+%\input{figs/half_sommerfeld.pdf_tex}}\caption[Half-Sommerfeld illustration]{Illustration of half-Sommerfeld model with cavitation pressure $p_\text{cav}=\nobreak-0.1$.}\label{fig:half_sommerfeld}
+%\end{figure}
+%For this model we simply solve Reynolds Equation and set $p=p_\text{cav}$ for every point such that $p<p_\text{cav}$. An example of this is shown in \Figref{half_sommerfeld}.
+
+%% CORREGIDO HASTA AQUI, ABRIL 24
+\subsection{Reynolds model}
+Remembering what was exposed in \Chapref{cavitation_models}, Reynolds cavitation model consists in finding a weak solution of Reynolds equation not in the whole space $\hzerooneOm$ but in the cone of positive functions $K\subset \hzerooneOm$ given by
+\begin{equation*}
+K=\{\phi \in \hzerooneOm :\phi \geq 0 \text{ a.e. on }\Omega\},
+\end{equation*}
+which leads to the variational inequality \eqref*{reynolds_inequality}.
+
+The method we will use for solving Reynolds model was first exposed by \citeauthor{christopherson1941} in \citeyear{christopherson1941} \cite{christopherson1941}. A detailed study of that method, applied to Journal Bearings, can be found in \cite{cryer1971}. This iterative methods can be described as: given an iterative method for solving Reynolds equation (e.g., a Gauss-Seidel like method), at the end of each iteration the partial solution is projected into the cone $K$. Such projection consists in nullifying each component of $P^{n,k}$ that is negative (see Section 2.8 in \cite{glowinski1980}). Therefore, the Algorithm \ref{alg:gs_reynolds} for solving Reynolds equation only needs a little modification that is presented in Algorithm \ref{alg:gs_reynolds_reynoldsmodel}.
+
+The convergence study of this procedure is based in the contraction property of the operator involved in each iteration composed with the projection operator into $K$, the interested reader may review \cite{cea1978,glowinski1980}. In these last works, it is proved that Algorithm \ref{alg:gs_reynolds_reynoldsmodel} converges to the solution of the next discrete problem (remember $\bds{A}_N$ is positive definite according to Proposition \ref{prop:An_definite_positive})
+\begin{equation*}
+\min_{v\in \mathbb{R}^N_+} \frac{1}{2} v^\intercal \bds{A}_Nv-(\bds{\hat{f}}_N)^\intercal v,
+\end{equation*}
+where $\mathbb{R}^N_+=\{x\in\mathbb{R}^{N}:x_i\geq 0,i=1\ldots N\}$, $\bds{A}_N$ and $\bds{\hat{f}}_N$ are given by \eqref{AN_reynolds,FN_reynolds}. In fact, \citeauthor{herbin2001} \cite{herbin2001} showed that a discretization by Finite Volume Methods converges to the solution of the associated variational inequality for the obstacle problem \cite{herbin2002}. Thus, we have good evidence of the convergence of Algorithm \ref{alg:gs_reynolds_reynoldsmodel}, although we are not going to prove it.
+
+\begin{minipage}[H]{\textwidth}
+\begin{algorithm}[H]
+\caption{Gauss-Seidel for Reynolds equation with Reynolds cavitation model}
+\KwIn{$h^n$: gap function, $P^{n-1}$: initial guess, $tol$: for stop criterion}
+\KwOut{$P^{n}$ pressure at time $n$}
+\LinesNumbered
+\Begin{
+$k=0$\;
+$P^{n,k}=P^{n-1}$\;
+ \While{change $>$ tol}{
+$k=k+1$\;
+ 	\For{$i=1\ldots N$}{
+ 	 $P_i^{n,k}=\frac{1}{a^n_{i-1}+a^n_i}\left(f^n_i+a^n_{i-1}\,P_{i-1}^{n,k}+
+ 	 a^n_{i}\,P_{i+1}^{n,k-1}\right)$\;
+ 	 $P_i^{n,k}=\max\left(0,\,P_i^{n,k}\right)$\;
+	 }
+$change=\|P^{n,k}-P^{n,k-1}\|_\infty$\;
+}
+return $P^{n,k}$\;
+}
+\label{alg:gs_reynolds_reynoldsmodel}
+\end{algorithm}
+with $a^n_i=\left(h_{i+1/2}^n\right)^3$ and $f^n_i=-\frac{2\Delta x ^2}{\Delta t}\left(h_{i}^{n}-h_{i}^{n-1}\right)-S\Delta x\left(h_i^n-h_{i-1}^n\right)$.
+\end{minipage}
+
+\subsubsection*{A linear obstacle}
+As another instance of Gauss-Seidel iterations with projections of the partial solution, we refer to \Figref{obstacle_problem}. There, $u(x)$  was generated solving the Poisson equation $\nabla^2 u = C$ (where $C<0$ is some constant source term) by Gauss-Seidel iterations and restricting the partial solution $u^k$ by the assignation $u^k=\min(\psi,\,u^k)$, with $\psi$ being the linear function that describes the obstacle.
+\subsection{Elrod-Adams model}\label{sec:num_elrod-adams} In \Chapref{cavitation_models} we presented the modified Reynolds equation when considering Elrod-Adams cavitation model. In the 1D case we write this equation along the complementary conditions as
+\begin{align}
+\parder{h\theta}{t}={}&-\parder{}{x}\left(\frac{S}{2}h\theta-\frac{h^3}{2}\parder{p}{x}\right),\\
+p\,(1-\theta)={}&0,\label{eq:chap5_comp_p_theta}
+\end{align}
+both in $\Omega$. Notice not only the pressure field $p$ is unknown but also the saturation field $\theta$. Making a similar discretization as before, we discretize $\theta$ as $\theta_i^n=\theta(x_i,t_n)$. This way, the transported quantity over each volume $V_i$ is written $Q^n_i=h_i^n\,\theta_i^n$, which corresponds to the average amount of fluid present at each volume. This way, for Elrod-Adams cavitation model, the equation analogous to \eqref{rey_fin_vol_1d_app} is
+\begin{equation}
+-\gamma\left(Q_i^n-Q_i^{n-1}-\nu\left(Q_i^n-Q_{i-1}^n\right)\right)=-a^n_{i-1} P_{i-1}^n+\left(a^n_{i-1}
++a^n_{i}\right)P_i^n - a^n_{i} P_{i+1}^n,\label{eq:ea_fin_vol_1d_app}
+\end{equation}
+where $a_i=\left(h_{i+1/2}^n\right)^3$, $\gamma =\frac{2\Delta x^2}{\Delta t}$ and $\nu=(S/2)\Delta t / \Delta x$ is the Courant number. Calculating first the pressures $P_i^n$ by \eqref{ea_fin_vol_1d_app}, we obtain the following equations for $P_i^{n}$ and $\theta_i^{n}$ for  iteration $k$
+\begin{align}
+P^{n,k}_i={}& \frac{1}{a^n_{i-1}
++a^n_{i}}\left(-\gamma\left(Q_i^{n,k-1}-Q_i^{n-1}-\nu\left(Q_i^{n,k-1}-Q_{i-1}^{n,k-1}\right)\right)+a^n_{i-1} P_{i-1}^{n,k}+a^n_{i} P_{i+1}^{n,k-1}\right)\label{eq:ea_gauss_pnk}\\ 
+\theta^{n,k}_i ={}& \frac{1}{\gamma(1+\nu)}\left(
+\gamma \left(Q_i^{n-1}+\nu\,Q_{i-1}^{n,k}\right)
++a^n_{i-1} P_{i-1}^{n,k}-\left(a^n_{i-1}
++a^n_{i}\right)P_i^{n,k} +a^n_{i} P_{i+1}^{n,k-1}\right).\label{eq:ea_gauss_thetank}
+\end{align}
+\begin{algorithm}[h]\small
+\caption{Gauss-Seidel for Reynolds equation with Elrod-Adams cavitation model}
+\KwIn{$h^n$: gap function, $\left(P^{n-1},\,\theta^{n-1}\right)$: initial guess, $tol$: for stop criterion}
+\KwOut{$P^{n}$, $\theta^{n}$ pressure and saturation fields at time $n$ resp.}
+\Begin{
+$k=0$\;
+$P^{n,k}=P^{n-1}$, $\theta^{n,k}=\theta^{n-1}$\;
+ \While{change $>$ tol}{
+$k=k+1$\;
+ 	\For{$i=1\ldots N$}{
+ 	\If{$P_i^{n,k-1}> 0$ or $\theta^{n,k-1}_i == 1$}{
+ 	 Compute $P_i^{n,k}$ using \eqref{ea_gauss_pnk}\;
+ 	 \eIf{$P_i^{n,k}\geq 0$}{$\theta^{n,k}_k=1$\;}
+ 	 {$P_i^{n,k}=0$\;}
+ 	 }
+ 	 \If{$P_i^{n,k}\leq 0$ or $\theta^{n,k}_i < 1$}{
+ 	 Compute $\theta^{n,k}_i$ using \eqref{ea_gauss_thetank}\;
+ 	 \eIf{$\theta_i^{n,k}< 1$}{$P_i^{n,k}=0$\;}
+ 	 {$\theta_i^{n,k}=1$\;}
+ 	 }
+%end of For
+}
+$change=\|P^{n,k}-P^{n,k-1}\|_\infty+\|\theta^{n,k}-\theta^{n,k-1}\|_\infty$\;
+}
+return $\left(P^{n,k},\,\theta^{n,k}\right)$\;
+}
+\label{alg:gs_reynolds_eamodel}
+\end{algorithm}
+
+The Gauss-Seidel like algorithm for Reynolds equation when considering cavitation through Elrod-Adams model is shown in Algorithm \ref{alg:gs_reynolds_eamodel}. Notice the complementary \eqref{chap5_comp_p_theta} is used to project the partial solutions $(p^k,\,\theta^k)$ into the subset of functions such that, for every volume $V_i$,
+if $p>0$ we must have $\theta=1$, and if $0<\theta <1$ we must have $p=0$.
+\section{Numerical solution examples}\label{sec:num_numerical_sol_examples}
+Gauss-Seidel is known to have a good numerical stability behavior for large systems of equations \cite{golub1996}. On the other hand, it is also known for having too low convergence speed, which means that the computational cost may be too high. To deal with this issue, we used methods like \emph{over-relaxation} and \emph{multigrid techniques}, which are well known for accelerating convergence speed \cite{fulton1986}, also see \cite{checophd}.
+
+\subsection{Numerical solution to the analytic examples}
+In this section we show the numerical solutions of the problems exposed in \Secref{ex_analytic_sol}.
+
+\subsubsection*{Cavitation in Pure Squeeze Motion}
+Here we search numerically for the analytic solution found for the Pure Squeeze Problem in \Secref{cavitation_pure_squeeze}. For this, we used a coarse mesh of only $100$ volumes and a finer mesh of $450$ volumes (same mesh used in \cite{ausas07}). The parameter $tol$ of Algorithm \ref{alg:gs_reynolds_eamodel} was chosen to be $tol=5\times 10^{-6}$ and the time step was set as $\Delta t = 0.3\times \Delta x$ (as the numeric scheme is implicit in time, there is unconditional time-stability \cite{leveque2007}, so this parameter is chosen just for having a good resolution in time), where $\Delta x = 1/100,\,1/450$. 
+
+Remembering $\Sigma(t)$ denotes the right side of the cavitated zone, from \Figref{ea_sigma_convergence} we observe a convergent behavior of the numerical solutions to the analytic solution of Elrod-Adams model. Similar behavior is found for the numerical solutions of $\Sigma(t)$ when considering the Reynolds model in \Figref{re_sigma_convergence}.
+
+\begin{figure}[ht]
+\centering 
+\def\svgwidth{\textwidth}\small{
+\input{figs/conv_sigma_ea.pdf_tex}}
+\caption[Numerical solution of the cavitation boundary for Elrod-Adams model with $N=100,\,450$]
+{Numerical solution of $\Sigma(t)$ for Elrod-Adams model with $N=100,\,450$.
+}\label{fig:ea_sigma_convergence}
+\end{figure}
+
+\begin{figure}[ht]
+\centering 
+\def\svgwidth{\textwidth}\small{
+\input{figs/conv_sigma_re.pdf_tex}}
+\caption[Numerical solution of the cavitation boundary for Reynolds model with $N=100,\,450$]{
+Numerical solution of $\Sigma(t)$ for Reynolds model with $N=100,\,450$.
+}\label{fig:re_sigma_convergence}
+\end{figure}
+
+\begin{figure}[ht]
+\centering 
+\def\svgwidth{\textwidth}\small{
+\input{figs/theta_trup.pdf_tex}}\caption{
+Numerical (N=450) and analytic solution of the saturation $\theta$ for $t=0.3146$, just before the reformation time $t_{ref}$.
+}\label{fig:theta_trup}
+\end{figure}
+
+Also, remember we denote as $t_{ref}$ the time for which $\Sigma(t)$ change from being a rupture point to be a reformation point $t_{ref}\approx 0.3146$. In \Figref{theta_trup} a good agreement between the numerical solution of $\theta$ for $t=0.3146$ and the analytic solution can be observed. This agreement is important since, as we said in \Secref{cavitation_pure_squeeze}, it influences the behavior of the cavitated zone during the time interval for which $\Sigma(t)$ is a reformation point (see \eqref{sigma3}).
+
+\subsubsection*{Cavitation in a flat pad with a traveling pocket} 
+In \Secref{ex_sol_stepped_shapes} we showed the analytic solutions of the pressure $p$ and saturation field $\theta$ for the stepped shape pocket traveling through the domain.
+
+Let us take a number of volumes equal to $N=1024$ over $]0,\,1[$, a time step $\Delta t = 2\,
+\Delta x /S$ (Courant number equal to 1) and $tol=1\times 10^{-7}$. With this, by using Algorithm \ref{alg:gs_reynolds_eamodel} we reproduce in \Figref{pockets_numerical} the analytic results found before in \Figref{pockets_analytic}.
+\begin{figure}[ht!]
+ \centering 
+ \def\svgwidth{\textwidth}	
+\input{figs/numerical_pocket_both_models.pdf_tex}
+\caption[Analitic solutions of Elrod-Adams and Reynolds cavitation models for three different times as done in \Secref{ex_sol_stepped_shapes}]{Analitic solutions of Elrod-Adams (in red) and Reynolds (in blue) cavitation models for three different times as done
+ in \Secref{ex_sol_stepped_shapes}. The non-dimensional pressure profiles were amplified by a factor of 100.}\label{fig:pockets_numerical}
+\end{figure}
+\begin{figure}[ht]
+\centering 
+\def\svgwidth{\textwidth}{
+\input{figs/conv_p_pocket.pdf_tex}}\caption{
+Convergence analysis for $p$ and $\theta$ in the $H^1_0(0,1)$ and $L^2(0,1)$ norms resp. for the traveling pocket problem solved in \Secref{ex_sol_stepped_shapes}. 
+}\label{fig:conv_p_pocket}
+\end{figure} Moreover, a convergence analysis is performed comparing the numerical and analytic solutions for $t=0.77$. The differences between pressures is denoted $e_p$ and between the field saturation is denoted by $e_\theta$. The norms of this errors are shown in \Figref{conv_p_pocket}. From those data, it is observed that $\Vert e_p \Vert_{H^1_0(0,1)}$ decays as $\Vert e_p \Vert_{H^1_0(0,1)}\propto \Delta x ^{1.9}$ (quadratic convergence rate), while $\Vert e_\theta \Vert_{L^2(0,1)}\propto \Delta x ^\frac{1}{2}$ (under linear convergence rate). Please note the rate convergence for pressure remains as calculated in Proposition \ref{prop:reynolds_scheme_consistency}. The low rate convergence for $\theta$ should be associated to its discontinuities in $]0,1[$.
+
+\subsection{Incorporating dynamics}
+Until now we have always considered the gap function $h$ as a known data. From now on, we will consider $h$ as an unknown, and its behavior will be coupled to the hydrodynamic pressure $p$. For this, we revisit the problem of the traveling pocket, this time allowing the upper surface (slider) to be depending on time $h_U(t)=Z(t)$.
+
+\begin{figure}[ht!]
+ \centering 
+ \def\svgwidth{\textwidth}	
+\input{figs/pocket_dynamics.pdf_tex}
+\caption[Scheme of the rectangular wedges problem]{Scheme of the traveling pocket with  a dynamic dependence of the upper surface.}\label{fig:pocket_dynamics}
+\end{figure}
+
+We assume the slider has a non-dimensional inertial mass $m$. Also, let us denote as $Z(t)$ the distance between the slider and the lower surface (see \Figref{pocket_dynamics}). Then, $Z(t)$ is a result of the interaction between the applied load $W^a$ (negative in the $z$-axis), which is supposed to be constant, and the hydrodynamic force $W^h(t)$ given by 
+\begin{equation}
+W^h(t) = \int_0^1 p(x,t)\,dx\label{eq:wa_pocket}.
+\end{equation}
+
+This way, the evolution of $Z(t)$ can be modeled by solving the problem
+\begin{align}
+m\,Z''(t) ={}& W^h(t)-W^a,\label{eq:newton_slider}\\
+Z'(t=0)={}&V_0,\\
+Z(t=0)={}&Z_0.
+\end{align}
+Where $Z'=U$ is the slider vertical velocity and $Z''$ its acceleration. We discretize time by some constant time step $\Delta t$ with $t_n=n\,\Delta t$, and for any function $f(t)$ we denote $f^n=f(t_n)$. And we discretize the Newton \Eqref{newton_slider} in time by using the next Newmark scheme for integration (which is unconditionally stable on time, e.g., \cite{geradin2015} Section 7.2) 
+\begin{align}
+Z^n ={}& Z^{n-1}+\Delta t\, U^{n-1} + \frac{\Delta t^2}{2}\frac{W^{h,n}-W_a}{m},\\
+U^n = {}& U^{n-1} + \Delta t\, \frac{W^{h,n}-W_a}{m}.
+\end{align}
+Observe that $\frac{W^{h,n}-W_a}{m}$ is the acceleration at time $t_n$. This numerical integration is implicit in time, so the iterative procedure will include an update of the partial solution $Z^{n,k}$ of $Z^{n}$ at each step. The Gauss-Seidel like algorithm resulting from including dynamics through this Newmark scheme is described in Algorithm \ref{alg:gs_reynolds_eamodel_dynamics}, at the end of this section. A convergence result of it can be found in a recent work made by \citeauthor{buscaglia2014i} \cite{buscaglia2014i}.
+
+\subsubsection*{A simple example simulation}
+We will present a simulation done to exemplify the incorporation of dynamics in the lubrication problem of the traveling pocket.
+
+The scales used in this section are described in \Tabref{pocket_dynamic_scales}. The values of the basic scales are $U=10$[m/s], $H=10^{-6}$[m] and $L=10^{-3}$[m]. The non-dimensional mass corresponds to $2\times 10^{-5}$ and the non-dimensional applied load was $W^a=1.666\times 10^{-4}$. The length of the pocket is $\ell = 0.2$ and its depth $d=1$. The number of volumes was chosen to be N$={}512$ over $]0,1[$ and the time step $\Delta t = 2\,
+\Delta x /S$ (Courant number equal to 1).
+
+The initial conditions for the slider position are $Z(t=0)=1$ and $Z'(t=0)=0$. And at $t=0$ the pocket is just entering into the domain, i.e., the right side of the pocket is at $x=0$.
+
+In \Figref{pocket_dynamics_frames} we show the numerical solutions of $p$ and $\theta$ obtained for different time instants $t_i$, $i=1\ldots 7$. In blue, we plot the mass quantity $h\theta$ present at each point of the domain. In red, we present the non-dimensional pressure amplified 200 times.
+\begin{table}[ht]
+\centering
+\begin{tabular}{lll}
+\toprule
+Quantity & Scale & Name\\ \midrule
+$x$ & ${L}$ & Horizontal coordinate\\
+%& & &\\
+$S$ & ${U}$ & Relative velocity\\
+%& & &\\
+$t$ & $\frac{L}{U}$ & Time\\
+%& & &\\
+$h$ & $H$ & Gap thickness\\
+%& & &\\
+$Z$, $d$ & $H$ & Slider vertical position, texture depth\\
+%& & &\\
+$p$ & $\frac{6\mu U L}{H^2}$ & Pressure\\
+%& & &\\
+$W^{a}, W^h$ & $\frac{6\mu U L^2}{H^2}$ & Applied and hydrodynamic forces\\
+%& & &\\
+$m$ & $\frac{6 L^4 \mu}{H^3 U}$ & Slider mass \\ \bottomrule
+\end{tabular}
+\caption[Basic and derived scales for traveling pocket with dynamic behavior of the slider]{Basic and derived scales.}\label{tab:pocket_dynamic_scales}
+\end{table}
+
+%\begin{table}[htb]
+%\label{tab:pocket_dynamic_scales}
+%\centering
+%\begin{tabular}{lll}
+%\toprule
+%Quantity & Scale & Name\\ \hline
+%& & \\
+%$x$,$\lambda$ & ${L}$ & horizontal coordinate, texture period\\
+%%& & &\\
+%$u$ & ${U}$ & relative velocity\\
+%%& & &\\
+%$R$ & ${L}$ & pad's profile curvature radius\\
+%%& & &\\
+%$t$ & $\frac{L}{U}$ & time\\
+%%& & &\\
+%$h$, $C$ & $H$ & gap thickness, minimum clearance\\
+%%& & &\\
+%$Z$,$d$ & $H$ & pad's vertical position, texture depth\\
+%%& & &\\
+%$p$ & $\frac{6\mu U L}{H^2}$ & pressure\\
+%%& & &\\
+%$W^{a}, W^h$ & $\frac{6\mu U L^2}{H^2}$ & applied and hydrodynamic forces per unit width\\
+%%& & &\\
+%$F$ & $\frac{\mu U L}{H}$ & friction force per unit width\\
+%%& & &\\
+%$m$ & $\frac{6 L^4 \mu}{H^3 U}$ & mass per unit width \\ & & \\\hline
+%\end{tabular}
+% \caption{Basic and derived scales}
+%\end{table}
+Let us remember that $d_1$ denotes the position of the left side of the pocket while $d_2$ denotes its right side. It can be observed that at time $t_1=0.19$ a cavitated zone is present at the very left of $d_2$ due to the divergent geometry of the pocket. There, the value of $\theta$ is approximated $1/2$ as predicted by \eqref{thetah1h2}. This \emph{cavitation bubble} travels along the domain coupled to the divergent zone of the pocket and being expanded since the transport velocity ($S/2$) is minor than the pocket velocity $S$. 
+\begin{figure}[ht!]
+ \centering 
+ \def\svgwidth{\textwidth}\small{
+\input{figs/pocket_dynamic_frames.pdf_tex}}
+\caption[Profiles of $p$ and $\theta$ for different time instants with dynamic behavior of the slider]{Scheme of the traveling pocket with  a dynamic dependence of the upper surface.}\label{fig:pocket_dynamics_frames}
+\end{figure}
+Also, we can observe a small pressure profile due to the slow downward movement of the slider ($Z'<0$).
+
+At $t_2=0.29$ the convergent part of the pocket generates a pressurized region that produces a small lifting of the slider ($Z\approx 1.05$), this also causes the appearance of a cavitated zone all along the interval $]d_2,1[$.
+
+The upward movement of the slider between $t_2=0.29$ and $t_3=0.59$, which corresponds to a positive squeeze, produces the pressure profile to diminish and a cavitated zone appears at the left side of the pressurized zone. Moreover, at $t_4=0.68$ we observe cavitation happening at almost the entire domain.
+
+This lack of hydrodynamic support makes the slider to fall again as there is no force to compensate the negative applied load. In fact, $Z(t_4)=1.54$ while $Z(t_5)=1.44$. Because of this fall, the slider makes contact again with the fluid and new pressurized zones appear due to a negative squeeze contribution. Interestingly, the slider does not fall enough as to make contact with the fluid at the convergent zone of the pocket, and so the pocket does not give any hydrodynamic support after approximately $t_4=0.68$. The last two frames, allow us to observe the cavitated zones traveling to the left and a slow downward movement of the slider that produces a small pressure profile. 
+
+\begin{remark}\it 
+It is difficult, maybe not possible, to generate analytic solutions for the simulation we have just shown. In \Chapref{slider_bearing} we will perform even more complicated simulations where the textures will have a sinusoidal profile.
+\end{remark}
+\begin{remark}\it 
+To perform such simulations we require suitable computational techniques that allow us to accelerate the convergence speed of the algorithms presented. Multigrid and Parallel Computing Techniques are example of this and the interested reader may review \cite{checophd} and \cite{checo2014arg}.
+\end{remark}
+
+\begin{algorithm}[ht]\small
+\caption{Dynamic Gauss-Seidel for Reynolds equation with Elrod-Adams cavitation model}
+\KwIn{$h^n$: gap function, $\left(P^{0},\,\theta^{0}\right)$: initial guess, $tol$: for stop criterion, $m$: slider mass, $W^a$: applied load, $Z^0,\,V^0$: initial position and vertical velocity of the slider resp.: $NT$: number of time steps to simulate}
+\KwOut{$P$, $\theta$, $Z$, $V$ pressure, saturation, slider position and slider velocities in time}
+\Begin{
+\For{$n=1\ldots NT$}{
+$k=0$\;
+$P^{n,k}=P^{n-1}$, $\theta^{n,k}=\theta^{n-1}$\;
+ \While{change $>$ tol}{
+$k=k+1$\;
+$W^{n,k-1}=\Delta x\sum_{i=1}^N p_i$\;
+$Z^{n,k}=Z^{n-1}+\Delta t\, V^{n-1}+\frac{\Delta t ^2}{2\,m}\left(W^{n,k-1}-W^a\right)$\;
+$h_i^{n,k}=Z^{n,k}-h_L(x_i)$\;
+ 	\For{$i=1\ldots N$}{
+ 	\If{$P_i^{n,k-1}> 0$ or $\theta^{n,k-1}_i == 1$}{
+ 	 Compute $P_i^{n,k}$ using \eqref{ea_gauss_pnk}\;
+ 	 \eIf{$P_i^{n,k}\geq 0$}{$\theta^{n,k}_k=1$\;}
+ 	 {$P_i^{n,k}=0$\;}
+ 	 }
+ 	 \If{$P^{n,k}_i\leq 0$ or $\theta^{n,k}_i < 1$}{
+ 	 Compute $\theta^{n,k}_i$ using \eqref{ea_gauss_thetank}\;
+ 	 \eIf{$\theta_i^{n,k}< 1$}{$P_i^{n,k}=0$\;}
+ 	 {$\theta_i^{n,k}=1$\;}
+ 	 }
+}%END LOOP OVER NODES
+$change=\|P^{n,k}-P^{n,k-1}\|_\infty+\|\theta^{n,k}-\theta^{n,k-1}\|_\infty+\|Z^{n,k}-Z^{n,k-1}\|_\infty$\;
+} %END RELAXATION
+$Z^n=Z^{n,k}$\;
+$V^n=V^{n-1}+\frac{\Delta t}{m}\left(W^{n,k-1}-W^a\right)$\;
+\For{$i=1\ldots N$}{
+$p^n_i=p^{n,k}_i$\;
+$\theta^n_i=\theta^{n,k}_i$\;
+}
+} %END LOOP OVER TIMES
+return $\left(P,\,\theta,\,Z,\,V\right)$\;
+}
+\label{alg:gs_reynolds_eamodel_dynamics}
+\end{algorithm}
